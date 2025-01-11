@@ -1,157 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { fetchFitMakerById, updateFitMakerProfile } from '../apiServices/fitMakerService';
-import axios from 'axios';
-
-
-
+import React, { useState, useContext, useEffect } from 'react'; 
+import { AuthContext } from '../../contexts/AuthContext';
+import useProfile from '../../apiServices/userProfile';
 
 const FitMakerProfile = () => {
     const { user } = useContext(AuthContext);
-    const [profileData, setProfileData] = useState({
-        user: '',
-        image: '',
-        shop_started: '',
-        shop_address: '',
-        shop_hours: '',
-        phone: '',
-        whatsapp: '',
-        website: '',
-        facebook: '',
-        instagram: '',
-    });
+    const token = localStorage.getItem("token");
 
-
-    const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-
-        if (e.target.multiple) {
-            // If the input is a multiple select, get all selected options
-            const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
-            setProfileData({
-                ...profileData,
-                [name]: selectedValues,
-            });
-        } else if (type === 'file') {
-            setProfileData({
-                ...profileData,
-                [name]: files[0], // Assign the file to the respective field
-            });
-        } else {
-            setProfileData({
-                ...profileData,
-                [name]: value,
-            });
-        }
-    };
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const res = await axios.get(
-                    `http://127.0.0.1:8000/fitMakers/fit-makers/${user.fitMaker}`,
-                    {
-                        headers: {
-                            Authorization: `Token ${token}`,
-                        },
-                    }
-                );
-
-                if (res.data) {
-                    setProfileData((prevData) => ({
-                        ...prevData,
-                        ...res.data,
-                    }));
-                }
-            } catch (error) {
-                console.error("Error fetching profile: ", error);
-            }
-        };
-
-        if (user) {
-            fetchProfile();
-        }
-    }, [user]);
-
-
-
-    // Helper function to upload images and return the URL
-    const uploadImage = async (image) => {
-        if (image && image instanceof File) {
-            const formData = new FormData();
-            formData.append('image', image);
-
-            try {
-                const imgbbResponse = await fetch('https://api.imgbb.com/1/upload?key=648e380c7b8d76ec81662ddc06d73ec5', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const imgbbData = await imgbbResponse.json();
-
-                if (imgbbData.status === 200) {
-                    return imgbbData.data.url; // Return the URL of the uploaded image
-                } else {
-                    alert('Image upload failed!');
-                    return '';
-                }
-            } catch (error) {
-                console.error('Error uploading image:', error);
-                alert('Image upload failed!');
-                return '';
-            }
-        }
-        return ''; // If no image provided, return empty string
-    };
-
-
-    const handleUpdateProfile = async (e) => {
-        e.preventDefault();
-
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            alert("You are not logged in.");
-            return;
-        }
-
-        // Upload profile image if it exists
-        let profileImageUrl = await uploadImage(profileData.image);
-
-        const updatedProfileData = {
-            ...profileData, 
-            image: profileImageUrl || profileData.image,
-        };
-
-        console.log('Updated Profile Data:', updatedProfileData);
-
-        try {
-            const res = await axios.put(
-                `http://127.0.0.1:8000/fitMakers/fit-makers/${user.fitMaker}/`,
-                updatedProfileData,
-                {
-                    headers: {
-                        Authorization: `Token ${token}`,
-                    },
-                }
-            );
-
-            if (res.status === 200) {
-                console.log("Profile updated successfully.");
-                setProfileData((prevData) => ({
-                    ...prevData,
-                    ...updatedProfileData, // Update the profile with new data
-                }));
-            } else {
-                console.log("Profile update failed.");
-            }
-        } catch (error) {
-            console.error("Error during the profile update:", error);
-        }
-    };
-
-
+    const { profileData, handleChange, handleUpdateProfile } = useProfile(
+        'fitMakers',  
+        user.fitMaker,  
+        token
+    );
+ 
     return (
 
         <section className='max-w-screen-lg p-10 my-20 m-auto shadow'>

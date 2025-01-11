@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { AuthContext } from '../contexts/AuthContext';
-import FitMakerProfile from '../components/FitMakerProfile';
-import FitFinderProfile from '../components/FitFinderProfile';
+import { AuthContext } from '../contexts/AuthContext'; 
+import FitMakerProfile from '../components/fitMaker/FitMakerProfile';
+import FitFinderProfile from '../components/fitFinder/FitFinderProfile';
 
 const ProfilePage = () => {
     const { user } = useContext(AuthContext);

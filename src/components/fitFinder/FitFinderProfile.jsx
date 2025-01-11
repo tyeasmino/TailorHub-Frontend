@@ -1,20 +1,20 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import useProfile from '../apiServices/userProfile';
+import React, { useContext } from 'react'; 
+import useProfile from '../../apiServices/userProfile';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const FitFinderProfile = () => {
     const { user } = useContext(AuthContext);
     const token = localStorage.getItem("token");
 
+    
     const { profileData, handleChange, handleUpdateProfile } = useProfile(
-        'fitFinders',   // Specify 'fitFinders' for this component
-        user.fitFinder, // Pass the fitFinder's user ID
-        token           // Authentication token
-    );
+        'fitFinders',    
+        user.fitFinder,  
+        token           
+    )
+    
 
     return (
-
-
         <section className='max-w-screen-lg p-10 my-20 m-auto shadow'>
             <div className='flex flex-col gap-5 relative'>
                 <div>

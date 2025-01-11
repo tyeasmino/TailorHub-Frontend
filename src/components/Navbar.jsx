@@ -65,9 +65,7 @@ const Navbar = () => {
         }
     }, [user]);
     
-
-
-    //for Dark
+ 
     useEffect(() => {
         localStorage.setItem("darkMode", JSON.stringify(darkMode));
 
@@ -186,7 +184,7 @@ const Navbar = () => {
                                 </div>
                                 <ul
                                     tabIndex={0}
-                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                                    className="menu flex gap-1 menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                                     <li>
                                         <Link to='/profile'className="justify-between">
                                             Profile
@@ -202,7 +200,7 @@ const Navbar = () => {
                                     : <></>}
                                     {user && user.fitFinder ? 
                                     <>
-                                        <li><a>Mesurements</a></li> 
+                                        <li> <Link to='/measurement'>Mesurements</Link> </li> 
                                     </> 
                                     : <></>}
                                     <li><button onClick={logout}>Logout</button></li>

@@ -11,8 +11,8 @@ import axios from 'axios'
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
     const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("darkMode")) || false);
-    
     const [profileData, setProfileData] = useState({ image: ''});
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -77,7 +77,7 @@ const Navbar = () => {
     }, [darkMode])
 
     return (
-        <section className='max-w-screen-2xl m-auto'>
+        <section className='mx-64 max-w-screen-2xl '>
             <div className="navbar">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -185,24 +185,6 @@ const Navbar = () => {
                                 <ul
                                     tabIndex={0}
                                     className="menu flex gap-1 menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                                    <li>
-                                        <Link to='/profile'className="justify-between">
-                                            Profile
-                                            <span className="badge">New</span>
-                                        </Link>
-                                    </li>
-                                    <li><Link to='/dashboard'>Dashboard</Link></li>
-                                    {user && user.fitMaker ? 
-                                    <>
-                                        <li><a>Inventory</a></li>
-                                        <li><a>Inventory Movement</a></li>
-                                    </> 
-                                    : <></>}
-                                    {user && user.fitFinder ? 
-                                    <>
-                                        <li> <Link to='/measurement'>Mesurements</Link> </li> 
-                                    </> 
-                                    : <></>}
                                     <li><button onClick={logout}>Logout</button></li>
                                 </ul>
                             </>) 

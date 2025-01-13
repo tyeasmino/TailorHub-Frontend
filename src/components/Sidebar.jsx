@@ -13,42 +13,97 @@ const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);  
   const location = useLocation();
 
+  // Toggle the sidebar collapse/expand state
+  const toggleSidebar = () => setCollapsed(!collapsed);
+
+  // Check if the current page is the dashboard, profile, or inventory page
+  const isOnProtectedPage = location.pathname === '/dashboard' || location.pathname === '/profile' || location.pathname === '/inventory';
 
   return (
-    <div className={`sidebar bg-purple h-full p-4 fixed left-0 top-0 transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
+    <div
+      className={`sidebar dark:bg-dark bg-purple h-full p-4 fixed left-0 top-0 transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}
+    >
       {/* Collapsibility Toggle */}
       <div className="flex justify-between items-center mb-4">
-        <button onClick={() => setCollapsed(!collapsed)}>
-          {collapsed ? <AiOutlineNodeExpand className="text-2xl" /> : <AiOutlineNodeCollapse className="text-2xl" />}
+        <button onClick={toggleSidebar}>
+          {collapsed ? (
+            <AiOutlineNodeExpand className="text-2xl" />
+          ) : (
+            <AiOutlineNodeCollapse className="text-2xl" />
+          )}
         </button>
       </div>
 
       {/* Sidebar Links */}
       <ul className="space-y-6">
-        <li>
-          <Link to="/dashboard" className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "border-b-2 border-pink" : ""}`}>
-            <LuLayoutDashboard className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`} />
+        <li className="relative group">
+          <Link
+            to="/dashboard"
+            className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "border-b-2 border-pink" : ""}`}
+          >
+            <LuLayoutDashboard
+              className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+            />
+            {/* Show tooltip only when collapsed */}
+            <span
+              className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+            >
+              Dashboard
+            </span>
             {!collapsed && <span className="ml-2">Dashboard</span>}
           </Link>
         </li>
-        <li>
-          <Link to="/profile" className={`flex items-center gap-2 ${location.pathname === "/profile" ? "border-b-2 border-pink" : ""}`}>
-            <TbMoodEdit className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`} />
+        <li className="relative group">
+          <Link
+            to="/profile"
+            className={`flex items-center gap-2 ${location.pathname === "/profile" ? "border-b-2 border-pink" : ""}`}
+          >
+            <TbMoodEdit
+              className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+            />
+            {/* Show tooltip only when collapsed */}
+            <span
+              className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+            >
+              Profile
+            </span>
             {!collapsed && <span className="ml-2">Profile</span>}
           </Link>
         </li>
 
         {user && user.fitMaker ? (
           <>
-            <li>
-              <Link to="/inventory" className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "border-b-2 border-pink" : ""}`}>
-                <MdOutlineInventory className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`} />
+            <li className="relative group">
+              <Link
+                to="/inventory"
+                className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "border-b-2 border-pink" : ""}`}
+              >
+                <MdOutlineInventory
+                  className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+                />
+                {/* Show tooltip only when collapsed */}
+                <span
+                  className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  Inventory
+                </span>
                 {!collapsed && <span className="ml-2">Inventory</span>}
               </Link>
             </li>
-            <li>
-              <Link to="/inventory-movement" className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "border-b-2 border-pink" : ""}`}>
-                <LuTrendingUpDown className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`} />
+            <li className="relative group">
+              <Link
+                to="/inventory-movement"
+                className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "border-b-2 border-pink" : ""}`}
+              >
+                <LuTrendingUpDown
+                  className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+                />
+                {/* Show tooltip only when collapsed */}
+                <span
+                  className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  Inventory Movement
+                </span>
                 {!collapsed && <span className="ml-2">Inventory Movement</span>}
               </Link>
             </li>
@@ -57,9 +112,20 @@ const Sidebar = () => {
 
         {user && user.fitFinder ? (
           <>
-            <li>
-              <Link to="/measurement" className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "border-b-2 border-pink" : ""}`}>
-                <TbRulerMeasure className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`} />
+            <li className="relative group">
+              <Link
+                to="/measurement"
+                className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "border-b-2 border-pink" : ""}`}
+              >
+                <TbRulerMeasure
+                  className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+                />
+                {/* Show tooltip only when collapsed */}
+                <span
+                  className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  Measurement
+                </span>
                 {!collapsed && <span className="ml-2">Measurement</span>}
               </Link>
             </li>

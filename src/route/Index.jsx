@@ -9,6 +9,7 @@ import RegistrationPage from '../pages/RegistrationPage'
 import { AuthProvider } from '../contexts/AuthContext'
 import ProfilePage from '../pages/ProfilePage'
 import DressMeasurementPage from '../pages/DressMeasurementPage'
+import InventoryPage from '../pages/InventoryPage'
 
 const Index = () => {
   return (
@@ -21,6 +22,7 @@ const Index = () => {
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/registration' element={<RegistrationPage />} />
                 <Route path='/dashboard' element={<Dashboard />} />
+                <Route path='/inventory' element={<InventoryPage />} />
                 <Route path='/measurement' element={<DressMeasurementPage />} />
                 <Route path='/profile' element={<ProfilePage />} />
             </Routes>

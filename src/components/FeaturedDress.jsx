@@ -6,6 +6,7 @@ import girl from '../assets/girl.jpg'
 import boy from '../assets/boy.jpg'
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { TbEye } from "react-icons/tb";
+import { Link } from 'react-router';
 
 
 
@@ -22,7 +23,7 @@ const FeaturedDress = () => {
                         <TbShoppingCartPlus className="absolute top-2 left-2 opacity-0 dark:group-hover:text-black group-hover:opacity-100 transition-opacity duration-300" />
 
                         {/* Eye Icon */}
-                        <TbEye className="absolute top-2 left-8 opacity-0 dark:group-hover:text-black group-hover:opacity-100 transition-opacity duration-300" />
+                        <Link to='/details'><TbEye className="absolute top-2 left-8 opacity-0 dark:group-hover:text-black group-hover:opacity-100 transition-opacity duration-300" /></Link>
 
                         <img className="w-52 h-60 p-2 object-center overflow-hidden rounded-t-lg bg-dress_bg" src={panjabi} alt="Panjabi" />
                     </div>

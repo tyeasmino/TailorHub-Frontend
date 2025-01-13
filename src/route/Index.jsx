@@ -10,6 +10,8 @@ import { AuthProvider } from '../contexts/AuthContext'
 import ProfilePage from '../pages/ProfilePage'
 import DressMeasurementPage from '../pages/DressMeasurementPage'
 import InventoryPage from '../pages/InventoryPage'
+import DetailsPage from '../pages/DetailsPage'
+import CartPage from '../pages/CartPage'
 
 const Index = () => {
   return (
@@ -22,6 +24,8 @@ const Index = () => {
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/registration' element={<RegistrationPage />} />
                 <Route path='/dashboard' element={<Dashboard />} />
+                <Route path='/details' element={<DetailsPage />} />
+                <Route path='/cart' element={<CartPage />} />
                 <Route path='/inventory' element={<InventoryPage />} />
                 <Route path='/measurement' element={<DressMeasurementPage />} />
                 <Route path='/profile' element={<ProfilePage />} />

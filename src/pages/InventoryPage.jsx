@@ -4,6 +4,11 @@ import { MdFormatListBulletedAdd } from 'react-icons/md'; // The icon for adding
 import { AuthContext } from '../contexts/AuthContext';
 import Modal from '../components/Modal'; // Modal component for the form
 import Sidebar from '../components/Sidebar';
+import { FaEdit } from "react-icons/fa";
+import { MdOutlineDeleteSweep } from "react-icons/md";
+import { uploadImage } from '../apiServices/apiService';
+import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
+
 
 const InventoryPage = () => {
   const { user } = useContext(AuthContext); // Get user from context
@@ -13,17 +18,31 @@ const InventoryPage = () => {
   const [isLoading, setIsLoading] = useState(true); // To track loading state
   const [error, setError] = useState(null); // To store errors (if any)
   const [showModal, setShowModal] = useState(false); // To control the modal visibility
+  const [editingItem, setEditingItem] = useState(null); // This will hold the item to be edited
+
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [pageSize, setPageSize] = useState(10); // Items per page (10, 25, 50)
+  const [totalItems, setTotalItems] = useState(0); // Total items count
+  const [totalPages, setTotalPages] = useState(0); // Total number of pages
+
+
   const [newItem, setNewItem] = useState({
-    item_type: '',
+    item_type: 'Tool',
     name: '',
     purchase_price_per_unit: '',
-    sell_price_per_unit: '',
-    stock: '',
+    sell_price_per_unit: 0,
+    stock: 0,
     color: '',
     supplier: '',
     description: '',
     category: '',
+    fitmaker: '',
+    image: null
   }); // To store the new item data for the form
+
+  const [sortField, setSortField] = useState(null); // Field by which to sort (e.g. 'item_type', 'stock', etc.)
+  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
+
 
   // Fetch the inventory items when the component mounts
   useEffect(() => {
@@ -50,47 +69,171 @@ const InventoryPage = () => {
     fetchInventoryItems();
   }, [token]);
 
-  // Handle input changes for the new item form
+  
+
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewItem((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const { name, value, type, files } = e.target;
+
+    // Handle file input (for images) separately
+    if (type === 'file') {
+      setNewItem({ ...newItem, [name]: files[0] });
+    } else {
+      setNewItem({ ...newItem, [name]: value });
+    }
   };
 
-  // Handle form submission to add a new item to the inventory
+  const handleEditItem = (item) => {
+    setEditingItem(item);  // Set the item being edited
+    setNewItem({ ...item }); // Populate the form fields with the item data
+    setShowModal(true); // Open the modal for editing
+  };
+
   const handleAddItem = async (e) => {
     e.preventDefault();
 
+    // Upload image first if there's an image selected
+    let imageUrl = '';
+    if (newItem.image) {
+      imageUrl = await uploadImage(newItem.image); // Upload image
+    }
+
+    // Add the image URL to the newItem object
+    const itemData = {
+      ...newItem,
+      fitmaker: user.fitMaker,
+      image: imageUrl,
+    };
+
+    console.log(itemData);
+
     try {
-      const response = await axios.post('http://127.0.0.1:8000/inventory/items/', newItem, {
+      const response = await axios.post('http://127.0.0.1:8000/inventory/items/', itemData, {
         headers: {
           'Authorization': `Token ${token}`,
         },
       });
 
       if (response.status === 201) {
-        setInventoryItems([...inventoryItems, response.data]); // Add new item to the list
-        setShowModal(false); // Close the modal
-        setNewItem({
-          item_type: '',
-          name: '',
-          purchase_price_per_unit: '',
-          sell_price_per_unit: '',
-          stock: '',
-          color: '',
-          supplier: '',
-          description: '',
-          category: '',
-        }); // Reset the form
+        setInventoryItems([...inventoryItems, response.data]);
+        setShowModal(false);
+        resetForm(); // Reset the form after adding a new item
       } else {
         setError('Failed to add new item');
       }
     } catch (err) {
+      console.error(err); // Log error for more detailed debugging
       setError('Error adding new item');
     }
   };
+
+
+  const handleUpdateItem = async (e) => {
+    e.preventDefault();
+
+    // If the image is updated, upload the new image and set the image URL
+    let imageUrl = '';
+    if (newItem.image && newItem.image instanceof File) {
+      imageUrl = await uploadImage(newItem.image); // Upload image
+    }
+
+    const updatedItemData = {
+      ...newItem,
+      image: imageUrl || newItem.image,  // If no new image, keep the old image
+    };
+
+    try {
+      const response = await axios.put(`http://127.0.0.1:8000/inventory/items/${editingItem.id}/`, updatedItemData, {
+        headers: {
+          'Authorization': `Token ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // Update the inventoryItems list with the updated item
+        setInventoryItems(inventoryItems.map(item => item.id === editingItem.id ? response.data : item));
+        setShowModal(false); // Close the modal
+        resetForm(); // Reset the form after update
+        setEditingItem(null); // Clear editing item state
+      } else {
+        setError('Failed to update item');
+      }
+    } catch (err) {
+      console.error('Error updating item:', err);
+      setError('An error occurred while updating the item.');
+    }
+  };
+
+  const resetForm = () => {
+    setNewItem({
+      item_type: 'Tool',
+      name: '',
+      purchase_price_per_unit: '',
+      sell_price_per_unit: 0,
+      stock: 0,
+      color: '',
+      supplier: '',
+      description: '',
+      category: '',
+      fitmaker: '',
+      image: null
+    });
+  };
+
+
+
+
+  const handleDeleteItem = async (itemId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this item?");
+    if (!confirmed) return;
+
+    try {
+      // Make the DELETE request to the API
+      const response = await axios.delete(`http://127.0.0.1:8000/inventory/items/${itemId}/`, {
+        headers: {
+          'Authorization': `Token ${token}`,
+        },
+      });
+
+      if (response.status === 204) {
+        // Successfully deleted the item, update the state to remove it from the list
+        setInventoryItems(inventoryItems.filter(item => item.id !== itemId));
+      } else {
+        alert("Failed to delete item");
+      }
+    } catch (err) {
+      console.error("Error deleting item:", err);
+      alert("An error occurred while deleting the item.");
+    }
+  };
+
+
+  // Sorting function
+  const handleSort = (field) => {
+    const isSameField = sortField === field;
+    const newSortOrder = isSameField && sortOrder === 'asc' ? 'desc' : 'asc'; // Toggle sort order
+    setSortField(field);
+    setSortOrder(newSortOrder);
+  };
+
+  // Sort items based on the selected field and order
+  const sortedItems = [...inventoryItems].sort((a, b) => {
+    if (sortField) {
+      if (typeof a[sortField] === 'string') {
+        return sortOrder === 'asc'
+          ? a[sortField].localeCompare(b[sortField])
+          : b[sortField].localeCompare(a[sortField]);
+      } else if (typeof a[sortField] === 'number') {
+        return sortOrder === 'asc' ? a[sortField] - b[sortField] : b[sortField] - a[sortField];
+      }
+    }
+    return 0;
+  });
+
+
+
+
+
 
   // If data is loading, show a loading spinner
   if (isLoading) {
@@ -104,155 +247,227 @@ const InventoryPage = () => {
 
   return (
     <section className='flex'>
-    <Sidebar />
+      <Sidebar />
 
-    {/* <section className='mx-64 p-10 max-w-screen-2xl w-full'>
+      {/* <section className='mx-64 p-10 max-w-screen-2xl w-full'>
         </section> */}
-    <section className="flex flex-col m-auto shadow my-20 p-10 max-w-screen-lg w-full">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-3xl font-bold">Inventory Items</h2>
-        <MdFormatListBulletedAdd
-          className="text-3xl cursor-pointer"
-          onClick={() => setShowModal(true)} // Show the modal on click
-        />
-      </div>
+      <section className="flex flex-col m-auto shadow my-20 p-10 max-w-screen-xl w-full">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-3xl font-bold">Inventory Items</h2>
+          <MdFormatListBulletedAdd
+            className="text-3xl cursor-pointer"
+            onClick={() => setShowModal(true)} // Show the modal on click
+          />
+        </div>
 
-      {/* Table to display inventory items */}
-      <table className="table-auto w-full border-collapse border border-gray-300">
+        {/* Table to display inventory items */}
+        <table className="table-auto w-full">
         <thead>
-          <tr>
-            <th className="border px-4 py-2">ID</th>
-            <th className="border px-4 py-2">Item Type</th>
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Purchase Price</th>
-            <th className="border px-4 py-2">Sell Price</th>
-            <th className="border px-4 py-2">Stock</th>
-            <th className="border px-4 py-2">Color</th>
-            <th className="border px-4 py-2">Supplier</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventoryItems.map((item) => (
-            <tr key={item.id}>
-              <td className="border px-4 py-2">{item.id}</td>
-              <td className="border px-4 py-2">{item.item_type}</td>
-              <td className="border px-4 py-2">{item.name}</td>
-              <td className="border px-4 py-2">{item.purchase_price_per_unit}</td>
-              <td className="border px-4 py-2">{item.sell_price_per_unit}</td>
-              <td className="border px-4 py-2">{item.stock}</td>
-              <td className="border px-4 py-2">{item.color}</td>
-              <td className="border px-4 py-2">{item.supplier}</td>
+            <tr className="border-b-2 border-violet-400">
+              <th
+                className="py-3 flex text-start cursor-pointer"
+                onClick={() => handleSort('item_type')}
+              >
+                Item Type {sortField === 'item_type' && (sortOrder === 'asc' ? <MdArrowDropUp /> : <MdArrowDropDown />)}
+                
+              </th>
+              <th className="py-3 text-start">Name</th>
+              <th
+                className="py-3 text-start cursor-pointer"
+                onClick={() => handleSort('purchase_price_per_unit')}
+              >
+                Purchase Price
+              </th>
+              <th
+                className="py-3 text-start cursor-pointer"
+                onClick={() => handleSort('sell_price_per_unit')}
+              >
+                Sell Price
+              </th>
+              <th
+                className="py-3 text-start cursor-pointer"
+                onClick={() => handleSort('stock')}
+              >
+                Stock
+              </th>
+              <th className="py-3 text-start">Color</th>
+              <th
+                className="py-3 text-start cursor-pointer"
+                onClick={() => handleSort('supplier')}
+              >
+                Supplier
+              </th>
+              <th className="py-3 text-start" colSpan={2}>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedItems.map((item) => (
+              <tr key={item.id} className="border-b border-violet-200">
+                <td className="py-2 text-start">{item.item_type}</td>
+                <td className="py-2 text-start flex items-center justify-start gap-3">
+                  <img src={item.image} className="w-[50px] h-[50px] object-cover overflow-hidden rounded-md" alt="" />
+                  {item.name}
+                </td>
+                <td className="py-2 text-start">{item.purchase_price_per_unit}</td>
+                <td className="py-2 text-start">{item.sell_price_per_unit}</td>
+                <td className="py-2 text-start">{item.stock}</td>
+                <td className="py-2 text-start">{item.color}</td>
+                <td className="py-2 text-start">{item.supplier}</td>
+                <td className="py-2 text-start">
+                  <FaEdit className="text-heading " onClick={() => handleEditItem(item)} />
+                </td>
+                <td className="py-2 text-start">
+                  <MdOutlineDeleteSweep className="text-pink" onClick={() => handleDeleteItem(item.id)} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      {/* Modal to Add New Item */}
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
-          <h2 className="text-2xl font-bold mb-5">Add New Inventory Item</h2>
-          <form onSubmit={handleAddItem} className="flex flex-col gap-5">
-            <div className="flex gap-5">
-              <div className="w-1/2">
-                <label htmlFor="item_type" className="font-semibold">Item Type</label>
-                <input
-                  type="text"
-                  name="item_type"
-                  value={newItem.item_type}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
+
+        {/* Modal to Add New Item */}
+        {showModal && (
+          <div className="fixed inset-0 bg-opacity-50 z-50 flex justify-center items-center">
+            <Modal onClose={() => setShowModal(false)}>
+              <div className="w-full max-w-3xl m-auto my-6 bg-white rounded-lg shadow-xl p-6 relative">
+
+                {/* Cross Button */}
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="absolute top-4 right-4 text-xl font-bold text-gray-700"
+                >
+                  &times;
+                </button>
+
+                <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Add New Inventory Item</h2>
+                <form onSubmit={editingItem ? handleUpdateItem : handleAddItem} className="flex flex-col gap-6">
+                  <div className="flex gap-6">
+                    <div className="w-1/2">
+                      <label htmlFor="item_type" className="block text-lg font-semibold text-gray-700 mb-2">Item Type</label>
+                      <select
+                        name="item_type"
+                        value={newItem.item_type}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out" >
+                        <option value="Tool">Tool</option>
+                        <option value="Fabric">Fabric</option>
+                      </select>
+                    </div>
+                    <div className="w-1/2">
+                      <label htmlFor="name" className="block text-lg font-semibold text-gray-700 mb-2">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        value={newItem.name}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-1/3">
+                      <label htmlFor="purchase_price_per_unit" className="block text-lg font-semibold text-gray-700 mb-2">Purchase Price</label>
+                      <input required
+                        type="number"
+                        name="purchase_price_per_unit"
+                        value={newItem.purchase_price_per_unit}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+
+                    <div className="w-1/3">
+                      <label htmlFor="sell_price_per_unit" className="block text-lg font-semibold text-gray-700 mb-2">Sell Price</label>
+                      <input
+                        type="number"
+                        name="sell_price_per_unit"
+                        value={newItem.sell_price_per_unit}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+
+                    <div className="w-1/3">
+                      <label htmlFor="color" className="block text-lg font-semibold text-gray-700 mb-2">Color</label>
+                      <input
+                        type="text"
+                        name="color"
+                        value={newItem.color}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-1/2">
+                      <label htmlFor="category" className="block text-lg font-semibold text-gray-700 mb-2">Category</label>
+                      <input
+                        type="text"
+                        name="category"
+                        value={newItem.category}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+                    <div className="w-1/2">
+                      <label htmlFor="supplier" className="block text-lg font-semibold text-gray-700 mb-2">Supplier</label>
+                      <input
+                        type="text"
+                        name="supplier"
+                        value={newItem.supplier}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-1/2">
+                      <label htmlFor="description" className="block text-lg font-semibold text-gray-700 mb-2">Description</label>
+                      <textarea
+                        rows={8}
+                        name="description"
+                        value={newItem.description}
+                        onChange={handleChange}
+                        className="input min-h-20 w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out overflow-hidden"
+                      />
+
+                    </div>
+                    <div className="w-1/2">
+                      <label htmlFor="image" className="block text-lg font-semibold text-gray-700 mb-2">Image</label>
+                      <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={handleChange}
+                        className="file-input mt-2 file-input-bordered w-full bg-violet-50"
+                      />
+
+                      {newItem.image && newItem.image instanceof File && (
+                        <p className="text-xs text-pink mt-1">New Image Uploaded</p>
+                      )}
+                      {newItem.image && !(newItem.image instanceof File) && (
+                        <img src={newItem.image} alt="Attachment Preview" className="max-w-[100px] max-h-[100px] mt-2 rounded-xl" />
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-violet-600 text-white py-3 rounded-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition duration-200 w-full mt-5"
+                  >
+                    {editingItem ? "Update Item" : "Add Item"} {/* Show correct text based on editing mode */}
+                  </button>
+                </form>
               </div>
+            </Modal>
+          </div>
+        )}
 
-              <div className="w-1/2">
-                <label htmlFor="name" className="font-semibold">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={newItem.name}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-            </div>
 
-            <div className="flex gap-5">
-              <div className="w-1/2">
-                <label htmlFor="purchase_price_per_unit" className="font-semibold">Purchase Price</label>
-                <input
-                  type="number"
-                  name="purchase_price_per_unit"
-                  value={newItem.purchase_price_per_unit}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-
-              <div className="w-1/2">
-                <label htmlFor="sell_price_per_unit" className="font-semibold">Sell Price</label>
-                <input
-                  type="number"
-                  name="sell_price_per_unit"
-                  value={newItem.sell_price_per_unit}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-5">
-              <div className="w-1/2">
-                <label htmlFor="stock" className="font-semibold">Stock</label>
-                <input
-                  type="number"
-                  name="stock"
-                  value={newItem.stock}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-
-              <div className="w-1/2">
-                <label htmlFor="color" className="font-semibold">Color</label>
-                <input
-                  type="text"
-                  name="color"
-                  value={newItem.color}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-5">
-              <div className="w-1/2">
-                <label htmlFor="supplier" className="font-semibold">Supplier</label>
-                <input
-                  type="text"
-                  name="supplier"
-                  value={newItem.supplier}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-
-              <div className="w-1/2">
-                <label htmlFor="description" className="font-semibold">Description</label>
-                <input
-                  type="text"
-                  name="description"
-                  value={newItem.description}
-                  onChange={handleChange}
-                  className="input w-full"
-                />
-              </div>
-            </div>
-
-            <button type="submit" className="bg-heading text-white px-5 py-2 rounded mt-5">Add Item</button>
-          </form>
-        </Modal>
-      )}
-    </section>
+      </section>
     </section>
   );
 };

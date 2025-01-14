@@ -22,3 +22,28 @@ export const getDressMeasurements = async () => {
 };
 
 
+export const uploadImage = async (image) => {
+    if (image && image instanceof File) {
+        const formData = new FormData();
+        formData.append('image', image);
+        try {
+            const imgbbResponse = await fetch('https://api.imgbb.com/1/upload?key=648e380c7b8d76ec81662ddc06d73ec5', {
+                method: 'POST',
+                body: formData,
+            });
+            const imgbbData = await imgbbResponse.json();
+             
+            if (imgbbData.status === 200) {
+                return imgbbData.data.url;
+            } else {
+                alert('Image upload failed!');
+                return '';
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('Image upload failed!');
+            return '';
+        }
+    }
+    return '';  
+};

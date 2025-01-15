@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar';
+import { FaEdit } from 'react-icons/fa';
+import { MdOutlineDeleteSweep } from 'react-icons/md';
 
 const InventoryMovementPage = () => {
-    // State to store data and loading state
     const [inventoryMovements, setInventoryMovements] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -11,29 +12,94 @@ const InventoryMovementPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [nextPage, setNextPage] = useState(null);
     const [previousPage, setPreviousPage] = useState(null);
-    const [showForm, setShowForm] = useState(false); // To toggle form visibility
+    const [showForm, setShowForm] = useState(false);
+    const [inventoryItems, setInventoryItems] = useState([]);  // <-- Add this line
+    const [message, setMessage] = useState('');
 
-    const token = localStorage.getItem('token'); // Get token for authentication
 
+    const token = localStorage.getItem('token');
     const [formData, setFormData] = useState({
         inventory_item: '',
         quantity: '',
-        movement_type: 'Add',  // Default to 'Add'
+        movement_type: 'Add',
         description: '',
     });
 
-    const [editingMovement, setEditingMovement] = useState(null); // For editing existing movements
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/inventory/items/', {
+            headers: {
+                'Authorization': `Token ${token}`,  // Ensure the token is passed correctly
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => setInventoryItems(data.results))  // Update state here
+            .catch((error) => console.error('Error fetching inventory items:', error));
+    }, []);
+
+
+    const [editingMovement, setEditingMovement] = useState(null);
+
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value,
+    //     });
+    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevState) => ({
+            ...prevState,
             [name]: value,
-        });
+        }));
     };
+
+
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log('inventory movement data: ', formData);
+
+    //     try {
+    //         const method = editingMovement ? 'put' : 'post';  // Use PUT if editing, POST if adding
+    //         const url = editingMovement
+    //             ? `http://127.0.0.1:8000/inventory/items_movements/${editingMovement.id}/`
+    //             : `http://127.0.0.1:8000/inventory/items_movements/`;
+
+    //         const response = await axios({
+    //             method,
+    //             url,
+    //             headers: {
+    //                 'Authorization': `Token ${token}`,
+    //             },
+    //             data: formData,
+    //         });
+
+
+
+    //         if (response.status === 200 || response.status === 201) {
+    //             fetchInventoryMovements(); // Re-fetch data after successful create/update
+    //             setFormData({
+    //                 inventory_item: '',
+    //                 quantity: '',
+    //                 movement_type: 'Add',
+    //                 description: '',
+    //             });
+    //             setEditingMovement(null); // Reset editing state
+    //             setShowForm(false); // Hide the form
+    //         } else {
+    //             setError('Failed to save movement');
+    //         }
+    //     } catch (err) {
+    //         setError('Error saving movement');
+    //     }
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('inventory movement data: ', formData);
 
         try {
             const method = editingMovement ? 'put' : 'post';  // Use PUT if editing, POST if adding
@@ -51,6 +117,8 @@ const InventoryMovementPage = () => {
             });
 
             if (response.status === 200 || response.status === 201) {
+                // If successful, set success message
+                setMessage('Item movement added successfully!');
                 fetchInventoryMovements(); // Re-fetch data after successful create/update
                 setFormData({
                     inventory_item: '',
@@ -61,12 +129,20 @@ const InventoryMovementPage = () => {
                 setEditingMovement(null); // Reset editing state
                 setShowForm(false); // Hide the form
             } else {
-                setError('Failed to save movement');
+                // If API doesn't return a 200/201 status, set the failure message
+                setMessage('Failed to add item movement.');
             }
         } catch (err) {
-            setError('Error saving movement');
+            // Handle specific error messages from backend (like insufficient balance)
+            if (err.response && err.response.data && err.response.data.detail) {
+                setMessage(err.response.data.detail); // Show the detailed error message
+            } else {
+                // Generic error message if no specific detail is found
+                setMessage('Error saving movement.');
+            }
         }
     };
+
 
     // Function to fetch inventory movement data
     const fetchInventoryMovements = async () => {
@@ -131,6 +207,13 @@ const InventoryMovementPage = () => {
             <section className="m-auto shadow my-20 p-10 max-w-screen-xl w-full">
                 <h2 className="text-3xl font-bold mb-5">Inventory Movements</h2>
 
+                {message && (
+                    <div className={`p-4 mb-4 rounded-md ${message === 'Item movement added successfully!' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                        {message}
+                    </div>
+                )}
+
+
                 {/* Button to show form */}
                 <button
                     onClick={() => setShowForm(!showForm)}
@@ -144,17 +227,24 @@ const InventoryMovementPage = () => {
                     <form onSubmit={handleSubmit} className="space-y-4 mb-5 p-5 border rounded-lg shadow-lg">
                         <div>
                             <label htmlFor="inventory_item" className="block">Inventory Item</label>
-                            <input
-                                type="text"
+                            <select
                                 id="inventory_item"
                                 name="inventory_item"
-                                value={formData.inventory_item}
+                                value={formData.inventory_item}  // Ensure this corresponds to the selected item ID in your form data
                                 onChange={handleInputChange}
                                 required
                                 className="w-full p-2 border rounded"
-                                placeholder="Inventory Item Name"
-                            />
+                            >
+                                <option value="">Select an item</option>  {/* Placeholder option */}
+                                {/* Iterate over the inventory items */}
+                                {inventoryItems.map(item => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
+
                         <div>
                             <label htmlFor="quantity" className="block">Quantity</label>
                             <input
@@ -211,7 +301,7 @@ const InventoryMovementPage = () => {
                             <th className="py-3 text-start">Movement Type</th>
                             <th className="py-3 text-start">Quantity</th>
                             <th className="py-3 text-start">Description</th>
-                            <th className="py-3 text-start">Actions</th>
+                            <th className="py-3 text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,7 +312,7 @@ const InventoryMovementPage = () => {
                                 <td className="py-2 text-start">{movement.movement_type}</td>
                                 <td className="py-2 text-start">{movement.quantity}</td>
                                 <td className="py-2 text-start">{movement.description}</td>
-                                <td className="py-2 text-start">
+                                <td className="py-2 text-end">
                                     <button
                                         onClick={() => {
                                             setFormData({
@@ -236,13 +326,13 @@ const InventoryMovementPage = () => {
                                         }}
                                         className="bg-violet-600 text-white px-3 py-1 rounded mr-2"
                                     >
-                                        Edit
+                                        <FaEdit />
                                     </button>
                                     <button
                                         onClick={() => handleDelete(movement.id)}
                                         className="bg-red-600 text-white px-3 py-1 rounded"
                                     >
-                                        Delete
+                                        <MdOutlineDeleteSweep />
                                     </button>
                                 </td>
                             </tr>
@@ -253,9 +343,9 @@ const InventoryMovementPage = () => {
                 {/* Pagination Controls */}
                 <div className="flex justify-between items-center">
                     <button
-                        disabled={!previousPage}
+                        disabled={!previousPage}  // Disable if no previous page
                         onClick={() => handlePageChange(currentPage - 1)}
-                        className="px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none"
+                        className={`px-4 py-2 ${!previousPage ? 'bg-gray-400' : 'bg-heading'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
                     >
                         Previous
                     </button>
@@ -273,13 +363,14 @@ const InventoryMovementPage = () => {
                     </div>
 
                     <button
-                        disabled={!nextPage}
+                        disabled={!nextPage}  // Disable if no next page
                         onClick={() => handlePageChange(currentPage + 1)}
-                        className="px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none"
+                        className={`px-4 py-2 ${!nextPage ? 'bg-gray-400' : 'bg-heading'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
                     >
                         Next
                     </button>
                 </div>
+
             </section>
         </section>
     );

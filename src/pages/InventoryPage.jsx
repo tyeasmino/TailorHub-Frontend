@@ -342,35 +342,36 @@ const InventoryPage = () => {
 
           {/* Pagination Controls */}
           <div className="flex justify-center">
-            {/* Previous Button */}
-            <button
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-              className="px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none"
-            >
-              Previous
-            </button>
+  {/* Previous Button */}
+  <button
+    disabled={currentPage === 1}  // Disable if on the first page
+    onClick={() => handlePageChange(currentPage - 1)}
+    className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+  >
+    Previous
+  </button>
 
-            {/* Page number buttons */}
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-violet-700' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
-              >
-                {index + 1}
-              </button>
-            ))}
+  {/* Page number buttons */}
+  {[...Array(totalPages)].map((_, index) => (
+    <button
+      key={index}
+      onClick={() => handlePageChange(index + 1)}
+      className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-violet-700' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
+    >
+      {index + 1}
+    </button>
+  ))}
 
-            {/* Next Button */}
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(currentPage + 1)}
-              className="px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none"
-            >
-              Next
-            </button>
-          </div>
+  {/* Next Button */}
+  <button
+    disabled={currentPage === totalPages}  // Disable if on the last page
+    onClick={() => handlePageChange(currentPage + 1)}
+    className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+  >
+    Next
+  </button>
+</div>
+
 
         </div>
 

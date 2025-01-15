@@ -12,6 +12,7 @@ import DressMeasurementPage from '../pages/DressMeasurementPage'
 import InventoryPage from '../pages/InventoryPage'
 import DetailsPage from '../pages/DetailsPage'
 import CartPage from '../pages/CartPage'
+import InventoryMovementPage from '../pages/InventoryMovementPage'
 
 const Index = () => {
   return (
@@ -27,6 +28,7 @@ const Index = () => {
                 <Route path='/details' element={<DetailsPage />} />
                 <Route path='/cart' element={<CartPage />} />
                 <Route path='/inventory' element={<InventoryPage />} />
+                <Route path='/inventory-movement' element={<InventoryMovementPage />} />
                 <Route path='/measurement' element={<DressMeasurementPage />} />
                 <Route path='/profile' element={<ProfilePage />} />
             </Routes>

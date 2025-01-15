@@ -20,11 +20,11 @@ const InventoryPage = () => {
   const [showModal, setShowModal] = useState(false); // To control the modal visibility
   const [editingItem, setEditingItem] = useState(null); // This will hold the item to be edited
 
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [pageSize, setPageSize] = useState(10); // Items per page (10, 25, 50)
-  const [totalItems, setTotalItems] = useState(0); // Total items count
-  const [totalPages, setTotalPages] = useState(0); // Total number of pages
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [totalPages, setTotalPages] = useState(0); // Track the total number of pages
+  const [pageSize, setPageSize] = useState(5);
 
+  
 
   const [newItem, setNewItem] = useState({
     item_type: 'Tool',
@@ -48,13 +48,15 @@ const InventoryPage = () => {
   useEffect(() => {
     const fetchInventoryItems = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/inventory/items/', {
+        const response = await axios.get(`http://127.0.0.1:8000/inventory/items/?page=${currentPage}&page_size=${pageSize}`, {
           headers: {
             'Authorization': `Token ${token}`,
           },
         });
+
         if (response.status === 200) {
-          setInventoryItems(response.data);
+          setInventoryItems(response.data.results);
+          setTotalPages(Math.ceil(response.data.count / pageSize)); // Update total pages
           setIsLoading(false);
         } else {
           setError('Failed to fetch inventory items');
@@ -67,9 +69,13 @@ const InventoryPage = () => {
     };
 
     fetchInventoryItems();
-  }, [token]);
+  }, [currentPage, pageSize, token]);
 
-  
+
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page); // Update the current page
+  };
 
 
   const handleChange = (e) => {
@@ -262,14 +268,14 @@ const InventoryPage = () => {
 
         {/* Table to display inventory items */}
         <table className="table-auto w-full">
-        <thead>
+          <thead>
             <tr className="border-b-2 border-violet-400">
               <th
                 className="py-3 flex text-start cursor-pointer"
                 onClick={() => handleSort('item_type')}
               >
                 Item Type {sortField === 'item_type' && (sortOrder === 'asc' ? <MdArrowDropUp /> : <MdArrowDropDown />)}
-                
+
               </th>
               <th className="py-3 text-start">Name</th>
               <th
@@ -284,19 +290,9 @@ const InventoryPage = () => {
               >
                 Sell Price
               </th>
-              <th
-                className="py-3 text-start cursor-pointer"
-                onClick={() => handleSort('stock')}
-              >
-                Stock
-              </th>
+              <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('stock')}> Stock </th>
               <th className="py-3 text-start">Color</th>
-              <th
-                className="py-3 text-start cursor-pointer"
-                onClick={() => handleSort('supplier')}
-              >
-                Supplier
-              </th>
+              <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('supplier')}> Supplier </th>
               <th className="py-3 text-start" colSpan={2}>Action</th>
             </tr>
           </thead>
@@ -323,6 +319,60 @@ const InventoryPage = () => {
             ))}
           </tbody>
         </table>
+
+
+
+        <div className='flex items-center py-3 justify-between'>
+
+          {/* Page Size Dropdown */}
+          <div className="flex justify-center items-center">
+            <label htmlFor="pageSize" className="mr-2">Items per page:</label>
+            <select
+              id="pageSize"
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="px-4 py-2 border rounded-md"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center">
+            {/* Previous Button */}
+            <button
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+              className="px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none"
+            >
+              Previous
+            </button>
+
+            {/* Page number buttons */}
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-violet-700' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            {/* Next Button */}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none"
+            >
+              Next
+            </button>
+          </div>
+
+        </div>
 
 
         {/* Modal to Add New Item */}

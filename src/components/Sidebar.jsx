@@ -39,7 +39,7 @@ const Sidebar = () => {
         <li className="relative group">
           <Link
             to="/dashboard"
-            className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "border-b-2 border-pink" : ""}`}
+            className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "bg-white p-4 shadow font-semibold" : ""}`}
           >
             <LuLayoutDashboard
               className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -56,7 +56,7 @@ const Sidebar = () => {
         <li className="relative group">
           <Link
             to="/profile"
-            className={`flex items-center gap-2 ${location.pathname === "/profile" ? "border-b-2 border-pink" : ""}`}
+            className={`flex items-center gap-2 ${location.pathname === "/profile" ? "bg-white md:p-4 shadow font-semibold" : ""}`}
           >
             <TbMoodEdit
               className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -76,7 +76,7 @@ const Sidebar = () => {
             <li className="relative group">
               <Link
                 to="/inventory"
-                className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "border-b-2 border-pink" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
                 <MdOutlineInventory
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -93,7 +93,7 @@ const Sidebar = () => {
             <li className="relative group">
               <Link
                 to="/inventory-movement"
-                className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "border-b-2 border-pink" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
                 <LuTrendingUpDown
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -115,7 +115,7 @@ const Sidebar = () => {
             <li className="relative group">
               <Link
                 to="/measurement"
-                className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "border-b-2 border-pink" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
                 <TbRulerMeasure
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}

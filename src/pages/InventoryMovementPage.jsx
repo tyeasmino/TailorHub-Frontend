@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 import { FaEdit } from 'react-icons/fa';
 import { MdOutlineDeleteSweep } from 'react-icons/md';
+import { FormGroup, Label, Input } from 'reactstrap';
 
 const InventoryMovementPage = () => {
     const [inventoryMovements, setInventoryMovements] = useState([]);
@@ -13,100 +14,54 @@ const InventoryMovementPage = () => {
     const [nextPage, setNextPage] = useState(null);
     const [previousPage, setPreviousPage] = useState(null);
     const [showForm, setShowForm] = useState(false);
-    const [inventoryItems, setInventoryItems] = useState([]);  // <-- Add this line
+    const [inventoryItems, setInventoryItems] = useState([]);
     const [message, setMessage] = useState('');
-
+    const [isEditing, setIsEditing] = useState(false);
 
     const token = localStorage.getItem('token');
     const [formData, setFormData] = useState({
         inventory_item: '',
         quantity: '',
         movement_type: 'Add',
-        description: '',
+        description: ''
     });
-
-
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/inventory/items/', {
-            headers: {
-                'Authorization': `Token ${token}`,  // Ensure the token is passed correctly
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => setInventoryItems(data.results))  // Update state here
-            .catch((error) => console.error('Error fetching inventory items:', error));
-    }, []);
-
 
     const [editingMovement, setEditingMovement] = useState(null);
 
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData({
-    //         ...formData,
-    //         [name]: value,
-    //     });
-    // };
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/inventory/items_movements/${id}/`, {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+            });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+            // Check if the page we're on is empty after deletion
+            if (inventoryMovements.length === 1 && currentPage > 1) {
+                setCurrentPage(currentPage - 1);  // Move to the previous page
+            } else {
+                fetchInventoryMovements();  // Re-fetch data after deletion
+            }
+
+        } catch (err) {
+            setError('Error deleting movement');
+        }
     };
 
 
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log('inventory movement data: ', formData);
-
-    //     try {
-    //         const method = editingMovement ? 'put' : 'post';  // Use PUT if editing, POST if adding
-    //         const url = editingMovement
-    //             ? `http://127.0.0.1:8000/inventory/items_movements/${editingMovement.id}/`
-    //             : `http://127.0.0.1:8000/inventory/items_movements/`;
-
-    //         const response = await axios({
-    //             method,
-    //             url,
-    //             headers: {
-    //                 'Authorization': `Token ${token}`,
-    //             },
-    //             data: formData,
-    //         });
-
-
-
-    //         if (response.status === 200 || response.status === 201) {
-    //             fetchInventoryMovements(); // Re-fetch data after successful create/update
-    //             setFormData({
-    //                 inventory_item: '',
-    //                 quantity: '',
-    //                 movement_type: 'Add',
-    //                 description: '',
-    //             });
-    //             setEditingMovement(null); // Reset editing state
-    //             setShowForm(false); // Hide the form
-    //         } else {
-    //             setError('Failed to save movement');
-    //         }
-    //     } catch (err) {
-    //         setError('Error saving movement');
-    //     }
-    // };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('inventory movement data: ', formData);
-
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        // Define the API URL for add/edit
+        const url = isEditing
+            ? `http://127.0.0.1:8000/inventory/items_movements/${editingMovement.id}/`  // Edit endpoint
+            : 'http://127.0.0.1:8000/inventory/items_movements/';  // Add endpoint
+        
         try {
-            const method = editingMovement ? 'put' : 'post';  // Use PUT if editing, POST if adding
-            const url = editingMovement
-                ? `http://127.0.0.1:8000/inventory/items_movements/${editingMovement.id}/`
-                : `http://127.0.0.1:8000/inventory/items_movements/`;
-
+            // Set the HTTP method based on whether it's editing or adding
+            const method = isEditing ? 'put' : 'post';
+            
+            // Make API call for add/edit
             const response = await axios({
                 method,
                 url,
@@ -115,36 +70,28 @@ const InventoryMovementPage = () => {
                 },
                 data: formData,
             });
-
-            if (response.status === 200 || response.status === 201) {
-                // If successful, set success message
-                setMessage('Item movement added successfully!');
-                fetchInventoryMovements(); // Re-fetch data after successful create/update
-                setFormData({
-                    inventory_item: '',
-                    quantity: '',
-                    movement_type: 'Add',
-                    description: '',
-                });
-                setEditingMovement(null); // Reset editing state
-                setShowForm(false); // Hide the form
+            
+            // If adding, update the list; if editing, update the specific item
+            if (isEditing) {
+                const updatedMovements = inventoryMovements.map(movement => 
+                    movement.id === editingMovement.id ? response.data : movement
+                );
+                setInventoryMovements(updatedMovements);
             } else {
-                // If API doesn't return a 200/201 status, set the failure message
-                setMessage('Failed to add item movement.');
+                setInventoryMovements([response.data, ...inventoryMovements]);
             }
+            
+            setMessage(isEditing ? 'Item movement updated successfully!' : 'Item movement added successfully!');
+            setShowForm(false);
+            setIsEditing(false);
+            setFormData({ inventory_item: '', quantity: '', movement_type: 'Add', description: '' });
         } catch (err) {
-            // Handle specific error messages from backend (like insufficient balance)
-            if (err.response && err.response.data && err.response.data.detail) {
-                setMessage(err.response.data.detail); // Show the detailed error message
-            } else {
-                // Generic error message if no specific detail is found
-                setMessage('Error saving movement.');
-            }
+            setError('Error submitting movement');
         }
     };
 
+    
 
-    // Function to fetch inventory movement data
     const fetchInventoryMovements = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/inventory/items_movements/?page=${currentPage}`, {
@@ -154,8 +101,18 @@ const InventoryMovementPage = () => {
             });
 
             if (response.status === 200) {
+                const totalItems = response.data.count;  // This is the total count of movements
+                const totalPages = Math.ceil(totalItems / 5);  // Assuming page size is 5
+
+                // Set inventory movements and total pages
                 setInventoryMovements(response.data.results);
-                setTotalPages(Math.ceil(response.data.count / 5));  // Assuming pageSize = 5
+                setTotalPages(totalPages);
+
+                // Adjust currentPage if necessary
+                if (currentPage > totalPages) {
+                    setCurrentPage(totalPages);  // Go to the last valid page
+                }
+
                 setNextPage(response.data.next);
                 setPreviousPage(response.data.previous);
                 setIsLoading(false);
@@ -169,38 +126,90 @@ const InventoryMovementPage = () => {
         }
     };
 
-    // Handle page change
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
-    // Handle Delete Movement
-    const handleDelete = async (id) => {
-        try {
-            await axios.delete(`http://127.0.0.1:8000/inventory/items_movements/${id}/`, {
-                headers: {
-                    'Authorization': `Token ${token}`,
-                },
-            });
-            fetchInventoryMovements(); // Re-fetch data after deletion
-        } catch (err) {
-            setError('Error deleting movement');
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
         }
     };
 
-    // Fetch data when the component mounts or when currentPage changes
+    const getPaginationNumbers = () => {
+        const range = 2; // Number of pages before and after the current page
+        let start = Math.max(currentPage - range, 1); // Ensure the start page is >= 1
+        let end = Math.min(currentPage + range, totalPages); // Ensure the end page is <= total pages
+
+        const paginationNumbers = [];
+
+        if (start > 1) {
+            paginationNumbers.push(1); // Show the first page
+            if (start > 2) paginationNumbers.push('...'); // Show ellipsis before start if needed
+        }
+
+        for (let i = start; i <= end; i++) {
+            paginationNumbers.push(i);
+        }
+
+        if (end < totalPages) {
+            if (end < totalPages - 1) paginationNumbers.push('...'); // Show ellipsis after end if needed
+            paginationNumbers.push(totalPages); // Show the last page
+        }
+
+        return paginationNumbers;
+    };
+
+    useEffect(() => {
+        const fetchAllInventoryItems = async () => {
+            let allItems = [];
+            let nextPageUrl = 'http://127.0.0.1:8000/inventory/items/';
+
+            try {
+                // Keep fetching until there are no more pages
+                while (nextPageUrl) {
+                    const response = await fetch(nextPageUrl, {
+                        headers: {
+                            'Authorization': `Token ${token}`,
+                        },
+                    });
+                    const data = await response.json();
+                    allItems = [...allItems, ...data.results]; // Accumulate all items
+                    nextPageUrl = data.next; // Set the next page URL
+                }
+
+                // After all pages are fetched, update state with all items
+                setInventoryItems(allItems);
+            } catch (error) {
+                console.error('Error fetching inventory items:', error);
+            }
+        };
+
+        fetchAllInventoryItems(); // Fetch all inventory items
+    }, [token]);
+
     useEffect(() => {
         fetchInventoryMovements();
     }, [currentPage]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // If you're editing an existing movement, set the initial state of formData
+    useEffect(() => {
+        if (editingMovement) {
+            setFormData({
+                inventory_item: editingMovement.inventory_item,
+                quantity: editingMovement.quantity,
+                movement_type: editingMovement.movement_type,
+                description: editingMovement.description
+            });
+            setIsEditing(true);  // Set isEditing to true when in edit mode
+        } else {
+            setFormData({
+                inventory_item: '',
+                quantity: '',
+                movement_type: 'Add',
+                description: ''
+            });
+            setIsEditing(false); // Set isEditing to false when adding a new movement
+        }
+    }, [editingMovement]); // Don't change the structure of useEffect
 
-    if (error) {
-        return <div>{error}</div>;
-    }
-
+ 
     return (
         <section className='flex'>
             <Sidebar />
@@ -213,8 +222,6 @@ const InventoryMovementPage = () => {
                     </div>
                 )}
 
-
-                {/* Button to show form */}
                 <button
                     onClick={() => setShowForm(!showForm)}
                     className="px-4 py-2 bg-violet-600 text-white rounded-md mb-4"
@@ -222,77 +229,81 @@ const InventoryMovementPage = () => {
                     {showForm ? 'Cancel' : 'Add New Movement'}
                 </button>
 
-                {/* New Movement Form */}
                 {showForm && (
                     <form onSubmit={handleSubmit} className="space-y-4 mb-5 p-5 border rounded-lg shadow-lg">
-                        <div>
-                            <label htmlFor="inventory_item" className="block">Inventory Item</label>
-                            <select
-                                id="inventory_item"
-                                name="inventory_item"
-                                value={formData.inventory_item}  // Ensure this corresponds to the selected item ID in your form data
-                                onChange={handleInputChange}
-                                required
-                                className="w-full p-2 border rounded"
-                            >
-                                <option value="">Select an item</option>  {/* Placeholder option */}
-                                {/* Iterate over the inventory items */}
-                                {inventoryItems.map(item => (
-                                    <option key={item.id} value={item.id}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                        <div className='flex'>
+                            <div className='w-1/2 px-5'>
+                                {/* Inventory Item */}
+                                <FormGroup className='py-2'>
+                                    <Label for="inventory_item">Inventory Item</Label>
+                                    <Input className='w-full p-2 border rounded'
+                                        type="select"
+                                        id="inventory_item"
+                                        disabled={isEditing}
+                                        value={formData.inventory_item}
+                                        onChange={(e) => setFormData({ ...formData, inventory_item: e.target.value })}
+                                    >
+                                        {inventoryItems.map(item => (
+                                            <option key={item.id} value={item.id}>{item.name}</option>
+                                        ))}
+                                    </Input>
+                                </FormGroup>
 
-                        <div>
-                            <label htmlFor="quantity" className="block">Quantity</label>
-                            <input
-                                type="number"
-                                id="quantity"
-                                name="quantity"
-                                value={formData.quantity}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="movement_type" className="block">Movement Type</label>
-                            <select
-                                id="movement_type"
-                                name="movement_type"
-                                value={formData.movement_type}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full p-2 border rounded"
+                                {/* Quantity */}
+                                <FormGroup className='py-2'>
+                                    <Label for="quantity">Quantity</Label>
+                                    <Input className='w-full p-2 border rounded'
+                                        type="number"
+                                        id="quantity"
+                                        disabled={isEditing}
+                                        value={formData.quantity}
+                                        onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                                    />
+                                </FormGroup>
+
+                                {/* Movement Type */}
+                                <FormGroup className='py-2'>
+                                    <Label for="movement_type">Movement Type</Label>
+                                    <Input className='w-full p-2 border rounded'
+                                        type="select"
+                                        id="movement_type"
+                                        disabled={isEditing}
+                                        value={formData.movement_type}
+                                        onChange={(e) => setFormData({ ...formData, movement_type: e.target.value })}
+                                    >
+                                        <option value="Add">Add</option>
+                                        <option value="Use">Use</option>
+                                    </Input>
+                                </FormGroup>
+                            </div>
+
+                            <div className="w-1/2 px-5 ">    
+                                {/* Description */}
+                                <FormGroup className='py-2'>
+                                    <Label for="description">Description</Label>
+                                    <textarea className='w-full p-2 border rounded' 
+                                        rows={5}
+                                        id="description"
+                                        value={formData.description}
+                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                        required 
+                                    />
+                                </FormGroup>
+
+
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                className="px-4 py-2 mt-2 bg-violet-600 text-white rounded-md"
                             >
-                                <option value="Add">Add</option>
-                                <option value="Use">Use</option>
-                            </select>
+                                {isEditing ? 'Update' : 'Add'} Movement
+                            </button>
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor="description" className="block">Description</label>
-                            <input
-                                type="text"
-                                id="description"
-                                name="description"
-                                value={formData.description}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-violet-600 text-white rounded-md"
-                        >
-                            {editingMovement ? 'Update' : 'Add'} Movement
-                        </button>
                     </form>
                 )}
 
-                {/* Table for displaying movements */}
+                {/* Table */}
                 <table className="table-auto w-full mb-5">
                     <thead>
                         <tr className="border-b-2 border-violet-400">
@@ -305,7 +316,7 @@ const InventoryMovementPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {inventoryMovements.map((movement) => (
+                        {inventoryMovements.map(movement => (
                             <tr key={movement.id} className="border-b border-violet-200">
                                 <td className="py-2 text-start">{movement.date}</td>
                                 <td className="py-2 text-start">{movement.inventory_item_name}</td>
@@ -315,12 +326,6 @@ const InventoryMovementPage = () => {
                                 <td className="py-2 text-end">
                                     <button
                                         onClick={() => {
-                                            setFormData({
-                                                inventory_item: movement.inventory_item_name,
-                                                quantity: movement.quantity,
-                                                movement_type: movement.movement_type,
-                                                description: movement.description,
-                                            });
                                             setEditingMovement(movement);
                                             setShowForm(true);
                                         }}
@@ -343,34 +348,29 @@ const InventoryMovementPage = () => {
                 {/* Pagination Controls */}
                 <div className="flex justify-between items-center">
                     <button
-                        disabled={!previousPage}  // Disable if no previous page
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        className={`px-4 py-2 ${!previousPage ? 'bg-gray-400' : 'bg-heading'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
+                        disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}
+                        className={`px-4 py-2 ${currentPage === 1 ? 'bg-gray-400' : 'bg-violet-600'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
                     >
                         Previous
                     </button>
 
                     <div className="flex">
-                        {Array.from({ length: totalPages }).map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => handlePageChange(index + 1)}
-                                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-violet-700' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
+                        {getPaginationNumbers().map((pageNumber, index) => (
+                            <button key={index} onClick={() => handlePageChange(pageNumber)}
+                                className={`px-4 py-2 ${currentPage === pageNumber ? 'bg-pink' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
                             >
-                                {index + 1}
+                                {pageNumber}
                             </button>
                         ))}
                     </div>
 
                     <button
-                        disabled={!nextPage}  // Disable if no next page
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        className={`px-4 py-2 ${!nextPage ? 'bg-gray-400' : 'bg-heading'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
+                        disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}
+                        className={`px-4 py-2 ${currentPage === totalPages ? 'bg-gray-400' : 'bg-violet-600'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
                     >
                         Next
                     </button>
                 </div>
-
             </section>
         </section>
     );

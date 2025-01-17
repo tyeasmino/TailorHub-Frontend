@@ -24,8 +24,9 @@ const Index = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/registration' element={<RegistrationPage />} />
-                <Route path='/dashboard' element={<Dashboard />} />
-                <Route path='/details' element={<DetailsPage />} />
+                <Route path='/dashboard' element={<Dashboard />} /> 
+
+                <Route path="/dresses/:id" element={<DetailsPage />} />
                 <Route path='/cart' element={<CartPage />} />
                 <Route path='/inventory' element={<InventoryPage />} />
                 <Route path='/inventory-movement' element={<InventoryMovementPage />} />

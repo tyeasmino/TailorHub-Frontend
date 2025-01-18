@@ -4,7 +4,7 @@ import orangeFlower from '../assets/fabric/orangeflower.png'
 import redFlower from '../assets/fabric/redflower.png'
 
 
-const CartPage = () => {
+const CartPage = ({ dress }) => {
     return (
         <section className='flex '>
 
@@ -28,36 +28,21 @@ const CartPage = () => {
                     </thead>
                     <tbody>
 
+
+
                         <tr className='border-b'>
                             <td className="flex items-center gap-5 px-4 py-2">
-                                <img className='w-10 rounded-full h-10' src={blueFlower} alt="" />
-                                <h3 className=''>Classy Modern Smart Watch</h3>
+                                <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
+                                <h3 className=''> {dress?.name} </h3>
                             </td>
                             <td className=" px-4 py-2">Cotton</td>
                             <td className=" px-4 py-2">Blue</td>
                             <td className=" px-4 py-2">1</td>
-                            <td className=" px-4 py-2">$99.00</td>
+                            <td className=" px-4 py-2">{dress?.discount_price || dress?.base_price}</td>
                         </tr>
-                        <tr className='border-b'>
-                        <td className="flex items-center gap-5 px-4 py-2">
-                                <img className='w-10 rounded-full h-10' src={orangeFlower} alt="" />
-                                <h3 className=''>Classy Modern Smart Watch</h3>
-                            </td>
-                            <td className=" px-4 py-2">Cotton</td>
-                            <td className=" px-4 py-2">Orange</td>
-                            <td className=" px-4 py-2">2</td>
-                            <td className=" px-4 py-2">$178.00</td>
-                        </tr>
-                        <tr className='border-b'>
-                        <td className="flex items-center gap-5 px-4 py-2">
-                                <img className='w-10 rounded-full h-10' src={redFlower} alt="" />
-                                <h3 className=''>Classy Modern Smart Watch</h3>
-                            </td>
-                            <td className=" px-4 py-2">Solid</td>
-                            <td className=" px-4 py-2">Red</td>
-                            <td className=" px-4 py-2">1</td>
-                            <td className=" px-4 py-2">$79.00</td>
-                        </tr>
+                         
+
+
                         <tr className='mt-5 font-bold text-heading'>
                             <td colSpan={3} className="  px-4 py-2">Total</td>
                             <td className=" px-4 py-2">4</td>
@@ -66,7 +51,7 @@ const CartPage = () => {
                     </tbody>
                 </table>
 
-                
+
                 <div className='flex items-center justify-end gap-5 pt-10'>
                     <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'>Continue Shopping</button>
                     <button className='bg-violet-500 font-semibold text-white px-8 py-2 rounded-md'>Checkout</button>

@@ -4,28 +4,37 @@ import { TbShoppingCartPlus } from "react-icons/tb";
 import { TbEye } from "react-icons/tb";
 import axios from 'axios'; // Import axios for API requests
 import { Link } from 'react-router-dom'; // Correct routing package
-import { useCart } from '../contexts/cartContext';
 
-const FeaturedDress = () => {
+const UpcomingDress = () => {
     const [dresses, setDresses] = useState([]); // State to hold fetched dresses
     const [categories, setCategories] = useState([]); // State to hold fetched categories
+    const [categoryMap, setCategoryMap] = useState({}); // Map to optimize category lookup
     const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state for handling errors
 
-    // Fetch dresses data from API
+    // Fetch dresses and categories data from API
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Fetch dresses data
-                const dressesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/dresses/?is_featured=true');
+                const dressesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/dresses/?is_upcoming=true');
                 setDresses(dressesResponse.data);
 
                 // Fetch categories data
                 const categoriesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/categories/');
                 setCategories(categoriesResponse.data);
 
+                // Create a map of category IDs to names for fast lookup
+                const newCategoryMap = categoriesResponse.data.reduce((acc, category) => {
+                    acc[category.id] = category.name;
+                    return acc;
+                }, {});
+                setCategoryMap(newCategoryMap);
+
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {
                 console.error("Error fetching data", error);
+                setError("An error occurred while fetching data. Please try again later.");
                 setLoading(false); // Set loading to false in case of error
             }
         };
@@ -38,18 +47,19 @@ const FeaturedDress = () => {
         return <div>Loading...</div>;
     }
 
-    // Function to get the category name by ID
+    // If there was an error, show the error message
+    if (error) {
+        return <div>{error}</div>;
+    }
+
+    // Function to get the category name by ID from the categoryMap
     const getCategoryName = (categoryId) => {
-        const category = categories.find(cat => cat.id === categoryId);
-        return category ? category.name : "Unknown Category";
+        return categoryMap[categoryId] || "Unknown Category"; // Fallback to "Unknown Category" if not found
     };
-
-
-    const { cartList, addToCart } = useCart();
 
     return (
         <section className='max-w-screen-xl m-auto py-20'>
-            <h2 className='text-heading text-center font-semibold text-3xl mb-10'>Featured Dress</h2>
+            <h2 className='text-heading text-center font-semibold text-3xl mb-10'>Upcoming Dress</h2>
 
             <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                 {dresses.map(dress => (
@@ -66,7 +76,7 @@ const FeaturedDress = () => {
                             {/* Eye Icon */}
                             <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <Link to={`/dresses/${dress.id}`}>
-                                    <TbEye className="text-violet-500 text-2xl" />
+                                    <TbEye className="text-white text-2xl" />
                                 </Link>
                             </div>
                         </div>
@@ -97,7 +107,7 @@ const FeaturedDress = () => {
 
                         {/* Add to Cart & Cart Icon */}
                         <div className="absolute bottom-3 right-3 flex gap-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <TbShoppingCartPlus onClick={() => addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                            <TbShoppingCartPlus className="text-2xl text-violet-500 cursor-pointer" />
                         </div>
                     </div>
                 ))}
@@ -106,4 +116,4 @@ const FeaturedDress = () => {
     );
 };
 
-export default FeaturedDress;
+export default UpcomingDress;

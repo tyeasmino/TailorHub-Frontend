@@ -7,6 +7,7 @@ import { TbRulerMeasure } from 'react-icons/tb';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { TbMoodEdit } from "react-icons/tb";
+import { IoShirtOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
@@ -73,6 +74,23 @@ const Sidebar = () => {
 
         {user && user.fitMaker ? (
           <>
+            <li className="relative group">
+              <Link
+                to="/dress"
+                className={`flex items-center gap-2 ${location.pathname === "/dress" ? "bg-white p-4 shadow font-semibold" : ""}`}
+              >
+                <IoShirtOutline 
+                  className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+                />
+                {/* Show tooltip only when collapsed */}
+                <span
+                  className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+                >
+                  Dress
+                </span>
+                {!collapsed && <span className="ml-2">Dress</span>}
+              </Link>
+            </li>
             <li className="relative group">
               <Link
                 to="/inventory"

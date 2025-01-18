@@ -13,6 +13,7 @@ import InventoryPage from '../pages/InventoryPage'
 import DetailsPage from '../pages/DetailsPage'
 import CartPage from '../pages/CartPage'
 import InventoryMovementPage from '../pages/InventoryMovementPage'
+import AllDresses from '../pages/AllDresses'
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
                 <Route path='/registration' element={<RegistrationPage />} />
                 <Route path='/dashboard' element={<Dashboard />} /> 
 
+                <Route path="/dresses" element={<AllDresses/>} />
                 <Route path="/dresses/:id" element={<DetailsPage />} />
                 <Route path='/cart' element={<CartPage />} />
                 <Route path='/inventory' element={<InventoryPage />} />

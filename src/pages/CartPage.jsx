@@ -5,6 +5,7 @@ import redFlower from '../assets/fabric/redflower.png'
 
 
 const CartPage = ({ dress }) => {
+    
     return (
         <section className='flex '>
 

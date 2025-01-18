@@ -97,7 +97,7 @@ const Navbar = () => {
                         <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             <li><a>Home</a></li>
                             <li><a>Pages</a></li>
-                            <li><a>Products</a></li>
+                            <li> <Link to='/dresses'>Dresses</Link> </li>
                             <li><a>Blog</a></li>
                             <li><a>Shop</a></li>
                             <li><a>Contact</a></li>
@@ -109,7 +109,7 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-1">
                         <li><Link to="/">Home</Link></li>
                         <li><a>Pages</a></li>
-                        <li><a>Products</a></li>
+                        <li><Link to='/dresses'>Dresses</Link> </li>
                         <li><a>Blog</a></li>
                         <li><a>Shop</a></li>
                         <li><a>Contact</a></li>

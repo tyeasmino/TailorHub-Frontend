@@ -10,8 +10,7 @@ const FeaturedDress = () => {
     const [dresses, setDresses] = useState([]); // State to hold fetched dresses
     const [categories, setCategories] = useState([]); // State to hold fetched categories
     const [loading, setLoading] = useState(true); // Loading state
-
-    // Fetch dresses data from API
+ 
     useEffect(() => {
         const fetchData = async () => {
             try {

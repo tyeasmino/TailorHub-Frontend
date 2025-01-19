@@ -5,10 +5,10 @@ import redFlower from '../assets/fabric/redflower.png'
 import { useCart } from '../contexts/cartContext'
 
 
-const CartPage = ({ dress }) => {
+const CartPage = () => {
 
-    const { cartList, removeFromCart } = useCart();
-
+    const { cartList, total, clearFromCart } = useCart();
+    
     return (
         <section className='flex '>
 
@@ -27,7 +27,7 @@ const CartPage = ({ dress }) => {
                             <th className=" px-4 py-2">Fabric Type</th>
                             <th className=" px-4 py-2">Color</th>
                             <th className=" px-4 py-2">Qnt</th>
-                            <th className=" px-4 py-2">Price</th>
+                            <th className="text-right px-4 py-2">Price</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -42,10 +42,10 @@ const CartPage = ({ dress }) => {
                                             <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
                                             <h3 className=''> {dress?.name} </h3>
                                         </td>
-                                        <td className=" px-4 py-2">Cotton</td>
-                                        <td className=" px-4 py-2">Blue</td>
+                                        <td className=" px-4 py-2">{dress?.fabric_type}</td>
+                                        <td className=" px-4 py-2">{dress?.color}</td>
                                         <td className=" px-4 py-2">1</td>
-                                        <td className=" px-4 py-2">{dress?.discount_price || dress?.base_price}</td>
+                                        <td className="text-right px-4 py-2">{dress?.discount_price || dress?.base_price}</td> 
                                     </tr> 
                             ))
                         }
@@ -53,13 +53,14 @@ const CartPage = ({ dress }) => {
                         <tr className='mt-5 font-bold text-heading'>
                             <td colSpan={3} className="  px-4 py-2">Total</td>
                             <td className=" px-4 py-2">{cartList.length}</td>
-                            <td className=" px-4 py-2">$356.00</td>
+                            <td className="text-right px-4 py-2">{total.toFixed(2)}</td>
                         </tr>
                     </tbody>
                 </table>
 
 
                 <div className='flex items-center justify-end gap-5 pt-10'>
+                    <button onClick={()=> clearFromCart()} className='bg-pink font-semibold text-white px-8 py-2 rounded-md'>Clear Cart</button>
                     <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'>Continue Shopping</button>
                     <button className='bg-violet-500 font-semibold text-white px-8 py-2 rounded-md'>Checkout</button>
                 </div>

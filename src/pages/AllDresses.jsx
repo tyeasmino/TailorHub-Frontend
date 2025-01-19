@@ -10,27 +10,27 @@ const AllDresses = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch dresses data
                 const dressesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/dresses/');
                 setDresses(dressesResponse.data);
 
-                setLoading(false); // Set loading to false after data is fetched
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching data", error);
-                setLoading(false); // Set loading to false in case of error
+                setLoading(false);
             }
         };
 
         fetchData();
-    }, []); // Empty dependency array means this runs once when the component mounts
+    }, []);
 
-
-
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <section className="max-w-screen-2xl p-20 m-auto flex flex-col gap-10">
             <div className='font-semibold'>
-                <h1 className='text-2xl'>All Dresses</h1>
+                <h1 className='text-heading font-semibold text-3xl mb-10'>All Dresses</h1>
             </div>
 
             <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4'>

@@ -13,27 +13,23 @@ export const CartProvider = ({ children }) => {
 
 
     const addToCart = (dress) => {
-        const updatedList = state.cartList.concat(dress);
-        const updatedTotal = state.total + dress.discount_price;
+        const updatedList = state.cartList.concat(dress); 
 
         dispatch({
             type: "ADD_TO_CART",
             payload: {
-                dresses: updatedList,
-                total: updatedTotal
+                dresses: updatedList
             }
         }) 
     }
 
     const removeFromCart = (dress) => {
         const updatedList = state.cartList.filter(item=>item.id !== dress.id)
-        const updatedTotal = state.total - dress.discount_price;
 
         dispatch({
             type: "REMOVE_FROM_CART",
             payload: {
-                dresses: updatedList,
-                total: updatedTotal
+                dresses: updatedList
             }
         }) 
     }

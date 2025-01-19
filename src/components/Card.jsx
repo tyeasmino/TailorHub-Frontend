@@ -101,15 +101,13 @@ const Card = ({ dress }) => {
 
             {/* Add to Cart & Cart Icon */}
             <div className="absolute bottom-3 right-3 flex gap-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 {/* {!inCart && */}
+                 {!inCart && 
                     <TbShoppingCartPlus onClick={()=> addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
-                {/* } */}
+                 }
 
-                {/* {inCart &&
-                    <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
-                }  */}
-                
-                
+                 {inCart &&
+                     <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                }
                 </div>
  
         </div>

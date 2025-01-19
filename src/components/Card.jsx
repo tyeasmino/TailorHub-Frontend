@@ -6,8 +6,7 @@ import axios from 'axios';
 
 const Card = ({ dress }) => {
     const { cartList, addToCart, removeFromCart } = useCart();
-    const [inCart, setInCart] = useState(false)
-
+    const [inCart, setInCart] = useState(false);
 
     const [categories, setCategories] = useState([]);
     const [categoryMap, setCategoryMap] = useState({});
@@ -47,6 +46,7 @@ const Card = ({ dress }) => {
     const getCategoryName = (categoryId) => {
         return categoryMap[categoryId] || "Common"; // Fallback to "Unknown Category" if not found
     };
+
 
 
     return (
@@ -101,15 +101,16 @@ const Card = ({ dress }) => {
 
             {/* Add to Cart & Cart Icon */}
             <div className="absolute bottom-3 right-3 flex gap-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {/* {!inCart &&
-                    <TbShoppingCartPlus onClick={() => addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
-                }
+                 {/* {!inCart && */}
+                    <TbShoppingCartPlus onClick={()=> addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                {/* } */}
 
-                {inCart &&
+                {/* {inCart &&
                     <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
-                } */}
-                <TbShoppingCartPlus className="text-2xl text-violet-500 cursor-pointer"/> <TbShoppingCartMinus className="text-2xl text-violet-500 cursor-pointer"/>
-            </div>
+                }  */}
+                
+                
+                </div>
  
         </div>
     )

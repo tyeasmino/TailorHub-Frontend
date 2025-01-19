@@ -2,10 +2,13 @@ import React from 'react'
 import blueFlower from '../assets/fabric/blueflower.png'
 import orangeFlower from '../assets/fabric/orangeflower.png'
 import redFlower from '../assets/fabric/redflower.png'
+import { useCart } from '../contexts/cartContext'
 
 
 const CartPage = ({ dress }) => {
-    
+
+    const { cartList, removeFromCart } = useCart();
+
     return (
         <section className='flex '>
 
@@ -31,22 +34,25 @@ const CartPage = ({ dress }) => {
 
 
 
-                        <tr className='border-b'>
-                            <td className="flex items-center gap-5 px-4 py-2">
-                                <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
-                                <h3 className=''> {dress?.name} </h3>
-                            </td>
-                            <td className=" px-4 py-2">Cotton</td>
-                            <td className=" px-4 py-2">Blue</td>
-                            <td className=" px-4 py-2">1</td>
-                            <td className=" px-4 py-2">{dress?.discount_price || dress?.base_price}</td>
-                        </tr>
-                         
-
+                        {
+                            cartList?.map((dress) => (
+                                
+                                    <tr className='border-b'>
+                                        <td className="flex items-center gap-5 px-4 py-2">
+                                            <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
+                                            <h3 className=''> {dress?.name} </h3>
+                                        </td>
+                                        <td className=" px-4 py-2">Cotton</td>
+                                        <td className=" px-4 py-2">Blue</td>
+                                        <td className=" px-4 py-2">1</td>
+                                        <td className=" px-4 py-2">{dress?.discount_price || dress?.base_price}</td>
+                                    </tr> 
+                            ))
+                        }
 
                         <tr className='mt-5 font-bold text-heading'>
                             <td colSpan={3} className="  px-4 py-2">Total</td>
-                            <td className=" px-4 py-2">4</td>
+                            <td className=" px-4 py-2">{cartList.length}</td>
                             <td className=" px-4 py-2">$356.00</td>
                         </tr>
                     </tbody>

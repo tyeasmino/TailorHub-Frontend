@@ -1,14 +1,12 @@
 import React from 'react'
-import blueFlower from '../assets/fabric/blueflower.png'
-import orangeFlower from '../assets/fabric/orangeflower.png'
-import redFlower from '../assets/fabric/redflower.png'
 import { useCart } from '../contexts/cartContext'
+import { Link } from 'react-router'
 
 
 const CartPage = () => {
 
-    const { cartList, total, clearFromCart } = useCart();
-    
+    const { cartList, total, clearFromCart, incrementQuantity, decrementQuantity } = useCart();
+
     return (
         <section className='flex '>
 
@@ -27,7 +25,7 @@ const CartPage = () => {
                             <th className=" px-4 py-2">Fabric Type</th>
                             <th className=" px-4 py-2">Color</th>
                             <th className=" px-4 py-2">Qnt</th>
-                            <th className="text-right px-4 py-2">Price</th> 
+                            <th className="text-right px-4 py-2">Price</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,23 +34,54 @@ const CartPage = () => {
 
                         {
                             cartList?.map((dress) => (
-                                
-                                    <tr className='border-b'>
-                                        <td className="flex items-center gap-5 px-4 py-2">
-                                            <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
-                                            <h3 className=''> {dress?.name} </h3>
-                                        </td>
-                                        <td className=" px-4 py-2">{dress?.fabric_type}</td>
-                                        <td className=" px-4 py-2">{dress?.color}</td>
-                                        <td className=" px-4 py-2">1</td>
-                                        <td className="text-right px-4 py-2">{dress?.discount_price || dress?.base_price}</td> 
-                                    </tr> 
+
+                                <tr className='border-b'>
+                                    <td className="flex items-center gap-5 px-4 py-2">
+                                        <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
+                                        <h3 className=''> {dress?.name} </h3>
+                                    </td>
+                                    <td className=" px-4 py-2">{dress?.fabric_type}</td>
+                                    <td className=" px-4 py-2">{dress?.color}</td>
+                                    <td className=" px-4 py-2">
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex items-center gap-3">
+                                                    {/* Decrement Button */}
+                                                    <button
+                                                        onClick={() => decrementQuantity(dress.id)}
+                                                        className={`w-8 h-8 font-bold rounded-full flex items-center justify-center transition duration-200 
+                                                        ${dress?.quantity <= 1 ? 'bg-pink text-white cursor-not-allowed' : 'bg-violet-500 text-white hover:bg-violet-600'}`}
+                                                        disabled={dress?.quantity <= 1} // Disable if quantity is 1
+                                                    >
+                                                        -
+                                                    </button>
+
+                                                    {/* Quantity Display */}
+                                                    <span className="text-xl font-semibold">{dress?.quantity}</span>
+
+                                                    {/* Increment Button */}
+                                                    <button
+                                                        onClick={() => incrementQuantity(dress.id, dress?.stock_quantity)}
+                                                        className={`w-8 h-8 font-bold rounded-full flex items-center justify-center transition duration-200 
+                                                        ${dress?.quantity >= dress?.stock_quantity ? 'bg-pink text-white cursor-not-allowed' : 'bg-violet-500 text-white hover:bg-violet-600'}`}
+                                                        disabled={dress?.quantity >= dress?.stock_quantity} // Disable if quantity reaches stock quantity
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td className="text-right px-4 py-2">{(dress?.quantity * (dress?.discount_price || dress?.base_price)).toFixed(2)}</td>
+                                </tr>
                             ))
                         }
 
                         <tr className='mt-5 font-bold text-heading'>
                             <td colSpan={3} className="  px-4 py-2">Total</td>
-                            <td className=" px-4 py-2">{cartList.length}</td>
+                            <td className=" px-4 py-2">{cartList.reduce((total, item) => total + item.quantity, 0)}</td>
                             <td className="text-right px-4 py-2">{total.toFixed(2)}</td>
                         </tr>
                     </tbody>
@@ -60,9 +89,9 @@ const CartPage = () => {
 
 
                 <div className='flex items-center justify-end gap-5 pt-10'>
-                    <button onClick={()=> clearFromCart()} className='bg-pink font-semibold text-white px-8 py-2 rounded-md'>Clear Cart</button>
-                    <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'>Continue Shopping</button>
-                    <button className='bg-violet-500 font-semibold text-white px-8 py-2 rounded-md'>Checkout</button>
+                    <button onClick={() => clearFromCart()} className='bg-pink font-semibold text-white px-8 py-2 rounded-md'>Clear Cart</button>
+                    <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'> <Link to='/dresses'>Continue Shopping</Link> </button>
+                    <button className='bg-violet-500 font-semibold text-white px-8 py-2 rounded-md'> <Link to='/Checkout'> Checkout </Link> </button>
                 </div>
             </section>
         </section>

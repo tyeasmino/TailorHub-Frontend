@@ -13,50 +13,66 @@ export const CartProvider = ({ children }) => {
 
 
     const addToCart = (dress) => {
-        const updatedList = state.cartList.concat(dress); 
-
+        const updatedList = [...state.cartList, { ...dress, quantity: 1 }];
         dispatch({
             type: "ADD_TO_CART",
-            payload: {
-                dresses: updatedList
-            }
-        }) 
-    }
+            payload: { dresses: updatedList }
+        });
+    };
 
     const removeFromCart = (dress) => {
-        const updatedList = state.cartList.filter(item=>item.id !== dress.id)
-
+        const updatedList = state.cartList.filter(item => item.id !== dress.id);
         dispatch({
             type: "REMOVE_FROM_CART",
-            payload: {
-                dresses: updatedList
-            }
-        }) 
-    }
+            payload: { dresses: updatedList }
+        });
+    };
 
     const clearFromCart = () => {
-        const updatedList = []
-        const updatedTotal = 0
-
         dispatch({
             type: "CLEAR_FROM_CART",
-            payload: {
-                dresses: updatedList,
-                total: updatedTotal
+            payload: { dresses: [], total: 0 }
+        });
+    };
+
+    const incrementQuantity = (dressId, stockQuantity) => {
+        const updatedList = state.cartList.map(item => {
+            if (item.id === dressId) {
+                // Ensure quantity does not exceed stock quantity
+                return { ...item, quantity: Math.min(item.quantity + 1, stockQuantity) };
             }
-        }) 
-    }
+            return item;
+        });
 
+        dispatch({
+            type: "UPDATE_CART",
+            payload: { dresses: updatedList }
+        });
+    };
 
+    const decrementQuantity = (dressId) => {
+        const updatedList = state.cartList.map(item => {
+            if (item.id === dressId && item.quantity > 1) {
+                return { ...item, quantity: item.quantity - 1 };
+            }
+            return item;
+        });
+
+        dispatch({
+            type: "UPDATE_CART",
+            payload: { dresses: updatedList }
+        });
+    };
 
     const value = {
         cartList: state.cartList,
         total: state.total,
         addToCart,
         removeFromCart,
-        clearFromCart
-    }
-
+        clearFromCart,
+        incrementQuantity,
+        decrementQuantity
+    };
 
     return (
         <CartContext.Provider value={value}>

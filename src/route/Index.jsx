@@ -14,6 +14,7 @@ import DetailsPage from '../pages/DetailsPage'
 import CartPage from '../pages/CartPage'
 import InventoryMovementPage from '../pages/InventoryMovementPage'
 import AllDresses from '../pages/AllDresses'
+import Checkout from '../pages/Checkout'
 
 const Index = () => {
   return (
@@ -30,6 +31,7 @@ const Index = () => {
                 <Route path="/dresses" element={<AllDresses/>} />
                 <Route path="/dresses/:id" element={<DetailsPage />} />
                 <Route path='/cart' element={<CartPage />} />
+                <Route path='/checkout' element={<Checkout />} />
                 <Route path='/inventory' element={<InventoryPage />} />
                 <Route path='/inventory-movement' element={<InventoryMovementPage />} />
                 <Route path='/measurement' element={<DressMeasurementPage />} />

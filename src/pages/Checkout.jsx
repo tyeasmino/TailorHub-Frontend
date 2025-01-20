@@ -3,7 +3,10 @@ import { useCart } from "../contexts/cartContext";
 import { Link } from "react-router-dom";
 
 const Checkout = () => {
-    const { cartList, total, clearFromCart } = useCart();
+    const { cartList, clearFromCart } = useCart();
+
+    // Filter only selected items for checkout
+    const selectedItems = cartList.filter(item => item.selected);
 
     // Form state for shipping info
     const [formData, setFormData] = useState({
@@ -38,36 +41,38 @@ const Checkout = () => {
                 <h3 className="text-2xl font-semibold mb-4">Your Cart</h3>
                 <table className="table-auto w-full text-left border border-gray-200">
                     <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-violet-100">
                             <th className="px-4 py-2">Item</th>
-                            <th className="px-4 py-2">Price</th>
+                            <th className="px-4 py-2">Fabric Type</th>
+                            <th className="px-4">Price</th>
                             <th className="px-4 py-2">Quantity</th>
-                            <th className="px-4 py-2">Total</th>
+                            <th className="px-4 py-2 text-right">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {cartList?.map((item) => (
-                            <tr key={item.id}>
-                                <td className="px-4 py-2">{item.name}</td>
-                                <td className="px-4 py-2">
-                                    <td className="px-4 py-2">
-                                        {(parseFloat(item.discount_price) || parseFloat(item.base_price)).toFixed(2)}
+                        {selectedItems?.map((dress) => (
+                            <tr className="border-b" key={dress .id}>
+                                <td className="px-4 ">{dress?.name}</td>
+                                <td className="px-4 ">{dress?.fabric_type}</td>
+                                <td className="px-4 ">
+                                    <td className="text-right">
+                                        {(parseFloat(dress?.discount_price) || parseFloat(dress?.base_price)).toFixed(2)}
                                     </td>
                                 </td>
-                                <td className="px-4 py-2">{item.quantity}</td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 ">{dress?.quantity}</td>
+                                <td className="px-4 text-right ">
                                     {(
-                                        item.quantity * (item.discount_price || item.base_price)
+                                        dress?.quantity * (dress?.discount_price || dress?.base_price)
                                     ).toFixed(2)}
                                 </td>
                             </tr>
                         ))}
                         <tr className="font-bold">
-                            <td colSpan={3} className="px-4 py-2 text-right">
+                            <td colSpan={4} className="px-20 py-2 text-right">
                                 Total
                             </td>
-                            <td className="px-4 py-2">
-                                {total.toFixed(2)}
+                            <td className="px-4 py-2 text-right">
+                            {selectedItems.reduce((acc, dress) => acc + (parseFloat(dress.discount_price || dress.base_price) * dress.quantity), 0).toFixed(2)}
                             </td>
                         </tr>
                     </tbody>

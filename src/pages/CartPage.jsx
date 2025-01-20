@@ -1,11 +1,17 @@
 import React from 'react'
 import { useCart } from '../contexts/cartContext'
 import { Link } from 'react-router'
-
+import { MdRemoveShoppingCart } from "react-icons/md";
 
 const CartPage = () => {
 
-    const { cartList, total, clearFromCart, incrementQuantity, decrementQuantity } = useCart();
+    const { cartList, removeFromCart, total, clearFromCart, incrementQuantity, decrementQuantity, toggleSelectDress, selectAllDresses, deselectAllDresses } = useCart();
+
+    // Calculate the total for selected items
+    const selectedTotal = cartList.filter(item => item.selected).reduce((acc, dress) => {
+        return acc + (parseFloat(dress.discount_price) || parseFloat(dress.base_price)) * dress.quantity;
+    }, 0);
+
 
     return (
         <section className='flex '>
@@ -17,15 +23,23 @@ const CartPage = () => {
                     <h2 className="text-3xl font-bold">Your Cart</h2>
                 </div>
 
+                {/* Select All Checkbox */}
+                <div className="mb-5">
+                    <button onClick={selectAllDresses} className="mr-2 bg-violet-500 text-white px-4 py-2 rounded-md">Select All</button>
+                    <button onClick={deselectAllDresses} className="bg-pink text-white px-4 py-2 rounded-md">Deselect All</button>
+                </div>
+
                 {/* Table to display inventory items */}
                 <table className="table-auto w-full text-left">
                     <thead>
                         <tr className='border-b'>
+                            <th className=" px-4 py-2">Select</th>
                             <th className=" px-4 py-2">Item</th>
                             <th className=" px-4 py-2">Fabric Type</th>
                             <th className=" px-4 py-2">Color</th>
-                            <th className=" px-4 py-2">Qnt</th>
+                            <th className=" px-12 py-2 ">Qnt</th>
                             <th className="text-right px-4 py-2">Price</th>
+                            <th className="text-right px-4 py-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,13 +50,20 @@ const CartPage = () => {
                             cartList?.map((dress) => (
 
                                 <tr className='border-b'>
+                                    <td className="px-4 py-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={dress.selected}
+                                            onChange={() => toggleSelectDress(dress.id)}
+                                        />
+                                    </td>
                                     <td className="flex items-center gap-5 px-4 py-2">
                                         <img className='w-10 rounded-full h-10' src={dress?.image} alt="" />
                                         <h3 className=''> {dress?.name} </h3>
                                     </td>
                                     <td className=" px-4 py-2">{dress?.fabric_type}</td>
                                     <td className=" px-4 py-2">{dress?.color}</td>
-                                    <td className=" px-4 py-2">
+                                    <td className=" px-4 py-2 ">
                                         <div className="flex items-center gap-2">
                                             <div className="flex items-center gap-3">
                                                 <div className="flex items-center gap-3">
@@ -75,14 +96,23 @@ const CartPage = () => {
                                         </div>
                                     </td>
                                     <td className="text-right px-4 py-2">{(dress?.quantity * (dress?.discount_price || dress?.base_price)).toFixed(2)}</td>
+                                    <td className="text-right px-4 py-2">
+                                        <button onClick={() => removeFromCart(dress)} className="text-red-500"> <MdRemoveShoppingCart /> </button>
+                                    </td>
                                 </tr>
                             ))
                         }
 
                         <tr className='mt-5 font-bold text-heading'>
-                            <td colSpan={3} className="  px-4 py-2">Total</td>
-                            <td className=" px-4 py-2">{cartList.reduce((total, item) => total + item.quantity, 0)}</td>
+                            <td colSpan={4} className="  px-4 py-2">Total</td>
+                            <td className=" px-12 py-2">{cartList.reduce((total, item) => total + item.quantity, 0)}</td>
                             <td className="text-right px-4 py-2">{total.toFixed(2)}</td>
+                        </tr>
+                        <tr className='mt-5 font-bold text-heading'>
+                            <td colSpan={4} className="  px-4 py-2">Selected Dress Price </td>
+                             
+                            <td className=" px-12 py-2"> </td>
+                            <td className="text-right px-4 py-2">{selectedTotal?.toFixed(2)}</td>
                         </tr>
                     </tbody>
                 </table>

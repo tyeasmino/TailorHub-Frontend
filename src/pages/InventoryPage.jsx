@@ -24,26 +24,41 @@ const InventoryPage = () => {
   const [totalPages, setTotalPages] = useState(0); // Track the total number of pages
   const [pageSize, setPageSize] = useState(5);
 
-  
+
 
   const [newItem, setNewItem] = useState({
     item_type: 'Tool',
     name: '',
-    purchase_price_per_unit: '',
-    sell_price_per_unit: 0,
-    stock: 0,
-    color: '',
-    supplier: '',
     description: '',
+    fabric_type: '',
+    color: '',
+    image: null,
+    purchase_price: '',
+    base_price: 0,
+    discount_price: 0,
+    stock: 0,
+    supplier: '',
+    order_count: 0,
     category: '',
     fitmaker: '',
-    image: null
-  }); // To store the new item data for the form
+    is_upcoming: false,
+    is_upcoming: false,
+  });
 
   const [sortField, setSortField] = useState(null); // Field by which to sort (e.g. 'item_type', 'stock', etc.)
   const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
 
 
+  useEffect(() => {
+    if (editingItem) {
+      setNewItem({
+        ...editingItem, // This should be the item you fetched from the server
+        is_upcoming: editingItem.is_upcoming === "true" || editingItem.is_upcoming === true,
+        is_featured: editingItem.is_featured === "true" || editingItem.is_featured === true,
+      });
+    }
+  }, [editingItem]);
+  
   // Fetch the inventory items when the component mounts
   useEffect(() => {
     const fetchInventoryItems = async () => {
@@ -79,10 +94,12 @@ const InventoryPage = () => {
 
 
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
+    const { name, value, type, files, checked } = e.target;
 
     // Handle file input (for images) separately
-    if (type === 'file') {
+    if (type === 'checkbox') {
+      setNewItem({ ...newItem, [name]: checked });
+    } else if (type === 'file') {
       setNewItem({ ...newItem, [name]: files[0] });
     } else {
       setNewItem({ ...newItem, [name]: value });
@@ -109,6 +126,8 @@ const InventoryPage = () => {
       ...newItem,
       fitmaker: user.fitMaker,
       image: imageUrl,
+      is_upcoming: newItem.is_upcoming === true,  
+      is_featured: newItem.is_featured === true,
     };
 
     console.log(itemData);
@@ -174,15 +193,20 @@ const InventoryPage = () => {
     setNewItem({
       item_type: 'Tool',
       name: '',
-      purchase_price_per_unit: '',
-      sell_price_per_unit: 0,
-      stock: 0,
-      color: '',
-      supplier: '',
       description: '',
+      fabric_type: '',
+      color: '',
+      image: null,
+      purchase_price: '',
+      base_price: 0,
+      discount_price: 0,
+      stock: 0,
+      supplier: '',
+      order_count: 0,
       category: '',
       fitmaker: '',
-      image: null
+      is_upcoming: false,
+      is_upcoming: false,
     });
   };
 
@@ -292,6 +316,7 @@ const InventoryPage = () => {
               </th>
               <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('stock')}> Stock </th>
               <th className="py-3 text-start">Color</th>
+              <th className="py-3 text-start">Featured</th>
               <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('supplier')}> Supplier </th>
               <th className="py-3 text-start" colSpan={2}>Action</th>
             </tr>
@@ -304,10 +329,11 @@ const InventoryPage = () => {
                   <img src={item.image} className="w-[50px] h-[50px] object-cover overflow-hidden rounded-md" alt="" />
                   {item.name}
                 </td>
-                <td className="py-2 text-start">{item.purchase_price_per_unit}</td>
-                <td className="py-2 text-start">{item.sell_price_per_unit}</td>
+                <td className="py-2 text-start">{item.purchase_price}</td>
+                <td className="py-2 text-start">{item.discount_price !== '0.00' ? item.discount_price : item.base_price}</td>
                 <td className="py-2 text-start">{item.stock}</td>
                 <td className="py-2 text-start">{item.color}</td>
+                <td className="py-2 text-start">{item.is_featured ? 'yes': 'no'}</td>
                 <td className="py-2 text-start">{item.supplier}</td>
                 <td className="py-2 text-start">
                   <FaEdit className="text-heading " onClick={() => handleEditItem(item)} />
@@ -342,37 +368,35 @@ const InventoryPage = () => {
 
           {/* Pagination Controls */}
           <div className="flex justify-center">
-  {/* Previous Button */}
-  <button
-    disabled={currentPage === 1}  // Disable if on the first page
-    onClick={() => handlePageChange(currentPage - 1)}
-    className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-  >
-    Previous
-  </button>
+            {/* Previous Button */}
+            <button
+              disabled={currentPage === 1}  // Disable if on the first page
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+            >
+              Previous
+            </button>
 
-  {/* Page number buttons */}
-  {[...Array(totalPages)].map((_, index) => (
-    <button
-      key={index}
-      onClick={() => handlePageChange(index + 1)}
-      className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-violet-700' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
-    >
-      {index + 1}
-    </button>
-  ))}
+            {/* Page number buttons */}
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-violet-700' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
+              >
+                {index + 1}
+              </button>
+            ))}
 
-  {/* Next Button */}
-  <button
-    disabled={currentPage === totalPages}  // Disable if on the last page
-    onClick={() => handlePageChange(currentPage + 1)}
-    className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-  >
-    Next
-  </button>
-</div>
-
-
+            {/* Next Button */}
+            <button
+              disabled={currentPage === totalPages}  // Disable if on the last page
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+            >
+              Next
+            </button>
+          </div>
         </div>
 
 
@@ -402,6 +426,7 @@ const InventoryPage = () => {
                         className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out" >
                         <option value="Tool">Tool</option>
                         <option value="Fabric">Fabric</option>
+                        <option value="Dress">Dress</option>
                       </select>
                     </div>
                     <div className="w-1/2">
@@ -418,29 +443,39 @@ const InventoryPage = () => {
                   </div>
 
                   <div className="flex gap-6">
-                    <div className="w-1/3">
-                      <label htmlFor="purchase_price_per_unit" className="block text-lg font-semibold text-gray-700 mb-2">Purchase Price</label>
+                    <div className="w-1/4">
+                      <label htmlFor="purchase_price" className="block text-lg font-semibold text-gray-700 mb-2">Purchase Price</label>
                       <input required
                         type="number"
-                        name="purchase_price_per_unit"
-                        value={newItem.purchase_price_per_unit}
+                        name="purchase_price"
+                        value={newItem.purchase_price}
                         onChange={handleChange}
                         className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
 
-                    <div className="w-1/3">
-                      <label htmlFor="sell_price_per_unit" className="block text-lg font-semibold text-gray-700 mb-2">Sell Price</label>
+                    <div className="w-1/4">
+                      <label htmlFor="base_price" className="block text-lg font-semibold text-gray-700 mb-2">Sell Price</label>
                       <input
                         type="number"
-                        name="sell_price_per_unit"
-                        value={newItem.sell_price_per_unit}
+                        name="base_price"
+                        value={newItem.base_price}
+                        onChange={handleChange}
+                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                      />
+                    </div>
+                    <div className="w-1/4">
+                      <label htmlFor="discount_price" className="block text-lg font-semibold text-gray-700 mb-2">Discount Price</label>
+                      <input
+                        type="number"
+                        name="discount_price"
+                        value={newItem.discount_price}
                         onChange={handleChange}
                         className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
 
-                    <div className="w-1/3">
+                    <div className="w-1/4">
                       <label htmlFor="color" className="block text-lg font-semibold text-gray-700 mb-2">Color</label>
                       <input
                         type="text"
@@ -477,14 +512,33 @@ const InventoryPage = () => {
 
                   <div className="flex gap-6">
                     <div className="w-1/2">
-                      <label htmlFor="description" className="block text-lg font-semibold text-gray-700 mb-2">Description</label>
-                      <textarea
-                        rows={8}
-                        name="description"
-                        value={newItem.description}
-                        onChange={handleChange}
-                        className="input min-h-20 w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out overflow-hidden"
-                      />
+
+                      <div>
+                        <label htmlFor="description" className="block text-lg font-semibold text-gray-700 mb-2">Description</label>
+                        <textarea
+                          rows={12}
+                          name="description"
+                          value={newItem.description}
+                          onChange={handleChange}
+                          className="input min-h-20 w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out overflow-hidden"
+                        />
+                      </div>
+                      <div className='flex gap-10 items-center'>
+                        <div>
+                          <input type='checkbox' name="is_upcoming"
+                            checked={newItem.is_upcoming}
+                            value={newItem.is_upcoming}
+                            onChange={handleChange} />
+                          <label htmlFor="is_best_seller" className="ml-2 text-lg font-semibold text-gray-700 mb-2">Upcoming Dress</label>
+                        </div>
+                        <div>
+                          <input type='checkbox' name="is_featured"
+                            checked={newItem.is_featured}
+                            value={newItem.is_featured}
+                            onChange={handleChange} />
+                          <label htmlFor="is_featured" className="ml-2 text-lg font-semibold text-gray-700 mb-2">Featured Dress</label>
+                        </div>
+                      </div>
 
                     </div>
                     <div className="w-1/2">

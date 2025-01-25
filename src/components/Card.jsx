@@ -82,7 +82,15 @@ const Card = ({ dress }) => {
 
                 <div className="mt-3 flex items-center justify-between">
                     <span className="text-lg flex items-center font-semibold text-violet-500">
-                        <TbCurrencyTaka /> {dress.discount_price || dress.base_price}
+                        {dress.discount_price && dress.base_price > 0 ? (
+                            <>
+                                <span className="line-through text-gray-500">{dress.base_price}</span>
+                                <span className="ml-2">{dress.discount_price}</span>
+                            </>
+                        ) : (
+                            <span>{dress.discount_price || dress.base_price}</span>
+                        )}
+                        <TbCurrencyTaka />
                     </span>
 
                     <div className="flex items-center gap-1">
@@ -94,22 +102,22 @@ const Card = ({ dress }) => {
                 <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-1">
                         <span className="text-gray-500 text-xs">Supplier:</span>
-                        <span className="text-gray-700 text-sm font-semibold">{dress.supplier_name}</span>
+                        <span className="text-gray-700 text-sm font-semibold">{dress.supplier}</span>
                     </div>
                 </div>
             </div>
 
             {/* Add to Cart & Cart Icon */}
             <div className="absolute bottom-3 right-3 flex gap-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 {!inCart && 
-                    <TbShoppingCartPlus onClick={()=> addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
-                 }
-
-                 {inCart &&
-                     <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                {!inCart &&
+                    <TbShoppingCartPlus onClick={() => addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
                 }
-                </div>
- 
+
+                {inCart &&
+                    <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                }
+            </div>
+
         </div>
     )
 }

@@ -10,8 +10,8 @@ const FeaturedDress = () => {
         const fetchData = async () => {
             try {
                 // Fetch dresses data
-                const dressesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/dresses/?is_featured=true');
-                setDresses(dressesResponse.data);
+                const dressesResponse = await axios.get('http://127.0.0.1:8000/inventory/all_items/?is_featured=true');
+                setDresses(dressesResponse.data.results); // Set the results from API response
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {
                 console.error("Error fetching data", error);
@@ -20,8 +20,7 @@ const FeaturedDress = () => {
         };
 
         fetchData();
-    }, []); // Empty dependency array means this runs once when the component mounts
-
+    }, []);
     // If data is still loading, show a loading message
     if (loading) {
         return <div>Loading...</div>;

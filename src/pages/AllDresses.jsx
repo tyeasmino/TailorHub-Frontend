@@ -9,22 +9,16 @@ const AllDresses = () => {
     const [nextPage, setNextPage] = useState(null);
     const [previousPage, setPreviousPage] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Default to first page
-    const [totalPages, setTotalPages] = useState(1); // To keep track of the total pages
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Function to fetch the data for a given page
+    // Function to fetch data based on the current page
     const fetchData = async (url) => {
         try {
-            const dressesResponse = await axios.get(url);
-            setDresses(dressesResponse.data.results);
-            setNextPage(dressesResponse.data.next);
-            setPreviousPage(dressesResponse.data.previous);
-
-            // Calculate the total number of pages based on the count and page size
-            const totalPages = Math.ceil(dressesResponse.data.count / 2); // Adjust page size to 2 for testing
-            setTotalPages(totalPages);
-
+            const response = await axios.get(url);
+            setDresses(response.data.results);
+            setNextPage(response.data.next);
+            setPreviousPage(response.data.previous);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching data", error);
@@ -32,19 +26,21 @@ const AllDresses = () => {
         }
     };
 
-    // Handle the initial load of the page
+    // Handle initial load of page based on URL params
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const pageFromUrl = searchParams.get('page') || 1;
         setCurrentPage(Number(pageFromUrl));
 
+        // Fetch data for the current page
         const url = `http://127.0.0.1:8000/inventory/all_items/?page=${pageFromUrl}`;
         fetchData(url);
     }, [location.search]);
 
-    // Function to handle pagination buttons
+    // Function to handle page change when Prev/Next is clicked
     const handlePageChange = (page) => {
         let newUrl = `http://127.0.0.1:8000/inventory/all_items/?page=${page}`;
+        
         if (page === 'next' && nextPage) {
             newUrl = nextPage;
             setCurrentPage(currentPage + 1);
@@ -56,23 +52,10 @@ const AllDresses = () => {
             setCurrentPage(page);
         }
 
-        // Update the URL with the current page number
+        // Update the URL with the new page
         navigate(`?page=${page}`, { replace: true });
 
         fetchData(newUrl);
-    };
-
-    const getPageNumbers = () => {
-        const pageNumbers = [];
-        let startPage = Math.max(currentPage - 2, 1);
-        let endPage = Math.min(currentPage + 2, totalPages);
-
-        // Add page numbers to the array
-        for (let i = startPage; i <= endPage; i++) {
-            pageNumbers.push(i);
-        }
-
-        return pageNumbers;
     };
 
     if (loading) {
@@ -103,40 +86,6 @@ const AllDresses = () => {
                 >
                     Prev
                 </button>
-
-                {/* Page Numbers */}
-                <div className="flex gap-2">
-                    {/* Show the first page and ellipses if needed */}
-                    {currentPage > 3 && (
-                        <span
-                            onClick={() => handlePageChange(1)}
-                            className="cursor-pointer px-4 py-2 bg-gray-200 text-black rounded-md"
-                        >
-                            1
-                        </span>
-                    )}
-                    {currentPage > 4 && <span className="px-4 py-2 text-gray-500">...</span>}
-                    
-                    {getPageNumbers().map((pageNumber) => (
-                        <span
-                            key={pageNumber}
-                            onClick={() => handlePageChange(pageNumber)}
-                            className={`cursor-pointer px-4 py-2 ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-md`}
-                        >
-                            {pageNumber}
-                        </span>
-                    ))}
-
-                    {currentPage < totalPages - 2 && <span className="px-4 py-2 text-gray-500">...</span>}
-                    {currentPage < totalPages - 1 && (
-                        <span
-                            onClick={() => handlePageChange(totalPages)}
-                            className="cursor-pointer px-4 py-2 bg-gray-200 text-black rounded-md"
-                        >
-                            {totalPages}
-                        </span>
-                    )}
-                </div>
 
                 {/* Next Button */}
                 <button

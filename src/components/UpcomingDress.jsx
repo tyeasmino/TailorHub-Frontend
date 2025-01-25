@@ -10,19 +10,18 @@ const UpcomingDress = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const dressesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/dresses/?is_upcoming=true');
-                setDresses(dressesResponse.data);
-
-                setLoading(false);
+                // Fetch dresses data
+                const dressesResponse = await axios.get('http://127.0.0.1:8000/inventory/all_items/?is_upcoming=true');
+                setDresses(dressesResponse.data.results); // Set the results from API response
+                setLoading(false); // Set loading to false after data is fetched
             } catch (error) {
                 console.error("Error fetching data", error);
-                setLoading(false);
+                setLoading(false); // Set loading to false in case of error
             }
         };
 
         fetchData();
     }, []);
-
     if (loading) {
         return <div>Loading...</div>;
     }

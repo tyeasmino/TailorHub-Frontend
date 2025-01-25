@@ -49,7 +49,7 @@ const CartPage = () => {
                         {
                             cartList?.map((dress) => (
 
-                                <tr className='border-b'>
+                                <tr key={dress.id} className='border-b'>
                                     <td className="px-4 py-2">
                                         <input
                                             type="checkbox"
@@ -82,17 +82,15 @@ const CartPage = () => {
 
                                                     {/* Increment Button */}
                                                     <button
-                                                        onClick={() => incrementQuantity(dress.id, dress?.stock_quantity)}
+                                                        onClick={() => incrementQuantity(dress.id, dress?.stock)}
                                                         className={`w-8 h-8 font-bold rounded-full flex items-center justify-center transition duration-200 
-                                                        ${dress?.quantity >= dress?.stock_quantity ? 'bg-pink text-white cursor-not-allowed' : 'bg-violet-500 text-white hover:bg-violet-600'}`}
-                                                        disabled={dress?.quantity >= dress?.stock_quantity} // Disable if quantity reaches stock quantity
+                                                        ${dress?.quantity >= dress?.stock ? 'bg-pink text-white cursor-not-allowed' : 'bg-violet-500 text-white hover:bg-violet-600'}`}
+                                                        disabled={dress?.quantity >= dress?.stock } // Disable if quantity reaches stock quantity
                                                     >
                                                         +
                                                     </button>
                                                 </div>
-
                                             </div>
-
                                         </div>
                                     </td>
                                     <td className="text-right px-4 py-2">{(dress?.quantity * (dress?.discount_price || dress?.base_price)).toFixed(2)}</td>

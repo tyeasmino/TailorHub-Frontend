@@ -316,7 +316,6 @@ const InventoryPage = () => {
               </th>
               <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('stock')}> Stock </th>
               <th className="py-3 text-start">Color</th>
-              <th className="py-3 text-start">Featured</th>
               <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('supplier')}> Supplier </th>
               <th className="py-3 text-start" colSpan={2}>Action</th>
             </tr>
@@ -333,7 +332,6 @@ const InventoryPage = () => {
                 <td className="py-2 text-start">{item.discount_price !== '0.00' ? item.discount_price : item.base_price}</td>
                 <td className="py-2 text-start">{item.stock}</td>
                 <td className="py-2 text-start">{item.color}</td>
-                <td className="py-2 text-start">{item.is_featured ? 'yes': 'no'}</td>
                 <td className="py-2 text-start">{item.supplier}</td>
                 <td className="py-2 text-start">
                   <FaEdit className="text-heading " onClick={() => handleEditItem(item)} />

@@ -266,6 +266,7 @@ const InventoryMovementPage = () => {
                                         value={formData.inventory_item}
                                         onChange={(e) => setFormData({ ...formData, inventory_item: e.target.value })}
                                     >
+                                        <option  >Select an item</option>
                                         {inventoryItems.map(item => (
                                             <option key={item.id} value={item.id}>{item.name}</option>
                                         ))}

@@ -1,59 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';  // Import useParams to read URL params
-import axios from 'axios';  // Import axios for making API requests
+import { useParams } from 'react-router-dom';  
+import axios from 'axios';  
 import { FaStar } from "react-icons/fa6";
 import { FaStarHalfStroke } from "react-icons/fa6";
-import { FaRegStar } from "react-icons/fa6";
-import { GiSelfLove } from "react-icons/gi";
+import { FaRegStar } from "react-icons/fa6"; 
+import { useCart } from '../contexts/cartContext';
+import { TbShoppingCartMinus, TbShoppingCartPlus } from 'react-icons/tb';
 
-const DetailsPage = () => { 
-  const [dress, setDress] = useState(null); // State to hold the dress data
-  const [quantity, setQuantity] = useState(0); // Quantity state for the cart
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+const DetailsPage = () => {
+  const [dress, setDress] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { cartList, addToCart, removeFromCart } = useCart();
+  const [inCart, setInCart] = useState(false);
+  const { id } = useParams();
 
-  const { id } = useParams(); // Use 'id' to fetch the correct dress based on the URL parameter
-
-  // Fetch the specific dress details based on the id
+  // Fetch dress details
   useEffect(() => {
     const fetchDressDetails = async () => {
       try {
-        setLoading(true); // Set loading to true when fetching starts
-        const response = await axios.get(`http://127.0.0.1:8000/fitMakers/dresses/${id}/`);
-        setDress(response.data);  // Set the dress data in the state
-        setLoading(false); // Set loading to false when the data is fetched
+        setLoading(true);
+        const response = await axios.get(`http://127.0.0.1:8000/inventory/all_items/${id}/`);
+        setDress(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching dress details:", error);
-        setError("Error fetching the dress details. Please try again later."); // Set an error message
-        setLoading(false); // Set loading to false when there's an error
+        setError("Error fetching the dress details. Please try again later.");
+        setLoading(false);
       }
     };
 
     fetchDressDetails();
-  }, [id]); // Fetch the data again if the id changes
+  }, [id]);
 
-  // Handle quantity increase and decrease
-  const handleIncrease = () => {
-    setQuantity(quantity + 1);
-  };
-
-  const handleDecrease = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
+  // Check if the dress is in the cart
+  useEffect(() => {
+    if (dress) {
+      const cartItem = cartList.find((item) => item.id === dress.id);
+      setInCart(cartItem ? true : false);
+      console.log('inCart state:', cartItem ? true : false); // Debugging line to check state
     }
+  }, [cartList, dress]);
+
+  // Add to cart handler
+  const handleAddToCart = () => {
+    console.log('Adding to cart');
+    addToCart(dress);
+    setInCart(true);  // Update inCart state to show remove button
   };
 
-  // If loading, show loading message
+  // Remove from cart handler
+  const handleRemoveFromCart = () => {
+    console.log('Removing from cart');
+    removeFromCart(dress);
+    setInCart(false);  // Update inCart state to show add button
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // If there's an error, display the error message
   if (error) {
     return <div>{error}</div>;
   }
 
-  // If dress data is available, render it
   return (
     <section className="max-w-screen-lg my-20 m-auto">
       {dress && (
@@ -61,8 +71,8 @@ const DetailsPage = () => {
           <div className="w-2/5 p-5">
             <img
               className="w-full overflow-hidden rounded-md object-cover h-full"
-              src={dress.image}  // Use the fetched dress image
-              alt={dress.name}  // Use the dress name for alt text
+              src={dress.image}
+              alt={dress.name}
             />
           </div>
           <div className="w-3/5 p-5 flex flex-col gap-5">
@@ -87,7 +97,7 @@ const DetailsPage = () => {
               </div>
               <div>
                 <small className="text-gray-400">Supplier</small> <br />
-                <strong>{dress.supplier_name}</strong>
+                <strong>{dress.supplier}</strong>
               </div>
             </div>
 
@@ -104,15 +114,18 @@ const DetailsPage = () => {
 
             {/* Quantity and Add to Cart */}
             <div className="flex gap-2 items-center">
-              <div>
-                <div>
-                  <span onClick={handleDecrease} className="border text-gray-400 cursor-pointer rounded-l-md px-3 py-1">-</span>
-                  <span className="border px-8 py-1">{quantity}</span>
-                  <span onClick={handleIncrease} className="border text-gray-400 cursor-pointer rounded-r-md px-3 py-1">+</span>
-                </div>
+              {/* Add to Cart & Cart Icon */}
+              <div className=" bottom-3 right-3 flex gap-2 items-center  transition-opacity duration-300">
+                {!inCart ? (
+                  <button onClick={handleAddToCart} className="bg-violet-500 flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
+                    <TbShoppingCartPlus /> Add to Cart
+                  </button>
+                ) : (
+                  <button onClick={handleRemoveFromCart} className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
+                    <TbShoppingCartMinus /> Remove from Cart
+                  </button>
+                )}
               </div>
-              <button className="bg-violet-500 px-5 py-1 rounded-md text-white cursor-pointer">Add to Cart</button>
-              <GiSelfLove className="text-violet-500" />
             </div>
           </div>
         </section>

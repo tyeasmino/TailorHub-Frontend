@@ -304,13 +304,13 @@ const InventoryPage = () => {
               <th className="py-3 text-start">Name</th>
               <th
                 className="py-3 text-start cursor-pointer"
-                onClick={() => handleSort('purchase_price_per_unit')}
+                onClick={() => handleSort('purchase_price')}
               >
                 Purchase Price
               </th>
               <th
                 className="py-3 text-start cursor-pointer"
-                onClick={() => handleSort('sell_price_per_unit')}
+                onClick={() => handleSort('base_price')}
               >
                 Sell Price
               </th>

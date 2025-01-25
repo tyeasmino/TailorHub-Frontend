@@ -49,19 +49,23 @@ const InventoryMovementPage = () => {
     };
 
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
-        // Define the API URL for add/edit
+    
+        // Log the formData object before making the request
+        console.log('Form data being sent:', formData);
+    
         const url = isEditing
             ? `http://127.0.0.1:8000/inventory/items_movements/${editingMovement.id}/`  // Edit endpoint
             : 'http://127.0.0.1:8000/inventory/items_movements/';  // Add endpoint
-        
+    
         try {
-            // Set the HTTP method based on whether it's editing or adding
             const method = isEditing ? 'put' : 'post';
-            
-            // Make API call for add/edit
+    
+            // Log the API request details
+            console.log('Making request to:', url, 'with method:', method);
+    
             const response = await axios({
                 method,
                 url,
@@ -70,27 +74,39 @@ const InventoryMovementPage = () => {
                 },
                 data: formData,
             });
-            
-            // If adding, update the list; if editing, update the specific item
+    
+            // Log the response from the API
+            console.log('API response:', response);
+    
             if (isEditing) {
-                const updatedMovements = inventoryMovements.map(movement => 
+                const updatedMovements = inventoryMovements.map(movement =>
                     movement.id === editingMovement.id ? response.data : movement
                 );
                 setInventoryMovements(updatedMovements);
             } else {
                 setInventoryMovements([response.data, ...inventoryMovements]);
             }
-            
+    
             setMessage(isEditing ? 'Item movement updated successfully!' : 'Item movement added successfully!');
             setShowForm(false);
             setIsEditing(false);
             setFormData({ inventory_item: '', quantity: '', movement_type: 'Add', description: '' });
         } catch (err) {
-            setError('Error submitting movement');
+            // Log the error response from the API
+            if (err.response) {
+                console.log('Error response from API:', err.response.data);
+                setError(err.response.data.detail || 'Error submitting movement');
+            } else {
+                console.log('Error during request:', err.message);
+                setError('Error submitting movement');
+            }
         }
     };
-
     
+
+
+
+
 
     const fetchInventoryMovements = async () => {
         try {
@@ -209,7 +225,7 @@ const InventoryMovementPage = () => {
         }
     }, [editingMovement]); // Don't change the structure of useEffect
 
- 
+
     return (
         <section className='flex'>
             <Sidebar />
@@ -221,6 +237,13 @@ const InventoryMovementPage = () => {
                         {message}
                     </div>
                 )}
+
+                {error && (
+                    <div className="p-4 mb-4 rounded-md bg-red-100 text-red-800">
+                        {error}
+                    </div>
+                )}
+
 
                 <button
                     onClick={() => setShowForm(!showForm)}
@@ -277,27 +300,27 @@ const InventoryMovementPage = () => {
                                 </FormGroup>
                             </div>
 
-                            <div className="w-1/2 px-5 ">    
+                            <div className="w-1/2 px-5 ">
                                 {/* Description */}
                                 <FormGroup className='py-2'>
                                     <Label for="description">Description</Label>
-                                    <textarea className='w-full p-2 border rounded' 
+                                    <textarea className='w-full p-2 border rounded'
                                         rows={5}
                                         id="description"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                        required 
+                                        required
                                     />
                                 </FormGroup>
 
 
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                className="px-4 py-2 mt-2 bg-violet-600 text-white rounded-md"
-                            >
-                                {isEditing ? 'Update' : 'Add'} Movement
-                            </button>
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 mt-2 bg-violet-600 text-white rounded-md"
+                                >
+                                    {isEditing ? 'Update' : 'Add'} Movement
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -315,34 +338,41 @@ const InventoryMovementPage = () => {
                             <th className="py-3 text-end">Actions</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        {inventoryMovements.map(movement => (
-                            <tr key={movement.id} className="border-b border-violet-200">
-                                <td className="py-2 text-start">{movement.date}</td>
-                                <td className="py-2 text-start">{movement.inventory_item_name}</td>
-                                <td className="py-2 text-start">{movement.movement_type}</td>
-                                <td className="py-2 text-start">{movement.quantity}</td>
-                                <td className="py-2 text-start">{movement.description}</td>
-                                <td className="py-2 text-end">
-                                    <button
-                                        onClick={() => {
-                                            setEditingMovement(movement);
-                                            setShowForm(true);
-                                        }}
-                                        className="bg-violet-600 text-white px-3 py-1 rounded mr-2"
-                                    >
-                                        <FaEdit />
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(movement.id)}
-                                        className="bg-red-600 text-white px-3 py-1 rounded"
-                                    >
-                                        <MdOutlineDeleteSweep />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {inventoryMovements.map(movement => {
+                            // Find the item name from the inventoryItems array based on the id
+                            const inventoryItem = inventoryItems.find(item => item.id === movement.inventory_item);
+                            return (
+                                <tr key={movement.id} className="border-b border-violet-200">
+                                    <td className="py-2 text-start">{movement.date}</td>
+                                    {/* Display the item name here */}
+                                    <td className="py-2 text-start">{inventoryItem ? inventoryItem.name : 'Item Not Found'}</td>
+                                    <td className="py-2 text-start">{movement.movement_type}</td>
+                                    <td className="py-2 text-start">{movement.quantity}</td>
+                                    <td className="py-2 text-start">{movement.description}</td>
+                                    <td className="py-2 text-end">
+                                        <button
+                                            onClick={() => {
+                                                setEditingMovement(movement);
+                                                setShowForm(true);
+                                            }}
+                                            className="bg-violet-600 text-white px-3 py-1 rounded mr-2"
+                                        >
+                                            <FaEdit />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(movement.id)}
+                                            className="bg-red-600 text-white px-3 py-1 rounded"
+                                        >
+                                            <MdOutlineDeleteSweep />
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
+
                 </table>
 
                 {/* Pagination Controls */}

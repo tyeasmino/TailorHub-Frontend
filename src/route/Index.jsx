@@ -15,6 +15,8 @@ import CartPage from '../pages/CartPage'
 import InventoryMovementPage from '../pages/InventoryMovementPage'
 import AllDresses from '../pages/AllDresses'
 import Checkout from '../pages/Checkout'
+import W3Login from '../pages/W3Login'
+import W3SignUp from '../pages/W3SignUp'
 
 const Index = () => {
   return (
@@ -36,6 +38,10 @@ const Index = () => {
                 <Route path='/inventory-movement' element={<InventoryMovementPage />} />
                 <Route path='/measurement' element={<DressMeasurementPage />} />
                 <Route path='/profile' element={<ProfilePage />} />
+                
+                
+                <Route path='/w3login' element={<W3Login />} />
+                <Route path='/w3signup' element={<W3SignUp />} />
             </Routes>
             <Footer />
         </BrowserRouter>

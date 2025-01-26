@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';  
-import axios from 'axios';  
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { FaStar } from "react-icons/fa6";
 import { FaStarHalfStroke } from "react-icons/fa6";
-import { FaRegStar } from "react-icons/fa6"; 
+import { FaRegStar } from "react-icons/fa6";
 import { useCart } from '../contexts/cartContext';
-import { TbShoppingCartMinus, TbShoppingCartPlus } from 'react-icons/tb';
+import { TbShoppingCartMinus, TbShoppingCartPlus, TbShoppingCartOff } from 'react-icons/tb';
 
 const DetailsPage = () => {
   const [dress, setDress] = useState(null);
@@ -116,15 +116,22 @@ const DetailsPage = () => {
             <div className="flex gap-2 items-center">
               {/* Add to Cart & Cart Icon */}
               <div className=" bottom-3 right-3 flex gap-2 items-center  transition-opacity duration-300">
-                {!inCart ? (
-                  <button onClick={handleAddToCart} className="bg-violet-500 flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
-                    <TbShoppingCartPlus /> Add to Cart
-                  </button>
-                ) : (
-                  <button onClick={handleRemoveFromCart} className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
-                    <TbShoppingCartMinus /> Remove from Cart
-                  </button>
-                )}
+                {dress.stock ?
+                  <>
+                    {!inCart ? (
+                      <button onClick={handleAddToCart} className="bg-violet-500 flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
+                        <TbShoppingCartPlus /> Add to Cart
+                      </button>
+                    ) : (
+                      <button onClick={handleRemoveFromCart} className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
+                        <TbShoppingCartMinus /> Remove from Cart
+                      </button>
+                    )}
+                  </> : <>
+                    <button className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white">
+                      <TbShoppingCartOff /> Out of Stock
+                    </button>
+                  </>}
               </div>
             </div>
           </div>

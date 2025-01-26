@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCart } from '../contexts/cartContext';
-import { TbCurrencyTaka, TbEye, TbShoppingCartMinus, TbShoppingCartPlus } from "react-icons/tb";
+import { TbCurrencyTaka, TbEye, TbShoppingCartMinus, TbShoppingCartPlus, TbShoppingCartOff } from "react-icons/tb";
 import { Link } from 'react-router';
 import axios from 'axios';
 
@@ -50,8 +50,7 @@ const Card = ({ dress }) => {
 
 
     return (
-        <div className="shadow-lg group relative rounded-lg overflow-hidden bg-white">
-            {/* Dress Image */}
+        <div className="mx-3 shadow-lg group relative rounded-lg overflow-hidden bg-white">
             <div className="relative">
                 <Link to={`/dresses/${dress.id}`}>
                     <img
@@ -109,15 +108,20 @@ const Card = ({ dress }) => {
 
             {/* Add to Cart & Cart Icon */}
             <div className="absolute bottom-3 right-3 flex gap-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {!inCart &&
-                    <TbShoppingCartPlus onClick={() => addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
-                }
+                {dress.stock ?
+                    <>
+                        {!inCart &&
+                            <TbShoppingCartPlus onClick={() => addToCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                        }
 
-                {inCart &&
-                    <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                        {inCart &&
+                            <TbShoppingCartMinus onClick={() => removeFromCart(dress)} className="text-2xl text-violet-500 cursor-pointer" />
+                        }
+                    </>
+                    :
+                    <TbShoppingCartOff className="text-2xl text-violet-500 cursor-pointer" />
                 }
             </div>
-
         </div>
     )
 }

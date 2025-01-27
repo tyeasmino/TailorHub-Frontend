@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCart } from '../contexts/cartContext'
 import { Link } from 'react-router'
 import { MdRemoveShoppingCart } from "react-icons/md";
@@ -6,11 +6,36 @@ import { MdRemoveShoppingCart } from "react-icons/md";
 const CartPage = () => {
 
     const { cartList, removeFromCart, total, clearFromCart, incrementQuantity, decrementQuantity, toggleSelectDress, selectAllDresses, deselectAllDresses } = useCart();
+    const [dressCategories, setDressCategories] = useState([]);
+    const [selectedDress, setSelectedDress] = useState(null);
 
     // Calculate the total for selected items
     const selectedTotal = cartList.filter(item => item.selected).reduce((acc, dress) => {
         return acc + (parseFloat(dress.discount_price) || parseFloat(dress.base_price)) * dress.quantity;
     }, 0);
+
+
+    // Fetch dress categories from the API
+    useEffect(() => {
+        const fetchDressCategories = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/measurements/dress_category/');
+                const data = await response.json();
+                setDressCategories(data);
+            } catch (error) {
+                console.error('Error fetching dress categories:', error);
+            }
+        };
+
+        fetchDressCategories();
+    }, []);
+
+    // Handle dress selection
+    const handleDressSelect = (dress) => {
+        setSelectedDress(dress);
+    };
+ 
+    
 
 
     return (
@@ -22,6 +47,39 @@ const CartPage = () => {
                 <div className="flex justify-between items-center mb-5">
                     <h2 className="text-3xl font-bold">Your Cart</h2>
                 </div>
+
+
+                {/* Dress Category Selection */}
+                <div className="mb-5 w-fit absolute left-20">
+                    <h3 className="text-xl font-semibold mb-3">Select a Dress Type (Optional) </h3>
+                    <table className="table-auto w-full text-left">
+                        <thead>
+                            <tr className='border-b'>
+                                <th className=" px-4 py-2">Select</th>
+                                <th className=" px-4 py-2">Name</th>
+                                <th className=" px-4 py-2">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dressCategories.map((dress) => (
+                                <tr key={dress.id} className='border-b'>
+                                    <td className="px-4 py-2">
+                                        <input
+                                            type="radio"
+                                            name="dress_type"
+                                            checked={selectedDress?.id === dress.id}
+                                            onChange={() => handleDressSelect(dress)}
+                                        />
+                                    </td>
+                                    <td className="px-4 py-2">{dress.name}</td>
+                                    <td className="px-4 py-2">{dress.sell_price_per_unit}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+
 
                 {/* Select All Checkbox */}
                 <div className="mb-5">
@@ -43,12 +101,8 @@ const CartPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-
-
-
                         {
                             cartList?.map((dress) => (
-
                                 <tr key={dress.id} className='border-b'>
                                     <td className="px-4 py-2">
                                         <input
@@ -85,7 +139,7 @@ const CartPage = () => {
                                                         onClick={() => incrementQuantity(dress.id, dress?.stock)}
                                                         className={`w-8 h-8 font-bold rounded-full flex items-center justify-center transition duration-200 
                                                         ${dress?.quantity >= dress?.stock ? 'bg-pink text-white cursor-not-allowed' : 'bg-violet-500 text-white hover:bg-violet-600'}`}
-                                                        disabled={dress?.quantity >= dress?.stock } // Disable if quantity reaches stock quantity
+                                                        disabled={dress?.quantity >= dress?.stock} // Disable if quantity reaches stock quantity
                                                     >
                                                         +
                                                     </button>
@@ -108,12 +162,32 @@ const CartPage = () => {
                         </tr>
                         <tr className='mt-5 font-bold text-heading'>
                             <td colSpan={4} className="  px-4 py-2">Selected Dress Price </td>
-                             
+
                             <td className=" px-12 py-2"> </td>
                             <td className="text-right px-4 py-2">{selectedTotal?.toFixed(2)}</td>
                         </tr>
                     </tbody>
                 </table>
+
+
+
+
+                {/* Add Selected Dress to Cart */}
+                {/* <div className="flex items-center justify-end gap-5 pt-10">
+                    <button onClick={handleAddToCart} className='bg-violet-500 font-semibold text-white px-8 py-2 rounded-md'>
+                        Add Selected Dress to Cart
+                    </button>
+                    <button onClick={clearFromCart} className='bg-pink font-semibold text-white px-8 py-2 rounded-md'>
+                        Clear Cart
+                    </button>
+                    <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'>
+                        <Link to='/dresses'>Continue Shopping</Link>
+                    </button>
+                    <button className='bg-violet-500 font-semibold text-white px-8 py-2 rounded-md'>
+                        <Link to='/Checkout'>Checkout</Link>
+                    </button>
+                </div> */}
+
 
 
                 <div className='flex items-center justify-end gap-5 pt-10'>

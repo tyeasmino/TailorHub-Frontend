@@ -7,7 +7,6 @@ const Checkout = () => {
 
     // Filter only selected items for checkout
     const selectedItems = cartList.filter(item => item.selected);
- 
 
     return (
         <section className="max-w-4xl mx-auto p-6 my-10">

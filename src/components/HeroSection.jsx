@@ -1,5 +1,6 @@
 import React from 'react'
 import sewingMachine from '../assets/sewingMachine.png'
+import bgIMG from '../assets/bg.gif'
 
 
 const HeroSection = () => {
@@ -16,7 +17,7 @@ const HeroSection = () => {
                     </div>
 
                     <div className='w-1/2'>
-                        <img src={sewingMachine} className='px-20' alt="" />
+                        <img src={bgIMG} className='px-20' alt="" />
                     </div>
                 </div>
             </div>

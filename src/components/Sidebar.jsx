@@ -8,17 +8,21 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { TbMoodEdit } from "react-icons/tb";
 import { IoShirtOutline } from "react-icons/io5";
+import { LuClipboardList } from "react-icons/lu";
+
+
+
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
-  const [collapsed, setCollapsed] = useState(false);  
+  const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
   // Toggle the sidebar collapse/expand state
   const toggleSidebar = () => setCollapsed(!collapsed);
 
   // Check if the current page is the dashboard, profile, or inventory page
-  const isOnProtectedPage = location.pathname === '/dashboard' || location.pathname === '/profile' || location.pathname === '/inventory';
+  const isOnProtectedPage = location.pathname === '/dashboard' || location.pathname === '/profile' || location.pathname === '/inventory' || location.pathname === '/orders';
 
   return (
     <div
@@ -79,7 +83,7 @@ const Sidebar = () => {
                 to="/dress"
                 className={`flex items-center gap-2 ${location.pathname === "/dress" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
-                <IoShirtOutline 
+                <IoShirtOutline
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
                 />
                 {/* Show tooltip only when collapsed */}
@@ -149,6 +153,23 @@ const Sidebar = () => {
             </li>
           </>
         ) : null}
+
+        <li className="relative group">
+          <Link
+            to="/orders"
+            className={`flex items-center gap-2 ${location.pathname === "/orders" ? "bg-white md:p-4 shadow font-semibold" : ""}`}
+          > 
+            <LuClipboardList
+              className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
+            />
+            <span
+              className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+            >
+              Orders
+            </span>
+            {!collapsed && <span className="ml-2">Orders</span>}
+          </Link>
+        </li>
       </ul>
     </div>
   );

@@ -6,6 +6,7 @@ import { FaStarHalfStroke } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa6";
 import { useCart } from '../contexts/cartContext';
 import { TbShoppingCartMinus, TbShoppingCartPlus, TbShoppingCartOff } from 'react-icons/tb';
+import TailorService from '../components/TailorService';
 
 const DetailsPage = () => {
   const [dress, setDress] = useState(null);
@@ -67,75 +68,81 @@ const DetailsPage = () => {
   return (
     <section className="max-w-screen-lg my-20 m-auto">
       {dress && (
-        <section className="flex items-center gap-10">
-          <div className="w-2/5 p-5">
-            <img
-              className="w-full overflow-hidden rounded-md object-cover h-full"
-              src={dress.image}
-              alt={dress.name}
-            />
-          </div>
-          <div className="w-3/5 p-5 flex flex-col gap-5">
-            <h1 className="text-3xl font-bold text-gray-600">{dress.name}</h1>
-            <div className="flex gap-1 text-yellow-400">
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStarHalfStroke />
-              <FaRegStar />
+        <>
+          <section className="flex items-center gap-10">
+            <div className="w-2/5 p-5">
+              <img
+                className="w-full overflow-hidden rounded-md object-cover h-full"
+                src={dress.image}
+                alt={dress.name}
+              />
             </div>
-            <div>
-              <del className="text-gray-400">${dress.base_price}</del>{' '}
-              <span className="text-violet-500 font-bold">${dress.discount_price || dress.base_price}</span>
-            </div>
-            <div className="text-gray-400">{dress.description}</div>
-
-            <div className="flex gap-10">
-              <div>
-                <small className="text-gray-400">Type</small> <br />
-                <strong>{dress.category}</strong>
+            <div className="w-3/5 p-5 flex flex-col gap-5">
+              <h1 className="text-3xl font-bold text-gray-600">{dress.name}</h1>
+              <div className="flex gap-1 text-yellow-400">
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaStarHalfStroke />
+                <FaRegStar />
               </div>
               <div>
-                <small className="text-gray-400">Supplier</small> <br />
-                <strong>{dress.supplier}</strong>
+                <del className="text-gray-400">${dress.base_price}</del>{' '}
+                <span className="text-violet-500 font-bold">${dress.discount_price || dress.base_price}</span>
+              </div>
+              <div className="text-gray-400">{dress.description}</div>
+
+              <div className="flex gap-10">
+                <div>
+                  <small className="text-gray-400">Type</small> <br />
+                  <strong>{dress.category}</strong>
+                </div>
+                <div>
+                  <small className="text-gray-400">Supplier</small> <br />
+                  <strong>{dress.supplier}</strong>
+                </div>
+              </div>
+
+              {/* Fabric Color */}
+              <div>
+                <strong>Fabric Color</strong>
+                <span className="flex gap-1">
+                  <input type="radio" name="radio-1" className="radio radio-sm" defaultChecked />
+                  <input type="radio" name="radio-1" className="radio radio-sm radio-primary" />
+                  <input type="radio" name="radio-1" className="radio radio-sm radio-secondary" />
+                  <input type="radio" name="radio-1" className="radio radio-sm radio-accent" />
+                </span>
+              </div>
+
+              {/* Quantity and Add to Cart */}
+              <div className="flex gap-2 items-center">
+                {/* Add to Cart & Cart Icon */}
+                <div className=" bottom-3 right-3 flex gap-2 items-center  transition-opacity duration-300">
+                  {dress.stock ?
+                    <>
+                      {!inCart ? (
+                        <button onClick={handleAddToCart} className="bg-violet-500 flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
+                          <TbShoppingCartPlus /> Add to Cart
+                        </button>
+                      ) : (
+                        <button onClick={handleRemoveFromCart} className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
+                          <TbShoppingCartMinus /> Remove from Cart
+                        </button>
+                      )}
+                    </> : <>
+                      <button className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white">
+                        <TbShoppingCartOff /> Out of Stock
+                      </button>
+                    </>}
+                </div>
               </div>
             </div>
+          </section>
 
-            {/* Fabric Color */}
-            <div>
-              <strong>Fabric Color</strong>
-              <span className="flex gap-1">
-                <input type="radio" name="radio-1" className="radio radio-sm" defaultChecked />
-                <input type="radio" name="radio-1" className="radio radio-sm radio-primary" />
-                <input type="radio" name="radio-1" className="radio radio-sm radio-secondary" />
-                <input type="radio" name="radio-1" className="radio radio-sm radio-accent" />
-              </span>
-            </div>
-
-            {/* Quantity and Add to Cart */}
-            <div className="flex gap-2 items-center">
-              {/* Add to Cart & Cart Icon */}
-              <div className=" bottom-3 right-3 flex gap-2 items-center  transition-opacity duration-300">
-                {dress.stock ?
-                  <>
-                    {!inCart ? (
-                      <button onClick={handleAddToCart} className="bg-violet-500 flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
-                        <TbShoppingCartPlus /> Add to Cart
-                      </button>
-                    ) : (
-                      <button onClick={handleRemoveFromCart} className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white cursor-pointer">
-                        <TbShoppingCartMinus /> Remove from Cart
-                      </button>
-                    )}
-                  </> : <>
-                    <button className="bg-pink flex items-center gap-3 px-5 py-1 rounded-md text-white">
-                      <TbShoppingCartOff /> Out of Stock
-                    </button>
-                  </>}
-              </div>
-            </div>
-          </div>
-        </section>
+          <section>
+            <TailorService />
+          </section>
+        </>
       )}
     </section>
   );

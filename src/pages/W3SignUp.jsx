@@ -33,11 +33,16 @@ const W3SignUp = () => {
         e.preventDefault();
         
         console.log(formData) 
-
+        alert("Username: " + formData.username + 
+            "\nFirst Name: " + formData.first_name + 
+            "\nLast Name: " + formData.last_name + 
+            "\nEmail Address: " + formData.email + 
+            "\nYour choice is: " + formData.user_type  
+        ) 
 
         try { 
-            const res = await axios.post(
-            "http://127.0.0.1:8000/accounts/register/",
+            const res = await axios.post("",
+            // "http://127.0.0.1:8000/accounts/register/",
             formData,
 
             {

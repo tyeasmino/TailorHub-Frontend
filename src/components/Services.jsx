@@ -36,10 +36,10 @@ const Services = () => {
         <section className='max-w-screen-xl m-auto my-10'>
             <h2 className='text-heading text-center font-semibold text-3xl' >What TailorHub Offer!</h2>
 
-            <div className='flex gap-10 mt-10'>
+            <div className='flex flex-col md:flex-row gap-10 mt-10'>
                 {services.length > 0 ? (
                     services.map(service => (
-                        <div key={service.id} className='shadow group transition-all duration-300 ease-in-out hover:bg-heading rounded p-10 w-1/4 text-center flex flex-col gap-3'>
+                        <div key={service.id} className='shadow shadow-pink md:shadow-slate-500 group transition-all duration-300 ease-in-out hover:bg-heading rounded p-10 md:w-1/4 px-10 mx-5 md:mx-0 text-center flex flex-col gap-3'>
                             {iconMappings[service.name] || <FaMotorcycle className='text-[50px] m-auto group-hover:text-white' />}
                             <h4 className='text-heading text-center font-semibold text-xl group-hover:text-pink'>{service.name}</h4>
                             <p className='text-gray-500'>{service.description}</p>

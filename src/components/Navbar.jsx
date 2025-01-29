@@ -87,7 +87,7 @@ const Navbar = () => {
         || location.pathname === '/measurement' || location.pathname === '/inventory';
 
     return (
-        <section className='mx-64 max-w-screen-2xl'>
+        <section className='m-auto max-w-screen-2xl'>
             <div className="navbar">
                 <div className="navbar-start">
                     <div className="dropdown">

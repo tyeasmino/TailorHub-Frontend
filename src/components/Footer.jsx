@@ -5,7 +5,7 @@ import { TbNeedleThread } from "react-icons/tb";
 const Footer = () => {
   return (
     <section className='bg-purple dark:bg-dark'>
-      <section className='mx-64 max-w-screen-2xl'>
+      <section className='m-auto max-w-screen-2xl'>
         <footer className="footer   p-10">
           <nav className=''>
             <h6 className="footer-title">Services</h6>

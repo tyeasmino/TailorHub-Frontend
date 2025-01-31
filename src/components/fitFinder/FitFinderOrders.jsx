@@ -17,7 +17,7 @@ const FitFinderOrders = () => {
     }
 
     // Fetch orders for the logged-in fitFinder (initial load)
-    axios.get('http://127.0.0.1:8000/orders/order/', {
+    axios.get('https://tailor-hub-backend.vercel.app/orders/', {
       headers: {
         'Authorization': `Token ${token}`  // Send token in the Authorization header
       }
@@ -124,9 +124,18 @@ const FitFinderOrders = () => {
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Total Bill:</strong> ${order.total_bill}
               </p>
-              <p className="text-sm text-gray-600 mb-2">
+              {order.order_status == 'Processing' && <p className="text-sm text-gray-600 mb-2">
                 <strong>Status:</strong> {order.order_status}
               </p>
+              }
+              {order.order_status == 'Completed' && <p className="text-sm mb-2">
+                <strong>Status:</strong> <span className='text-green-500 font-bold '> {order.order_status} </span> 
+              </p>
+              }
+              {order.order_status == 'Delivered' && <p className="text-sm  mb-2">
+                <strong>Status:</strong> <span className='text-violet-600 font-bold'> {order.order_status} </span> 
+              </p>
+              }
             </div>
           </div>
         ))}

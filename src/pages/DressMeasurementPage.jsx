@@ -12,12 +12,12 @@ const DressMeasurementPage = () => {
   const [error, setError] = useState(null);  // To store errors (if any)
   const [successMessage, setSuccessMessage] = useState(null);  // To store success message
 
-  // Fetch the measurements data when the component mounts or when the user changes
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch the measurements using the fitFinder ID
-        const response = await axios.get(`http://127.0.0.1:8000/measurements/dress_measurements/?fit_finder=${user.fitFinder}`, {
+        const response = await axios.get(`https://tailor-hub-backend.vercel.app/measurements/dress_measurements/?fit_finder=${user.fitFinder}`, {
           headers: {
             'Authorization': `Token ${token}`,  // Add the Authorization header with the token
           },
@@ -40,7 +40,7 @@ const DressMeasurementPage = () => {
     }
   }, [user, token]);
 
-  // Handle the form submission to update the measurements
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,7 +52,7 @@ const DressMeasurementPage = () => {
 
       // Send the updated measurements to the server
       const response = await axios.put(
-        `http://127.0.0.1:8000/measurements/dress_measurements/${measurements.id}/`,  // URL for updating
+        `https://tailor-hub-backend.vercel.app/measurements/dress_measurements/${measurements.id}/`,  // URL for updating
         { ...updatedData, fit_finder: user.fitFinder },  // Add fit_finder from user context
         {
           headers: {

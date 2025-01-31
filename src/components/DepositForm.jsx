@@ -27,7 +27,7 @@ const DepositForm = ({ onClose }) => {
       }
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/fitMakers/deposit/',
+        'https://tailor-hub-backend.vercel.app/fitMakers/deposit/',
         depositData,
         {
           headers: {

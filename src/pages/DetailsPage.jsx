@@ -21,7 +21,7 @@ const DetailsPage = () => {
     const fetchDressDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://127.0.0.1:8000/inventory/all_items/${id}/`);
+        const response = await axios.get(`https://tailor-hub-backend.vercel.app/inventory/all_items/${id}/`);
         setDress(response.data);
         setLoading(false);
       } catch (error) {

@@ -30,7 +30,7 @@ const InventoryMovementPage = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/inventory/items_movements/${id}/`, {
+            await axios.delete(`https://tailor-hub-backend.vercel.app/inventory/items_movements/${id}/`, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
@@ -57,8 +57,8 @@ const InventoryMovementPage = () => {
         console.log('Form data being sent:', formData);
     
         const url = isEditing
-            ? `http://127.0.0.1:8000/inventory/items_movements/${editingMovement.id}/`  // Edit endpoint
-            : 'http://127.0.0.1:8000/inventory/items_movements/';  // Add endpoint
+            ? `https://tailor-hub-backend.vercel.app/inventory/items_movements/${editingMovement.id}/`  // Edit endpoint
+            : 'https://tailor-hub-backend.vercel.app/inventory/items_movements/';  // Add endpoint
     
         try {
             const method = isEditing ? 'put' : 'post';
@@ -110,7 +110,7 @@ const InventoryMovementPage = () => {
 
     const fetchInventoryMovements = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/inventory/items_movements/?page=${currentPage}`, {
+            const response = await axios.get(`https://tailor-hub-backend.vercel.app/inventory/items_movements/?page=${currentPage}`, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
@@ -175,7 +175,7 @@ const InventoryMovementPage = () => {
     useEffect(() => {
         const fetchAllInventoryItems = async () => {
             let allItems = [];
-            let nextPageUrl = 'http://127.0.0.1:8000/inventory/items/';
+            let nextPageUrl = 'https://tailor-hub-backend.vercel.app/inventory/items/';
 
             try {
                 // Keep fetching until there are no more pages

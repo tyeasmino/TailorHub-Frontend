@@ -30,7 +30,7 @@ const LoginPage = () => {
         // console.log(formData) 
         try {
             const res = await axios.post( 
-                "http://127.0.0.1:8000/accounts/login/",
+                "https://tailor-hub-backend.vercel.app/accounts/login/",
                 formData,
                 {
                     headers: {

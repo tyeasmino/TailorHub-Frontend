@@ -23,7 +23,7 @@ const Card = ({ dress }) => {
         const fetchData = async () => {
             try {
                 // Fetch categories data
-                const categoriesResponse = await axios.get('http://127.0.0.1:8000/fitMakers/categories/');
+                const categoriesResponse = await axios.get('https://tailor-hub-backend.vercel.app/fitMakers/categories/');
                 setCategories(categoriesResponse.data);
                 // Create a map of category IDs to names for fast lookup
                 const newCategoryMap = categoriesResponse.data.reduce((acc, category) => {

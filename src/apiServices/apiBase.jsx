@@ -1,7 +1,7 @@
 // apiService.js
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000';  // Centralize API URL
+const API_URL = 'https://tailor-hub-backend.vercel.app';  // Centralize API URL
 
 // Helper function to handle API requests
 const apiRequest = async (method, url, data = null) => {

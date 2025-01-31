@@ -9,7 +9,7 @@ const TailorService = () => {
     useEffect(() => {
         const fetchDressCategories = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/measurements/dress_category/');
+                const response = await fetch('https://tailor-hub-backend.vercel.app/measurements/dress_category/');
                 const data = await response.json();
                 setDressCategories(data);
             } catch (error) {

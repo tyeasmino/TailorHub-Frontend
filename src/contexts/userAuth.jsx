@@ -16,7 +16,7 @@ const userAuth = () => {
         }
 
         // Fetch user data
-        fetch(`http://localhost:8000/api/v1/user/${id}`, {
+        fetch(`https://tailor-hub-backend.vercel.app/api/v1/user/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

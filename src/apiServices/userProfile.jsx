@@ -31,7 +31,7 @@ const useProfile = (type, userId, token) => {
         try {
             const endpoint = type === 'fitMakers' ? `fitMakers/fit-makers` : 'fitFinders/fit-finder';
             const res = await axios.get(
-                `http://127.0.0.1:8000/${endpoint}/${userId}/`,
+                `https://tailor-hub-backend.vercel.app/${endpoint}/${userId}/`,
                 { headers: { Authorization: `Token ${token}` } }
             );
 
@@ -89,7 +89,7 @@ const useProfile = (type, userId, token) => {
         const endpoint = type === 'fitMakers' ? 'fitMakers/fit-makers' : 'fitFinders/fit-finder';
         try {
             const res = await axios.put(
-                `http://127.0.0.1:8000/${endpoint}/${userId}/`,
+                `https://tailor-hub-backend.vercel.app/${endpoint}/${userId}/`,
                 updatedProfileData,
                 { headers: { Authorization: `Token ${token}` } }
             );

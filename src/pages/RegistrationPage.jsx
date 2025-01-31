@@ -32,7 +32,7 @@ const RegistrationPage = () => {
 
         try { 
             const res = await axios.post(
-            "http://127.0.0.1:8000/accounts/register/",
+            "https://tailor-hub-backend.vercel.app/accounts/register/",
             formData,
 
             {

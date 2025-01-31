@@ -17,7 +17,7 @@ const FitMakerOrders = () => {
     }
 
     // Fetch orders for the logged-in fitFinder (initial load)
-    axios.get('http://127.0.0.1:8000/orders/order/', {
+    axios.get('https://tailor-hub-backend.vercel.app/orders/', {
       headers: {
         'Authorization': `Token ${token}`  // Send token in the Authorization header
       }

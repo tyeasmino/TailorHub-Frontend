@@ -33,13 +33,13 @@ const AllDresses = () => {
         setCurrentPage(Number(pageFromUrl));
 
         // Fetch data for the current page
-        const url = `http://127.0.0.1:8000/inventory/all_items/?page=${pageFromUrl}`;
+        const url = `https://tailor-hub-backend.vercel.app/inventory/all_items/?page=${pageFromUrl}`;
         fetchData(url);
     }, [location.search]);
 
     // Function to handle page change when Prev/Next is clicked
     const handlePageChange = (page) => {
-        let newUrl = `http://127.0.0.1:8000/inventory/all_items/?page=${page}`;
+        let newUrl = `https://tailor-hub-backend.vercel.app/inventory/all_items/?page=${page}`;
         
         if (page === 'next' && nextPage) {
             newUrl = nextPage;
@@ -48,7 +48,7 @@ const AllDresses = () => {
             newUrl = previousPage;
             setCurrentPage(currentPage - 1);
         } else if (typeof page === 'number') {
-            newUrl = `http://127.0.0.1:8000/inventory/all_items/?page=${page}`;
+            newUrl = `https://tailor-hub-backend.vercel.app/inventory/all_items/?page=${page}`;
             setCurrentPage(page);
         }
 

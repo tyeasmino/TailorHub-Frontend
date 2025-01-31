@@ -63,7 +63,7 @@ const InventoryPage = () => {
   useEffect(() => {
     const fetchInventoryItems = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/inventory/items/?page=${currentPage}&page_size=${pageSize}`, {
+        const response = await axios.get(`https://tailor-hub-backend.vercel.app/inventory/items/?page=${currentPage}&page_size=${pageSize}`, {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -133,7 +133,7 @@ const InventoryPage = () => {
     console.log(itemData);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/inventory/items/', itemData, {
+      const response = await axios.post('https://tailor-hub-backend.vercel.app/inventory/items/', itemData, {
         headers: {
           'Authorization': `Token ${token}`,
         },
@@ -168,7 +168,7 @@ const InventoryPage = () => {
     };
 
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/inventory/items/${editingItem.id}/`, updatedItemData, {
+      const response = await axios.put(`https://tailor-hub-backend.vercel.app/inventory/items/${editingItem.id}/`, updatedItemData, {
         headers: {
           'Authorization': `Token ${token}`,
         },
@@ -219,7 +219,7 @@ const InventoryPage = () => {
 
     try {
       // Make the DELETE request to the API
-      const response = await axios.delete(`http://127.0.0.1:8000/inventory/items/${itemId}/`, {
+      const response = await axios.delete(`https://tailor-hub-backend.vercel.app/inventory/items/${itemId}/`, {
         headers: {
           'Authorization': `Token ${token}`,
         },

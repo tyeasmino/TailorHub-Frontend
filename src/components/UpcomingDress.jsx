@@ -11,7 +11,7 @@ const UpcomingDress = () => {
         const fetchData = async () => {
             try {
                 // Fetch dresses data
-                const dressesResponse = await axios.get('http://127.0.0.1:8000/inventory/all_items/?is_upcoming=true');
+                const dressesResponse = await axios.get('https://tailor-hub-backend.vercel.app/inventory/all_items/?is_upcoming=true');
                 setDresses(dressesResponse.data.results); // Set the results from API response
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {

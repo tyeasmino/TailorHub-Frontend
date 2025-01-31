@@ -23,7 +23,7 @@ const Navbar = () => {
             // Fetch the profile for FitMaker
             if (user && user.fitMaker) {
                 const res = await axios.get(
-                    `http://127.0.0.1:8000/fitMakers/fit-makers/${user.fitMaker}`,
+                    `https://tailor-hub-backend.vercel.app/fitMakers/fit-makers/${user.fitMaker}`,
                     {
                         headers: {
                             Authorization: `Token ${token}`,
@@ -42,7 +42,7 @@ const Navbar = () => {
             // Fetch the profile for FitFinder
             if (user && user.fitFinder) {
                 const res = await axios.get(
-                    `http://127.0.0.1:8000/fitFinders/fit-finder/${user.fitFinder}`,
+                    `https://tailor-hub-backend.vercel.app/fitFinders/fit-finder/${user.fitFinder}`,
                     {
                         headers: {
                             Authorization: `Token ${token}`,
@@ -171,7 +171,7 @@ const Navbar = () => {
                                             {profileData.image ? (
                                                 <img src={profileData.image} />
                                             ) : (
-                                                <LiaUserEditSolid className='cursor-pointer text-[25px]' />
+                                                <LiaUserEditSolid className='cursor-pointer text-[35px] pt-2 pl-2' />
                                             )}
                                         </div>
                                     </div>

@@ -43,6 +43,7 @@ const Sidebar = () => {
       <ul className="space-y-6">
         <li className="relative group">
           <Link
+            data-tour-element='dashboard'
             to="/dashboard"
             className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "bg-white p-4 shadow font-semibold" : ""}`}
           >
@@ -60,6 +61,7 @@ const Sidebar = () => {
         </li>
         <li className="relative group">
           <Link
+            data-tour-element='profile'
             to="/profile"
             className={`flex items-center gap-2 ${location.pathname === "/profile" ? "bg-white md:p-4 shadow font-semibold" : ""}`}
           >
@@ -80,6 +82,7 @@ const Sidebar = () => {
           <>
             <li className="relative group">
               <Link
+              data-tour-element='dress'
                 to="/dress"
                 className={`flex items-center gap-2 ${location.pathname === "/dress" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
@@ -97,6 +100,7 @@ const Sidebar = () => {
             </li>
             <li className="relative group">
               <Link
+              data-tour-element='inventory'
                 to="/inventory"
                 className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
@@ -114,6 +118,7 @@ const Sidebar = () => {
             </li>
             <li className="relative group">
               <Link
+              data-tour-element='inventory-movement'
                 to="/inventory-movement"
                 className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
@@ -136,6 +141,7 @@ const Sidebar = () => {
           <>
             <li className="relative group">
               <Link
+              data-tour-element='measurement'
                 to="/measurement"
                 className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "bg-white p-4 shadow font-semibold" : ""}`}
               >
@@ -156,6 +162,7 @@ const Sidebar = () => {
 
         <li className="relative group">
           <Link
+          data-tour-element='orders'
             to="/orders"
             className={`flex items-center gap-2 ${location.pathname === "/orders" ? "bg-white md:p-4 shadow font-semibold" : ""}`}
           > 

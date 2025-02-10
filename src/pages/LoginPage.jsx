@@ -71,43 +71,66 @@ const LoginPage = () => {
     };
 
     return (
-        <section className='max-w-screen-sm p-10 my-20 m-auto shadow'>
-            <div className='flex flex-col gap-5 relative'>
-                <div>
-                    <h2 className='text-heading text-center text-3xl font-bold'>Login</h2>
-                    <p className='text-center'>Please login using account details below</p>
-                </div>
+        <section className='max-w-xl rounded-xl p-8 my-20 m-auto bg-white shadow-xl'>
+    <div className='flex flex-col gap-5'>
+        <div className="text-center">
+            <h2 className='text-gray-800 text-4xl font-semibold'>Login</h2>
+            <p className='text-gray-500 mt-2'>Please login using your account details below.</p>
+        </div>
 
-
-                <form className="max-w-sm mx-auto w-full" onSubmit={handleSubmit}>
-                    <div className="mb-5">
-                        <input 
-                            name="username" 
-                            value={formData.username}
-                            onChange={handleChange}
-                            type="text" id="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required />
-                    </div>
-                    <div className="mb-2">
-                        <input
-                            name='password'
-                            value={formData.password}
-                            onChange={handleChange}
-                            type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" required />
-                    </div>
-                    <div className='mb-5'>
-                        <Link className='text-gray-500'>Forget your password?</Link>
-                    </div>
-                    <button type="submit" className="text-white bg-heading focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full px-5 py-2.5 text-center dark:bg-pink dark:focus:ring-blue-800">Login</button>
-                </form>
-                <p className='text-gray-500 text-center'>Don't have an Account? Create account</p>
-            
-
-                {successMessage && ( <div className="bg-heading absolute -right-3 -bottom-7  md:right-16 md:-bottom-28 rounded-br-md border-l-4 border-green-500 text-white p-1 md:p-4 mb-4" role="alert"> 
-                                    <p className="font-bold"> {successTitle} </p> 
-                                    <p className="hidden md:block">{successMessage}</p> 
-                                </div> )}
+        <form className="w-full space-y-5" onSubmit={handleSubmit}>
+            <div>
+                <input
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    type="text"
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-violet-500 transition-all duration-300 ease-in-out hover:shadow-md"
+                    placeholder="Username"
+                    required
+                />
             </div>
-        </section>
+
+            <div>
+                <input
+                    name='password'
+                    value={formData.password}
+                    onChange={handleChange}
+                    type="password"
+                    className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-violet-500 transition-all duration-300 ease-in-out hover:shadow-md"
+                    placeholder="Password"
+                    required
+                />
+            </div>
+
+            <div className="text-right">
+                <Link to='/forgot-password' className="text-violet-600 hover:text-violet-800 text-sm">Forgot your password?</Link>
+            </div>
+
+            <button
+                type="submit"
+                className="w-full py-3 bg-black text-white rounded-lg font-semibold transition-all duration-300 ease-in-out hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 transform"
+            >
+                Login
+            </button>
+        </form>
+
+        <p className="text-center mt-6 text-gray-500">
+            Don't have an account? <Link to='/registration' className="text-violet-600 hover:text-violet-800">Create an account</Link>
+        </p>
+
+        {successMessage && (
+            <div
+                className="bg-green-500 text-white rounded-lg mt-5 p-3 text-center shadow-md transform transition-all duration-300 ease-in-out"
+                role="alert"
+            >
+                <p className="font-bold">{successTitle}</p>
+                <p>{successMessage}</p>
+            </div>
+        )}
+    </div>
+</section>
+
     )
 }
 

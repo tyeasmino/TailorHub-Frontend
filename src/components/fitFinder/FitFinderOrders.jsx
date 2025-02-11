@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { FaTools } from "react-icons/fa";
+import { IoBagCheck } from "react-icons/io5";
+import { TbTruckDelivery } from "react-icons/tb";
+
+
 
 const FitFinderOrders = () => {
   const [orders, setOrders] = useState([]);  // State to hold the fetched orders
@@ -64,6 +69,18 @@ const FitFinderOrders = () => {
     return <div className="text-center text-red-600 py-10">{error}</div>;
   }
 
+  // Function to determine status step class
+  const getStatusClass = (status, currentStatus) => {
+    if (status === currentStatus) {
+      return 'bg-violet-600 text-white';
+    } else if (status === 'Completed' && currentStatus === 'Delivered') {
+      return 'bg-green-600 text-white';
+    } else if (status === 'Delivered' && currentStatus !== 'Completed') {
+      return 'bg-gray-300 text-gray-500';
+    }
+    return 'bg-gray-300 text-gray-500';
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Orders</h1>
@@ -76,33 +93,6 @@ const FitFinderOrders = () => {
               <p className="text-sm text-gray-500">{format(new Date(order.created_at), 'MMMM dd, yyyy')}</p>
             </div>
             <div className="px-6 py-4">
-
-
-              {/* <table className="w-full px-4 divide-y divide-gray-200">
-                <tbody className="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.fabric_OR_dress_name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.fabric_OR_dress_quantity} Qnt </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.fabric_OR_dress_price}</td>
-                  </tr>
-
-                  {order?.tailorService_name &&
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.tailorService_name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.tailorService_price}</td>
-                    </tr>
-                  }
-
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> <strong>Total Bill:</strong> </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.total_bill}</td>
-                  </tr>
-                </tbody>
-              </table> */}
-
-
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Fabric/Dress Name:</strong> {order.fabric_OR_dress_name}
               </p>
@@ -112,7 +102,7 @@ const FitFinderOrders = () => {
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Fabric/Dress Price:</strong> ${order.fabric_OR_dress_price}
               </p>
-              {order.tailorService_name ? 
+              {order.tailorService_name && (
                 <>
                   <p className="text-sm text-gray-600 mb-2">
                     <strong>Tailor Service Name:</strong> {order.tailorService_name}
@@ -120,22 +110,26 @@ const FitFinderOrders = () => {
                   <p className="text-sm text-gray-600 mb-2">
                     <strong>Tailor Service Price:</strong> ${order.tailorService_price}
                   </p>
-                </> : <></>}
+                </>
+              )}
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Total Bill:</strong> ${order.total_bill}
               </p>
-              {order.order_status == 'Processing' && <p className="text-sm text-gray-600 mb-2">
-                <strong>Status:</strong> {order.order_status}
-              </p>
-              }
-              {order.order_status == 'Completed' && <p className="text-sm mb-2">
-                <strong>Status:</strong> <span className='text-green-500 font-bold '> {order.order_status} </span> 
-              </p>
-              }
-              {order.order_status == 'Delivered' && <p className="text-sm  mb-2">
-                <strong>Status:</strong> <span className='text-violet-600 font-bold'> {order.order_status} </span> 
-              </p>
-              }
+
+              {/* Order Status Tracker */}
+              <div className="mt-4">
+                <h4 className="font-semibold text-gray-900">Order Status</h4>
+                <div className="flex items-center space-x-4">
+                  {['Processing', 'Completed', 'Delivered'].map(status => (
+                    <div key={status} className={`px-3 py-1 flex items-center gap-1 rounded-full text-sm text-center ${getStatusClass(status, order.order_status)}`}>
+                      {status === 'Processing' && <span> <FaTools className='text-[14px]' /> </span>}
+                      {status === 'Completed' && <span> <IoBagCheck className='text-[18px]'/> </span>}
+                      {status === 'Delivered' && <span> <TbTruckDelivery className='text-[18px]' /> </span>}
+                      <div>{status}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         ))}

@@ -152,7 +152,7 @@ const DressMeasurementPage = () => {
     <section className='flex'>
       <Sidebar />
 
-      <section className="m-auto shadow my-20 p-10 max-w-screen-lg w-full">
+      <section className="m-auto rounded-lg shadow shadow-violet-200 my-20 p-10 max-w-screen-lg w-full">
         <div className="flex flex-col gap-5 relative">
           <h2 className="text-heading text-center text-3xl font-bold">Update Your Dress Measurements</h2>
           <p className="text-center">Please update your measurements below</p>

@@ -33,6 +33,77 @@ const FitMakerOrders = () => {
       });
   }, [token]);
 
+  const updateOrderStatus = (orderId, newStatus, order) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      setError('Authentication required');
+      console.log('No authentication token found.');
+      return;
+    }
+
+    // Set the updated order data (only the field you want to update)
+    const updatedOrder = {
+      order_status: newStatus,  // Update only the order status here
+    };
+
+    console.log('Sending PATCH request with data:', updatedOrder);  // Log the request data
+
+    // Use PATCH to update only the order_status field
+    axios.patch(`https://tailor-hub-backend.vercel.app/orders/${orderId}/`, updatedOrder, {
+      headers: {
+        'Authorization': `Token ${token}`,  // Send token in the Authorization header
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        // Log the success response
+        console.log('Response from backend:', response.data);
+        setOrders(prevOrders => prevOrders.map(order =>
+          order.id === orderId ? { ...order, order_status: newStatus } : order
+        ));
+        
+        // Now create the movement after updating the status
+        if (newStatus === 'Completed') {
+          updateOrderStatusAndCreateMovement(order);  // Call the function to create the inventory movement
+        }
+      })
+      .catch(err => {
+        // Log the error message and response from the backend
+        console.error('Error updating order status:', err);  // Log error details
+        if (err.response) {
+          console.log('Backend error response:', err.response.data);  // Log the backend error response
+        }
+        setError('Error updating order status');
+      });
+  };
+
+  // Function to update order status and create the inventory movement
+  const updateOrderStatusAndCreateMovement = async (order) => {
+    try {
+      // Create the inventory movement
+      const movementData = {
+        inventory_item: order.fabric_OR_dress, // fabric_OR_dress from the order
+        quantity: order.fabric_OR_dress_quantity, // fabric_OR_dress_quantity from the order
+        movement_type: "Use", // Fixed as per your requirement
+        date: new Date().toISOString().split('T')[0], // Today's date in YYYY-MM-DD format
+        description: `For ${order.order_id}` // Description with the order ID
+      };
+
+      const movementResponse = await axios.post(
+        'https://tailor-hub-backend.vercel.app/inventory/items_movements/',
+        movementData,
+        { headers: { 'Authorization': `Token ${token}` } }
+      );
+
+      // Log the response of movement creation
+      console.log('Movement Created:', movementResponse.data);
+
+    } catch (err) {
+      console.error('Error creating movement:', err);
+    }
+  };
+
   // Function to fetch next page of orders
   const fetchNextPage = () => {
     if (nextPage) {
@@ -77,32 +148,6 @@ const FitMakerOrders = () => {
             </div>
             <div className="px-6 py-4">
 
-
-              {/* <table className="w-full px-4 divide-y divide-gray-200">
-                <tbody className="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.fabric_OR_dress_name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.fabric_OR_dress_quantity} Qnt </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.fabric_OR_dress_price}</td>
-                  </tr>
-
-                  {order?.tailorService_name &&
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.tailorService_name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.tailorService_price}</td>
-                    </tr>
-                  }
-
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> <strong>Total Bill:</strong> </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.total_bill}</td>
-                  </tr>
-                </tbody>
-              </table> */}
-
-
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Fabric/Dress Name:</strong> {order.fabric_OR_dress_name}
               </p>
@@ -120,23 +165,41 @@ const FitMakerOrders = () => {
                   <p className="text-sm text-gray-600 mb-2">
                     <strong>Tailor Service Price:</strong> ${order.tailorService_price}
                   </p>
-                </> : <></>}
+                </> 
+                : <></>}
               <p className="text-sm text-gray-600 mb-2">
                 <strong>Total Bill:</strong> ${order.total_bill}
               </p>
-              {order.order_status == 'Processing' && <p className="text-sm text-gray-600 mb-2">
+              {order.order_status === 'Processing' && <p className="text-sm text-gray-600 mb-2">
                 <strong>Status:</strong> {order.order_status}
-              </p>
-              }
-              {order.order_status == 'Completed' && <p className="text-sm mb-2">
-                <strong>Status:</strong> <span className='text-green-500 font-bold '> {order.order_status} </span> 
-              </p>
-              }
-              {order.order_status == 'Delivered' && <p className="text-sm  mb-2">
-                <strong>Status:</strong> <span className='text-violet-600 font-bold'> {order.order_status} </span> 
-              </p>
-              }
-             </div>
+              </p>}
+              {order.order_status === 'Completed' && <p className="text-sm mb-2">
+                <strong>Status:</strong> <span className='text-green-500 font-bold '> {order.order_status} </span>
+              </p>}
+              {order.order_status === 'Delivered' && <p className="text-sm mb-2">
+                <strong>Status:</strong> <span className='text-violet-600 font-bold'> {order.order_status} </span>
+              </p>}
+
+              {order.order_status === 'Processing' && (
+                <button
+                  onClick={() => updateOrderStatus(order.id, 'Completed', order)}
+                  className="px-4 py-1 bg-green-400 text-white rounded-lg"
+                >
+                  Mark as Completed
+                </button>
+              )}
+
+              {/* Show Mark as Delivered button if order is completed */}
+              {order.order_status === 'Completed' && (
+                <button
+                  onClick={() => updateOrderStatus(order.id, 'Delivered', order)}
+                  className="mt-2 px-4 py-1 bg-violet-400 text-white rounded-lg"
+                >
+                  Mark as Delivered
+                </button>
+              )}
+
+            </div>
           </div>
         ))}
       </div>

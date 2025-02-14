@@ -18,6 +18,8 @@ import Checkout from '../pages/Checkout'
 import W3Login from '../pages/W3Login'
 import W3SignUp from '../pages/W3SignUp'
 import OrdersPage from '../pages/OrdersPage'
+import Details from '../pages/Details'
+import Cart from '../pages/Cart'
 
 const Index = () => {
   return (
@@ -42,7 +44,9 @@ const Index = () => {
 
                 <Route path="/dresses" element={<AllDresses/>} />
                 <Route path="/dresses/:id" element={<DetailsPage />} />
+                <Route path="/dresses/:id/details" element={<Details />} />
                 <Route path='/cart' element={<CartPage />} />
+                <Route path='/cart2' element={<Cart />} />
                 <Route path='/checkout' element={<Checkout />} />
                 
                 

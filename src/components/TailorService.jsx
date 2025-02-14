@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+// TailorService.js
+import React, { useEffect, useState } from 'react';
 
-const TailorService = () => {
+const TailorService = ({ onDressTypeSelect }) => {
     const [dressCategories, setDressCategories] = useState([]);
     const [selectedDress, setSelectedDress] = useState(null);
-
 
     // Fetch dress categories from the API
     useEffect(() => {
@@ -20,44 +20,38 @@ const TailorService = () => {
         fetchDressCategories();
     }, []);
 
-
     // Handle dress selection
-    const handleDressSelect = (dress) => {
-        setSelectedDress(dress);
+    const handleDressSelect = (event) => {
+        const selectedId = event.target.value;
+        const selectedDress = dressCategories.find((dress) => dress.id === selectedId);
+        setSelectedDress(selectedDress);
+        // Pass selected dress to parent component
+        onDressTypeSelect(selectedDress); // Notify the parent component of the selection
     };
 
-
     return (
-
-        < div className="m-auto my-5" >
-            <h3 className="text-xl font-semibold mb-3">Select a Dress Type (Optional) </h3>
-            <table className="table-auto w-full text-left">
-                <thead>
-                    <tr className='border-b'>
-                        <th className=" px-4 py-2">Select</th>
-                        <th className=" px-4 py-2">Name</th>
-                        <th className=" px-4 py-2">Price</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div className="m-auto my-5">
+            <h3 className="text-xl font-semibold mb-3">Select a Dress Type (Optional)</h3>
+            <div className="mb-3">
+                <label htmlFor="dress-select" className="block mb-2 text-sm font-medium">
+                    Choose a Dress
+                </label>
+                <select
+                    id="dress-select"
+                    className="border p-2 w-full"
+                    value={selectedDress ? selectedDress.id : ''}
+                    onChange={handleDressSelect}
+                >
+                    <option value="">Select a Dress Type</option>
                     {dressCategories.map((dress) => (
-                        <tr key={dress.id} className='border-b'>
-                            <td className="px-4 py-2">
-                                <input
-                                    type="radio"
-                                    name="dress_type"
-                                    checked={selectedDress?.id === dress.id}
-                                    onChange={() => handleDressSelect(dress)}
-                                />
-                            </td>
-                            <td className="px-4 py-2">{dress.name}</td>
-                            <td className="px-4 py-2">{dress.sell_price_per_unit}</td>
-                        </tr>
+                        <option key={dress.id} value={dress.id}>
+                            {dress.name} - {dress.sell_price_per_unit}
+                        </option>
                     ))}
-                </tbody>
-            </table>
-        </div >
-    )
-}
+                </select>
+            </div>
+        </div>
+    );
+};
 
-export default TailorService
+export default TailorService;

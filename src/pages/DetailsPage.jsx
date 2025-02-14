@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaStar } from "react-icons/fa6";
 import { FaStarHalfStroke } from "react-icons/fa6";
@@ -78,7 +78,7 @@ const DetailsPage = () => {
               />
             </div>
             <div className="w-3/5 p-5 flex flex-col gap-5">
-              <h1 className="text-3xl font-bold text-gray-600">{dress.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-600">{dress.name}  </h1>
               <div className="flex gap-1 text-yellow-400">
                 <FaStar />
                 <FaStar />

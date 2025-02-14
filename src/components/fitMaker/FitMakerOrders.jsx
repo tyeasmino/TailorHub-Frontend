@@ -17,7 +17,7 @@ const FitMakerOrders = () => {
     }
 
     // Fetch orders for the logged-in fitFinder (initial load)
-    axios.get('https://tailor-hub-backend.vercel.app/orders/', {
+    axios.get('https://tailor-hub-backend.vercel.app/orders/myorder/', {
       headers: {
         'Authorization': `Token ${token}`  // Send token in the Authorization header
       }
@@ -50,7 +50,7 @@ const FitMakerOrders = () => {
     console.log('Sending PATCH request with data:', updatedOrder);  // Log the request data
 
     // Use PATCH to update only the order_status field
-    axios.patch(`https://tailor-hub-backend.vercel.app/orders/${orderId}/`, updatedOrder, {
+    axios.patch(`https://tailor-hub-backend.vercel.app/orders/myorder/${orderId}/`, updatedOrder, {
       headers: {
         'Authorization': `Token ${token}`,  // Send token in the Authorization header
         'Content-Type': 'application/json',

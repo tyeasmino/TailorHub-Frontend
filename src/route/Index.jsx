@@ -14,9 +14,7 @@ import DetailsPage from '../pages/DetailsPage'
 import CartPage from '../pages/CartPage'
 import InventoryMovementPage from '../pages/InventoryMovementPage'
 import AllDresses from '../pages/AllDresses'
-import Checkout from '../pages/Checkout'
-import W3Login from '../pages/W3Login'
-import W3SignUp from '../pages/W3SignUp'
+import Checkout from '../pages/Checkout' 
 import OrdersPage from '../pages/OrdersPage'
 import Details from '../pages/Details'
 import Cart from '../pages/Cart'
@@ -43,15 +41,14 @@ const Index = () => {
 
 
                 <Route path="/dresses" element={<AllDresses/>} />
-                <Route path="/dresses/:id" element={<DetailsPage />} />
-                <Route path="/dresses/:id/details" element={<Details />} />
-                <Route path='/cart' element={<CartPage />} />
-                <Route path='/cart2' element={<Cart />} />
+                <Route path="/dresses/:id" element={<Details />} />
+                <Route path='/cart' element={<Cart />} />
+
+                {/* NOT Using, BUT created based on first thinking */}
+                <Route path="/dresses/:id/details" element={<DetailsPage />} />
+                <Route path='/cart2' element={<CartPage />} />
                 <Route path='/checkout' element={<Checkout />} />
-                
-                
-                <Route path='/w3login' element={<W3Login />} />
-                <Route path='/w3signup' element={<W3SignUp />} />
+                 
             </Routes>
             <Footer />
         </BrowserRouter>

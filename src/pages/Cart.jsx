@@ -165,7 +165,6 @@ const Cart = () => {
                                                     year: '2-digit',
                                                 }).replace(/ /g, '-')}
                                             </p>
-
                                         </td>
                                         <td className="px-4 py-2">
                                             <h3>{dress?.name || " "}</h3>

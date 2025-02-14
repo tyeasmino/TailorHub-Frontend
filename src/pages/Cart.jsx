@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { MdRemoveShoppingCart } from 'react-icons/md';
 import { Link } from 'react-router-dom'; // Correct import
+import { AuthContext } from '../contexts/AuthContext';
 
 const Cart = () => {
+    const { user } = useContext(AuthContext);
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -210,11 +212,11 @@ const Cart = () => {
                     <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'>
                         <Link to='/dresses'>Continue Shopping</Link>
                     </button>
-                    <Link to='http://127.0.0.1:8000/payments/'>
+                    <Link to={`http://127.0.0.1:8000/payments/?ffid=${user.fitFinder}`}>
                         <button type="submit" className="bg-violet-500 font-semibold text-white px-8 py-2 rounded-md">
                             Complete Order
                         </button>
-                    </Link>
+                    </Link> 
                 </div>
             </section>
         </section>

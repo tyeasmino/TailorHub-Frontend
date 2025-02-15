@@ -57,6 +57,47 @@ const FitFinderOrders = () => {
     }
   };
 
+
+
+  const getStatusClass = (status, currentStatus) => {
+    // Determine if this status is active or past
+    const statusOrder = ['Processing', 'Completed', 'Delivered'];
+    const currentIndex = statusOrder.indexOf(currentStatus);
+    const statusIndex = statusOrder.indexOf(status);
+
+    return statusIndex <= currentIndex ? 'text-violet-500' : 'text-gray-500';
+  };
+
+  // const getLineClass = (status, currentStatus) => {
+  //   // Determine if this line should be active
+  //   const statusOrder = ['Processing', 'Completed', 'Delivered'];
+  //   const currentIndex = statusOrder.indexOf(currentStatus);
+  //   const statusIndex = statusOrder.indexOf(status);
+
+  //   return statusIndex < currentIndex ? 'bg-violet-500' : 'bg-gray-300';
+  // };
+
+  const getLineClass = (lineEndStatus, currentStatus) => {
+    // Define order of statuses
+    const statusOrder = ['Processing', 'Completed', 'Delivered'];
+    const currentIndex = statusOrder.indexOf(currentStatus);
+    const lineEndIndex = statusOrder.indexOf(lineEndStatus);
+
+    // Line should be violet if the current status is ahead of or at the line's end
+    return currentIndex >= lineEndIndex ? 'bg-violet-500' : 'bg-gray-300';
+  };
+
+
+  const getVisibleText = (currentStatus) => {
+    if (currentStatus === 'Processing') return 'Processing';
+    if (currentStatus === 'Completed') return 'Completed';
+    if (currentStatus === 'Delivered') return 'Delivered';
+    return '';
+  };
+
+
+
+
   // Show loading message while data is being fetched
   if (loading && !orders.length) {
     return <div className="text-center text-xl font-semibold py-10">Loading...</div>;
@@ -67,17 +108,7 @@ const FitFinderOrders = () => {
     return <div className="text-center text-red-600 py-10">{error}</div>;
   }
 
-  // Function to determine status step class
-  const getStatusClass = (status, currentStatus) => {
-    if (status === currentStatus) {
-      return 'bg-violet-600 text-white';
-    } else if (status === 'Completed' && currentStatus === 'Delivered') {
-      return 'bg-green-600 text-white';
-    } else if (status === 'Delivered' && currentStatus !== 'Completed') {
-      return 'bg-gray-300 text-gray-500';
-    }
-    return 'bg-gray-300 text-gray-500';
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
@@ -115,20 +146,44 @@ const FitFinderOrders = () => {
                   <strong>Total Bill:</strong> ${order.total_bill}
                 </p>
 
-                {/* Order Status Tracker */}
                 <div className="mt-4">
                   <h4 className="font-semibold text-gray-900">Order Status</h4>
-                  <div className="flex items-center space-x-4">
-                    {['Processing', 'Completed', 'Delivered'].map(status => (
-                      <div key={status} className={`px-3 py-1 flex items-center gap-1 rounded-full text-sm text-center ${getStatusClass(status, order.order_status)}`}>
-                        {status === 'Processing' && <span><FaTools className='text-[14px]' /></span>}
-                        {status === 'Completed' && <span><IoBagCheck className='text-[18px]' /></span>}
-                        {status === 'Delivered' && <span><TbTruckDelivery className='text-[18px]' /></span>}
-                        <div>{status}</div>
+
+                  <div className="relative flex items-center justify-between w-full mt-4">
+
+                    {/* Line between Processing & Completed */}
+                    <div className={`absolute top-1/2 left-10 w-[150px] h-0.5 transform -translate-y-1/2 ${getLineClass('Completed', order.order_status)}`}></div>
+
+                    {/* Line between Completed & Delivered */}
+                    <div className={`absolute top-1/2 left-[180px] w-[120px] h-0.5 transform -translate-y-1/2 ${getLineClass('Delivered', order.order_status)}`}></div>
+
+                    {/* Processing */}
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className={`w-10 h-10 flex items-center justify-center rounded-full ${getStatusClass('Processing', order.order_status)}`}>
+                        <FaTools className="text-2xl" />
                       </div>
-                    ))}
+                      {order.order_status === 'Processing' && <span className="text-xs mt-2 text-violet-500">Processing</span>}
+                    </div>
+
+                    {/* Completed */}
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className={`w-10 h-10 flex items-center justify-center rounded-full ${getStatusClass('Completed', order.order_status)}`}>
+                        <IoBagCheck className="text-2xl" />
+                      </div>
+                      {order.order_status === 'Completed' && <span className="text-xs mt-2 text-violet-500">Completed</span>}
+                    </div>
+
+                    {/* Delivered */}
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className={`w-10 h-10 flex items-center justify-center rounded-full ${getStatusClass('Delivered', order.order_status)}`}>
+                        <TbTruckDelivery className="text-2xl" />
+                      </div>
+                      {order.order_status === 'Delivered' && <span className="text-xs mt-2 text-violet-500">Delivered</span>}
+                    </div>
+
                   </div>
                 </div>
+
               </div>
             </div>
           ))

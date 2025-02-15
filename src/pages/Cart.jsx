@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { MdRemoveShoppingCart } from 'react-icons/md';
-import { Link } from 'react-router-dom'; // Correct import
-import { AuthContext } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';  
 
 const Cart = () => {
-    const { user } = useContext(AuthContext);
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -96,20 +94,20 @@ const Cart = () => {
         return cartItems.reduce((total, item) => {
             const dress = Array.isArray(dresses) ? dresses.find(d => d.id === item.fabric_or_dress) : null;
             const service = Array.isArray(services) ? services.find(s => s.id === item.tailorService) : null;
-            
+
             const dressPrice = parseFloat(dress?.discount_price) || 0;
             const serviceCharge = parseFloat(service?.sell_price_per_unit) || 0;
             const quantity = item.fabric_or_dress_quantity || 1;
 
             // Calculate the subtotal (dress price * quantity + service charge)
             const subtotal = (dressPrice * quantity) + serviceCharge;
-            
+
             return total + subtotal; // Add the subtotal to the total
         }, 0);
     };
     const total = calculateTotal();
-    
-    
+
+
 
     // Show loading message while data is being fetched
     if (loading && !cartItems.length) {
@@ -208,15 +206,14 @@ const Cart = () => {
                 </table>
 
                 <div className='flex items-center justify-end gap-5 pt-10'>
-                     
+
                     <button className='font-semibold border border-gray-200 px-8 py-2 rounded-md'>
                         <Link to='/dresses'>Continue Shopping</Link>
                     </button>
-                    <Link to={`http://127.0.0.1:8000/payments/?ffid=${user.fitFinder}`}>
-                        <button type="submit" className="bg-violet-500 font-semibold text-white px-8 py-2 rounded-md">
-                            Complete Order
-                        </button>
-                    </Link> 
+
+                    <button className="bg-violet-500 font-semibold text-white px-8 py-2 rounded-md">
+                    <Link to='/checkout'>Check Out</Link> 
+                    </button>
                 </div>
             </section>
         </section>

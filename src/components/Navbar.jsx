@@ -6,19 +6,23 @@ import { Link, useLocation } from 'react-router';
 import { AuthContext } from '../contexts/AuthContext';
 import { LiaUserEditSolid } from 'react-icons/lia';
 import axios from 'axios';
-import { useCart } from '../contexts/cartContext';
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
     const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("darkMode")) || false);
     const [profileData, setProfileData] = useState({ image: '', balance: null });
-    const location = useLocation();
-    const { cartList, total } = useCart();
+    const location = useLocation(); 
+    const [dresses, setDresses] = useState([]);
+    const [services, setServices] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
+    const token = localStorage.getItem('token');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Re-fetch profile data
     const fetchProfile = async () => {
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token"); 
 
             // Fetch the profile for FitMaker
             if (user && user.fitMaker) {
@@ -69,6 +73,81 @@ const Navbar = () => {
     }, [user]);
 
     useEffect(() => {
+        if (!token) {
+            setError('Authentication required');
+            setLoading(false);
+            return;
+        }
+ 
+        axios.get('http://127.0.0.1:8000/orders/mycart/', {
+            headers: {
+                'Authorization': `Token ${token}`,
+            }
+        })
+            .then(response => {
+                setCartItems(response.data);   
+                setLoading(false);
+            })
+            .catch(err => {
+                setError('Error fetching cart items');
+                setLoading(false);
+            });
+
+        axios.get('http://127.0.0.1:8000/inventory/all_items/', {
+            headers: {
+                'Authorization': `Token ${token}`,
+            }
+        })
+            .then(response => {
+                if (Array.isArray(response.data.results)) {
+                    setDresses(response.data.results);  
+                } else {
+                    setDresses([]);  
+                    setError('Unexpected data format for dresses');
+                }
+            })
+            .catch(err => {
+                setError('Error fetching dresses');
+            });
+
+
+
+        axios.get('http://127.0.0.1:8000/measurements/dress_category/', {
+            headers: {
+                'Authorization': `Token ${token}`,
+            }
+        })
+            .then(response => {
+                setServices(response.data);   
+            })
+            .catch(err => {
+                setError('Error fetching tailor services');
+            });
+
+    }, [token]);
+
+
+    // Calculate total price and selected dress price
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => {
+            const dress = Array.isArray(dresses) ? dresses.find(d => d.id === item.fabric_or_dress) : null;
+            const service = Array.isArray(services) ? services.find(s => s.id === item.tailorService) : null;
+
+            const dressPrice = parseFloat(dress?.discount_price) || 0;
+            const serviceCharge = parseFloat(service?.sell_price_per_unit) || 0;
+            const quantity = item.fabric_or_dress_quantity || 1;
+
+            // Calculate the subtotal (dress price * quantity + service charge)
+            const subtotal = (dressPrice * quantity) + serviceCharge;
+
+            return total + subtotal; // Add the subtotal to the total
+        }, 0);
+    };
+    const total = calculateTotal();
+
+    
+
+    useEffect(() => {
         localStorage.setItem("darkMode", JSON.stringify(darkMode));
 
         if (darkMode) {
@@ -98,7 +177,7 @@ const Navbar = () => {
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             <li><a>Home</a></li>
-                            <li><a>Pages</a></li>
+                            <li> <Link to='/profiles'>Profiles</Link> </li>
                             <li> <Link to='/dresses'>Dresses</Link> </li>
                             <li><a>Blog</a></li>
                             <li><a>Shop</a></li>
@@ -110,7 +189,7 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
                         <li><Link to="/">Home</Link></li>
-                        <li><a>Pages</a></li>
+                        <li><Link to='/profiles'>Profiles</Link></li>
                         <li><Link to='/dresses'>Dresses</Link> </li>
                         <li><a>Blog</a></li>
                         <li><a>Shop</a></li>
@@ -145,12 +224,12 @@ const Navbar = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
-                                        <span className="badge badge-sm indicator-item"> {cartList.length} </span>
+                                        <span className="badge badge-sm indicator-item"> {cartItems?.length} </span>
                                     </div>
                                 </div>
                                 <div tabIndex={0} className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
                                     <div className="card-body">
-                                        <span className="text-lg font-bold">{cartList.length} Items</span>
+                                        <span className="text-lg font-bold">{cartItems?.length} Items</span>
                                         <span className="text-info">Subtotal: {total}</span>
                                         <div className="card-actions">
                                             <Link to='/cart'>

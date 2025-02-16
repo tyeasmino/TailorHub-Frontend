@@ -67,7 +67,7 @@ const AllDresses = () => {
     return (
         <section className="max-w-screen-2xl p-20 m-auto flex flex-col gap-10">
             <div className='font-semibold'>
-                <h1 className='text-heading font-semibold text-3xl mb-10'>All Dresses</h1>
+                <h1 className='text-heading text-center font-semibold text-3xl mb-10'>All Dresses</h1>
             </div>
 
             <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4'>

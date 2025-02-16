@@ -18,7 +18,8 @@ import Checkout from '../pages/Checkout'
 import OrdersPage from '../pages/OrdersPage'
 import Details from '../pages/Details'
 import Cart from '../pages/Cart'
-import AllProfiles from '../pages/AllProfiles'
+import AllProfiles from '../pages/AllProfiles' 
+import ProfileDetailsPage from '../pages/ProfileDetailsPage'
 
 const Index = () => {
   return (
@@ -42,6 +43,7 @@ const Index = () => {
 
 
                 <Route path="/profiles" element={<AllProfiles/>} />
+                <Route path="/profiles/:id" element={<ProfileDetailsPage />} />
                 <Route path="/dresses" element={<AllDresses/>} />
                 <Route path="/dresses/:id" element={<Details />} />
                 <Route path='/cart' element={<Cart />} />

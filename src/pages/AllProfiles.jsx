@@ -49,25 +49,27 @@ const AllProfiles = ({ homeView = false }) => {
             {homeView ? (
                 // Custom Layout for Home Page
                 <div className="flex flex-col gap-10">
-                    <div className='flex gap-5'>
+                    <div className='flex gap-5 max-w-screen-xl m-auto'>
 
-                    {profiles.map((profile, index) => (
-                        <div 
-                            key={profile.id} 
-                            className={`w-1/3 flex items-center gap-6 bg-white shadow-lg p-6 rounded-lg`}
-                        > 
-                            {/* {index % 2 === 0 ? ( */}
+                        {profiles.map((profile, index) => (
+                            <div
+                                key={profile.id}
+                                className={`w-1/3 flex items-center  bg-white shadow-lg p-3 rounded-lg`}
+                            >
+                                {/* {index % 2 === 0 ? ( */}
                                 <>
-                                    <img
-                                        src={profile.image}
-                                        alt={profile.name}
-                                        className="w-full md:w-1/2   rounded-lg"
-                                    />
-                                    <div className="w-full md:w-1/2 text-left">
+                                    <Link to={`/profiles/${profile.id}`} className="w-full p-3 md:w-1/3 rounded-lg" >
+                                        <img
+                                            alt={profile?.name}
+                                            src={profile?.image}
+                                        />
+                                    </Link>
+
+                                    <div className="w-full md:w-2/3 p-3 text-left">
                                         <h2 className="text-2xl font-semibold text-gray-800">{profile.name}</h2>
                                         <p className="text-gray-500 mt-1">Started: {profile?.shop_started}</p>
                                         <p className="text-gray-500 mt-1">Address: {profile?.shop_address}</p>
-                                        <p className="text-gray-500 mt-1">Open Hours: {profile?.shop_hours}</p>
+                                        <p className="text-gray-500 mt-1">Open Hours: {profile?.shop_hours || 'Not Added Yet' }</p>
 
                                         {/* Contact Links */}
                                         <div className="mt-4 flex gap-4 text-lg">
@@ -95,7 +97,7 @@ const AllProfiles = ({ homeView = false }) => {
                                         </div>
                                     </div>
                                 </>
-                            {/* ) : (
+                                {/* ) : (
                                 <>
                                     <div className="w-full md:w-2/3 text-left">
                                         <h2 className="text-2xl font-semibold text-gray-800">{profile.name}</h2>
@@ -127,17 +129,19 @@ const AllProfiles = ({ homeView = false }) => {
                                             <MdOutlineSettingsPhone className="text-gray-600" />
                                         </div>
                                     </div>
-                                    <img
-                                        src={profile.image}
-                                        alt={profile.name}
-                                        className="w-full md:w-1/3 h-56 object-cover rounded-lg"
-                                    />
+                                    <Link to={`/profiles/${profile.id}`}>
+                                        <img
+                                            className="w-full md:w-1/2   rounded-lg"
+                                            alt={profile?.name}
+                                            src={profile?.image}
+                                        />
+                                    </Link>
                                 </>
                             )} */}
-                        </div>
-                    ))}
+                            </div>
+                        ))}
                     </div>
-                    
+
 
                     {/* Button to View All Profiles */}
                     <div className="text-center mt-6">

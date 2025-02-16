@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { TbCurrencyTaka, TbEye, TbShoppingCartMinus, TbShoppingCartPlus, TbShoppingCartOff } from "react-icons/tb";
+import React, { useEffect, useState } from 'react' 
 import { Link } from 'react-router';
 import { FaWhatsapp } from "react-icons/fa";
 import { MdOutlineSettingsPhone } from "react-icons/md";
@@ -12,11 +11,11 @@ const Profile = ({ profile }) => {
     const [loading, setLoading] = useState(true);
 
     return (
-        <div className="mx-3 shadow-lg group relative rounded-lg overflow-hidden bg-white">
+        <div className="mx-3 flex flex-col shadow-lg group relative rounded-lg overflow-hidden bg-white">
             <div className="relative">
-                <Link to={`/profilees/${profile.id}`}>
+                <Link to={`/profiles/${profile.id}`}>
                     <img
-                        className="w-full min-h-52 max-h-52 object-scale-down object-center transition-transform duration-300 group-hover:scale-105"
+                        className="w-full min-h-36 max-h-36 object-scale-down object-center transition-transform duration-300 group-hover:scale-105"
                         src={profile?.image}
                         alt={profile?.name}
                     />
@@ -24,7 +23,7 @@ const Profile = ({ profile }) => {
             </div>
 
             {/* profile Details */}
-            <div className="py-3 px-4">
+            <div className="py-3 px-4 min-h-36 max-h-36 flex flex-col justify-end">
                 <h6 className="text-pink-600 group-hover:text-black font-semibold">{profile.name}</h6>
                 <p className="text-gray-500 text-sm mt-1">{profile?.shop_started}</p> {/* Display brief description */}
                 <p className="text-gray-500 text-sm mt-1">{profile?.shop_address}</p> {/* Display brief description */}

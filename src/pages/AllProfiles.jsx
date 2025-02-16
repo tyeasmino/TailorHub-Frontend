@@ -19,8 +19,8 @@ const AllProfiles = ({ homeView = false }) => {
         const fetchData = async () => {
             try {
                 const url = homeView
-                    ? `http://127.0.0.1:8000/fitMakers/fit-makers-profiles/?limit=3`
-                    : `http://127.0.0.1:8000/fitMakers/fit-makers-profiles/`;
+                    ? `https://tailor-hub-backend.vercel.app/fitMakers/fit-makers-profiles/?limit=3`
+                    : `https://tailor-hub-backend.vercel.app/fitMakers/fit-makers-profiles/`;
 
                 const response = await axios.get(url);
                 setProfiles(homeView ? response.data.results.slice(0, 3) : response.data.results);

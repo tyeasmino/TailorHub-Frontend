@@ -20,7 +20,7 @@ const Checkout = () => {
         }
 
         // Fetch cart items for the logged-in user
-        axios.get('http://127.0.0.1:8000/orders/mycart/', {
+        axios.get('https://tailor-hub-backend.vercel.app/orders/mycart/', {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -36,7 +36,7 @@ const Checkout = () => {
             });
 
         // Fetch all dresses (used to resolve fabric_or_dress_name)
-        axios.get('http://127.0.0.1:8000/inventory/all_items/', {
+        axios.get('https://tailor-hub-backend.vercel.app/inventory/all_items/', {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -58,7 +58,7 @@ const Checkout = () => {
 
 
         // Fetch all services (used to resolve tailorService_name)
-        axios.get('http://127.0.0.1:8000/measurements/dress_category/', {
+        axios.get('https://tailor-hub-backend.vercel.app/measurements/dress_category/', {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -207,7 +207,7 @@ const Checkout = () => {
             </div>
 
             <div className="flex justify-center px-10 mt-10">
-                <Link to={`http://127.0.0.1:8000/payments/?ffid=${user.fitFinder}`}>
+                <Link to={`https://tailor-hub-backend.vercel.app/payments/?ffid=${user.fitFinder}`}>
                     <button type="submit" className="bg-violet-500 text-sm font-semibold text-white px-8 py-2 rounded-md">
                         Complete Order
                     </button>
@@ -257,7 +257,7 @@ export default Checkout;
 
 //   const completeOrder = async () => {
 //     // Assuming cartData and totalAmount are already defined in your state or from local storage
-//     const response = await fetch('http://127.0.0.1:8000/payments/', {
+//     const response = await fetch('https://tailor-hub-backend.vercel.app/payments/', {
 //         method: 'POST',
 //         headers: {
 //             'Content-Type': 'application/json',
@@ -314,7 +314,7 @@ export default Checkout;
 //     await sendCartItemsToServer(cartData, totalAmount);
   
 //     // Redirect to payment gateway
-//     window.location.href = "http://127.0.0.1:8000/payments/";
+//     window.location.href = "https://tailor-hub-backend.vercel.app/payments/";
 //   };
 
 

@@ -79,7 +79,7 @@ const Navbar = () => {
             return;
         }
  
-        axios.get('http://127.0.0.1:8000/orders/mycart/', {
+        axios.get('https://tailor-hub-backend.vercel.app/orders/mycart/', {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -93,7 +93,7 @@ const Navbar = () => {
                 setLoading(false);
             });
 
-        axios.get('http://127.0.0.1:8000/inventory/all_items/', {
+        axios.get('https://tailor-hub-backend.vercel.app/inventory/all_items/', {
             headers: {
                 'Authorization': `Token ${token}`,
             }
@@ -112,7 +112,7 @@ const Navbar = () => {
 
 
 
-        axios.get('http://127.0.0.1:8000/measurements/dress_category/', {
+        axios.get('https://tailor-hub-backend.vercel.app/measurements/dress_category/', {
             headers: {
                 'Authorization': `Token ${token}`,
             }

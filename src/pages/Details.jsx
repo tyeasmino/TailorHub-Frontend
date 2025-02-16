@@ -84,7 +84,7 @@ const Details = () => {
     
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/orders/mycart/',
+                'https://tailor-hub-backend.vercel.app/orders/mycart/',
                 cartData,
                 {
                     headers: {

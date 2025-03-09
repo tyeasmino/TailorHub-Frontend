@@ -200,20 +200,20 @@ const Navbar = () => {
                     <div className="flex items-center">
 
                         {/* dark mode */}
-                        <div className="dropdown dropdown-end">
+                        {/* <div className="dropdown dropdown-end">
                             <div className="btn btn-ghost btn-circle">
                                 <p onClick={() => setDarkMode(!darkMode)} className=' cursor-pointer text-[25px]'>
                                     {darkMode ? <MdOutlineLightMode /> : <MdLightMode />}
                                 </p>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Conditionally Render Balance for fitMaker */}
-                        {user && user.fitMaker && profileData.balance !== null ? (
+                        {/* {user && user.fitMaker && profileData.balance !== null ? (
                             <div className="mr-4">
                                 <span className="text-lg font-bold">Balance: ${profileData.balance}</span>
                             </div>
-                        ) : null}
+                        ) : null} */}
 
                         {/* cart part */}
                         {!user || !user.fitMaker ? (

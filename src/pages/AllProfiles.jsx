@@ -54,7 +54,7 @@ const AllProfiles = ({ homeView = false }) => {
                         {profiles.map((profile, index) => (
                             <div
                                 key={profile.id}
-                                className={`w-1/3 flex items-center  bg-white shadow-lg p-3 rounded-lg`}
+                                className={`md:w-1/3 flex items-center  bg-white shadow-lg p-3 rounded-lg`}
                             >
                                 {/* {index % 2 === 0 ? ( */}
                                 <>

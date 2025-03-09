@@ -7,12 +7,27 @@ export default {
     theme: {
       extend: {
         colors: {
-          dark: "#1E293B", 
-          purple: "#F2F0FF", 
-          pink: "#FB2E86",  
-          heading: "#1A0B5B",
-          dress_bg: "#F6F7FB",
-        }
+          dark: {
+            DEFAULT: "#1E293B",
+            light: "#334155",
+          },
+          purple: {
+            DEFAULT: "#F2F0FF",
+            dark: "#A29BFE",
+          },
+          pink: {
+            DEFAULT: "#FB2E86",
+            dark: "#FF1493",
+          },
+          heading: {
+            DEFAULT: "#1A0B5B",
+            dark: "#E0E0E0", // Adjust as needed
+          },
+          dress_bg: {
+            DEFAULT: "#F6F7FB",
+            dark: "#1E1E1E", // Adjust as needed
+          },
+        },
       },
     },
     plugins: [

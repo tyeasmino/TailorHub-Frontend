@@ -42,9 +42,10 @@ const AllProfiles = ({ homeView = false }) => {
 
     return (
         <section className="max-w-screen-2xl p-10 m-auto flex flex-col gap-10">
-            <h1 className="text-heading dark:text-white text-center font-semibold text-3xl mb-10">
+            <h1 className="text-heading dark:text-heading-dark text-center font-semibold text-3xl mb-10">
                 {homeView ? "Top Profiles" : "All Profiles"}
             </h1>
+
 
             {homeView ? (
                 // Custom Layout for Home Page
@@ -69,7 +70,7 @@ const AllProfiles = ({ homeView = false }) => {
                                         <h2 className="text-2xl font-semibold text-gray-800">{profile.name}</h2>
                                         <p className="text-gray-500 mt-1">Started: {profile?.shop_started}</p>
                                         <p className="text-gray-500 mt-1">Address: {profile?.shop_address}</p>
-                                        <p className="text-gray-500 mt-1">Open Hours: {profile?.shop_hours || 'Not Added Yet' }</p>
+                                        <p className="text-gray-500 mt-1">Open Hours: {profile?.shop_hours || 'Not Added Yet'}</p>
 
                                         {/* Contact Links */}
                                         <div className="mt-4 flex gap-4 text-lg">

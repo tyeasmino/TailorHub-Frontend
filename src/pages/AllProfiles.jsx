@@ -49,7 +49,7 @@ const AllProfiles = ({ homeView = false }) => {
             {homeView ? (
                 // Custom Layout for Home Page
                 <div className="flex flex-col gap-10">
-                    <div className='flex gap-5 max-w-screen-xl m-auto'>
+                    <div className='flex flex-col md:flex-row gap-5 max-w-screen-xl m-auto'>
 
                         {profiles.map((profile, index) => (
                             <div

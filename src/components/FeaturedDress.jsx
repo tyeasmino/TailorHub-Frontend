@@ -72,7 +72,7 @@ const FeaturedDress = () => {
 
     return (
         <section className='max-w-screen-xl m-auto py-20'>
-            <h2 className='text-heading text-center font-semibold text-3xl mb-10'>Featured Dress</h2>
+            <h2 className='text-heading dark:text-white text-center font-semibold text-3xl mb-10'>Featured Dress</h2>
 
             <div className=''>
                 <Slider {...settings}>

@@ -71,7 +71,7 @@ const LoginPage = () => {
     };
 
     return (
-        <section className='max-w-xl rounded-xl p-8 my-20 m-auto bg-white shadow-xl'>
+        <section className='w-11/12 md:max-w-xl rounded-xl p-8 m-auto my-20  bg-white shadow-xl'>
     <div className='flex flex-col gap-5'>
         <div className="text-center">
             <h2 className='text-gray-800 text-4xl font-semibold'>Login</h2>

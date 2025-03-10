@@ -89,10 +89,10 @@ const RegistrationPage = () => {
 
     return (
         <section>
-            <section className='max-w-xl rounded-xl p-8 my-20 m-auto bg-white shadow-xl'>
+            <section className='w-11/12 md:max-w-xl rounded-xl p-8 my-20 m-auto bg-white shadow-xl'>
                 <div className='flex flex-col gap-5'>
                     <div className="text-center">
-                        <h2 className='text-gray-800 text-4xl font-semibold'>Create an Account</h2>
+                        <h2 className='text-gray-800 text-2xl md:text-4xl font-semibold'>Create an Account</h2>
                         <p className='text-gray-500 mt-2'>Please fill in the details below to register.</p>
                     </div>
 
@@ -109,8 +109,8 @@ const RegistrationPage = () => {
                             />
                         </div>
 
-                        <div className='flex gap-5 justify-between'>
-                            <div className='w-1/2'>
+                        <div className='flex flex-col md:flex-row gap-5 justify-between'>
+                            <div className='md:w-1/2'>
                                 <input
                                     value={formData.first_name}
                                     onChange={handleChange}
@@ -122,7 +122,7 @@ const RegistrationPage = () => {
                                 />
                             </div>
 
-                            <div className='w-1/2'>
+                            <div className='md:w-1/2'>
                                 <input
                                     value={formData.last_name}
                                     onChange={handleChange}
@@ -147,8 +147,8 @@ const RegistrationPage = () => {
                             />
                         </div>
 
-                        <div className='flex gap-5 justify-between'>
-                            <div className='w-1/2'>
+                        <div className='flex flex-col md:flex-row gap-5 justify-between'>
+                            <div className='md:w-1/2'>
                                 <input
                                     value={formData.password}
                                     onChange={handleChange}
@@ -160,7 +160,7 @@ const RegistrationPage = () => {
                                 />
                             </div>
 
-                            <div className='w-1/2'>
+                            <div className='md:w-1/2'>
                                 <input
                                     value={formData.confirm_password}
                                     onChange={handleChange}

@@ -31,12 +31,15 @@ const AppIntegrations = () => {
                         50% { transform: translateY(0); }  
                         75% { transform: translateY(-5px); }  /* Second bounce */
                     }
+
+                     
                 `}
             </style>
 
-            <section className='mt-5 md:mt-0 py-20' style={{ backgroundImage: `url(${appbg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+
+            <section className="mt-5 md:mt-0 py-20 bg-[#F6F6F6]" >
                 <section className='relative max-w-screen-xl mx-auto py-30 flex flex-col gap-14'>
-                    <h1 className='md:text-4xl text-white text-center font-semibold'>More than 100+ Apps & Integrations</h1>
+                    <h1 className='md:text-4xl text-heading dark:text-white text-center font-semibold'>More than 100+ Tailor Shop Connected</h1>
 
                     <img className="absolute left-0 animate-[floatAnimation_5s_infinite_linear]"
                         src={shape1} alt=""
@@ -49,46 +52,46 @@ const AppIntegrations = () => {
                         <div className='flex flex-col md:flex-row items-center justify-center gap-5'>
                             {/* card 1 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon1} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Wordpress Hosting</span>
+                                <img src={icon1} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='dark:text-black font-semibold text-xl'>Stitch & Style</span>
                             </div>
 
                             {/* card 2 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon2} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Joomla Hosting</span>
+                                <img src={icon2} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='dark:text-black font-semibold text-xl'>The Perfect Fit</span>
                             </div>
 
                             {/* card 3 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon3} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Durpal Hosting</span>
+                                <img src={icon3} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='dark:text-black font-semibold text-xl'>TailorCraft</span>
                             </div>
 
                             {/* card 4 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon4} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Mobile Hosting</span>
+                                <img src={icon4} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='dark:text-black font-semibold text-xl'>Elite Stitches</span>
                             </div>
 
                         </div>
                         <div className='flex flex-col md:flex-row items-center justify-center gap-5'>
                             {/* card 5 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon5} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Ace Net Hosting</span>
+                                <img src={icon5} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='font-semibold text-xl'>Seamline Studio</span>
                             </div>
 
                             {/* card 6 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon6} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>ProLink Hosting</span>
+                                <img src={icon6} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='font-semibold text-xl'>The Bespoke Touch</span>
                             </div>
 
                             {/* card 7 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon7} alt="" className="group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>WebZen Hosting</span>
+                                <img src={icon7} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <span className='font-semibold text-xl'>Thread & Needle</span>
                             </div>
                         </div>
                     </div>

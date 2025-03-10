@@ -43,7 +43,7 @@ const AllProfiles = ({ homeView = false }) => {
     return (
         <section className="max-w-screen-2xl p-10 m-auto flex flex-col gap-10">
             <h1 className="text-heading dark:text-heading-dark text-center font-semibold text-3xl mb-10">
-                {homeView ? "Top --Profiles" : "All~ Profiles"}
+                {homeView ? "Top -Profiles" : "All Profiles"}
             </h1>
 
 
@@ -55,7 +55,7 @@ const AllProfiles = ({ homeView = false }) => {
                         {profiles.map((profile, index) => (
                             <div
                                 key={profile.id}
-                                className={`w-full md:w-1/3 flex items-center  bg-white shadow-lg p-3 rounded-lg`}
+                                className={`w-full md:w-1/3 flex flex-col  md:flex-row items-center  bg-white shadow-lg p-3 rounded-lg`}
                             >
                                 {/* {index % 2 === 0 ? ( */}
                                 <>

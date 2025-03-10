@@ -7,7 +7,7 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 
 const WeAre = () => {
     return (
-        <section className='bg-[#F6F6F6]'>
+        <section className='bg-[#F6F6F6] py-10 md:py-0'>
             <section className='max-w-screen-xl px-5 md:px-0 md:py-20 mx-auto flex flex-col md:flex-row gap-5 md:gap-20 items-center justify-between'>
                 <div className='w-full md:w-1/2'>
                     <img src={about} alt="" />

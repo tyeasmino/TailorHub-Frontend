@@ -20,6 +20,7 @@ export default {
             dark: "#FF1493",
           },
           heading: "#1A0B5B",
+          "heading-dark": "#1EFACD",
           dress_bg: {
             DEFAULT: "#F6F7FB",
             dark: "#1E1E1E", // Adjust as needed

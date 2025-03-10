@@ -42,7 +42,7 @@ const AllProfiles = ({ homeView = false }) => {
 
     return (
         <section className="max-w-screen-2xl p-10 m-auto flex flex-col gap-10">
-            <h1 className="text-[var(--heading-color)] text-center font-semibold text-3xl mb-10">
+            <h1 className="text-heading dark:text-heading-dark text-center font-semibold text-3xl mb-10">
   {homeView ? "Top Profiles" : "All Profiles"}
 </h1>
 

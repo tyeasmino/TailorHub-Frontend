@@ -21,7 +21,7 @@ export default {
           },
           heading: {
             DEFAULT: "#1A0B5B",
-            dark: "#E0E0E0", // Adjust as needed
+            dark: "#1EFACD", // Adjust as needed
           },
           dress_bg: {
             DEFAULT: "#F6F7FB",

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+    --heading-color: #1A0B5B; /* Default (light mode) */
+  }
+  
+  .dark {
+    --heading-color: #1EFACD; /* Dark mode */
+  }

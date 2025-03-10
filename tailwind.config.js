@@ -19,10 +19,7 @@ export default {
             DEFAULT: "#FB2E86",
             dark: "#FF1493",
           },
-          heading: {
-            DEFAULT: "#1A0B5B",
-            dark: "#1EFACD", // Adjust as needed
-          },
+          heading: "#1A0B5B",
           dress_bg: {
             DEFAULT: "#F6F7FB",
             dark: "#1E1E1E", // Adjust as needed
@@ -30,6 +27,7 @@ export default {
         },
       },
     },
+    darkMode: "class",
     plugins: [
       require('daisyui'),
     ],

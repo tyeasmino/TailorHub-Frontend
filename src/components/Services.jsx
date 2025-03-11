@@ -24,24 +24,24 @@ const Services = () => {
 
 
     const iconMappings = {
-        "24/7 Support": <TbHours24 className='text-[50px] m-auto group-hover:text-white' />,
-        "Free Delivery": <FaMotorcycle className='text-[50px] m-auto group-hover:text-white' />,
-        "Delivery in outside": <FaTruckFast className='text-[50px] m-auto group-hover:text-white' />,
-        "Delivery Time": <IoTimerOutline className='text-[50px] m-auto group-hover:text-white' />,
+        "24/7 Support": <TbHours24 className='text-[50px] m-auto  ' />,
+        "Free Delivery": <FaMotorcycle className='text-[50px] m-auto  ' />,
+        "Delivery in outside": <FaTruckFast className='text-[50px] m-auto  ' />,
+        "Delivery Time": <IoTimerOutline className='text-[50px] m-auto  ' />,
       };
 
 
 
     return (
         <section className='max-w-screen-xl m-auto my-10'>
-            <h2 className='text-heading text-center font-semibold text-3xl' >What TailorHub Offer!</h2>
+            <h2 className='text-black dark:text-white text-center font-semibold text-3xl' >What TailorHub Offer!</h2>
 
             <div className='flex flex-col md:flex-row gap-5 mt-10'>
                 {services.length > 0 ? (
                     services.map(service => (
-                        <div key={service.id} className='shadow shadow-pink md:shadow-slate-500 group transition-all duration-300 ease-in-out hover:bg-heading rounded py-10 md:w-1/4 px-6 mx-5 md:mx-0 text-justify flex flex-col gap-3'>
-                            {iconMappings[service.name] || <FaMotorcycle className='text-[50px] m-auto group-hover:text-white' />}
-                            <h4 className='text-heading text-center font-semibold text-xl group-hover:text-pink'>{service.name}</h4>
+                        <div key={service.id} className='shadow shadow-pink md:shadow-slate-500 group transition-all duration-300 ease-in-out hover:bg-violet-200 md:hover:bg-transparent rounded py-10 md:w-1/4 px-6 mx-5 md:mx-0 text-justify flex flex-col gap-3'>
+                            {iconMappings[service.name] || <FaMotorcycle className='text-[50px] m-auto ' />}
+                            <h4 className='text-black dark:text-white text-center font-semibold text-xl  '>{service.name}</h4>
                             <p className='text-gray-500'>{service.description}</p>
                         </div>
                     ))

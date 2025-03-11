@@ -119,7 +119,7 @@ const FitMakerDashboard = () => {
         e.setIsOpen(false)
       }}
     >
-      <div className="p-6 font-sans bg-gray-100 min-h-screen">
+      <div className="p-6 font-sans bg-gray-100 dark:bg-transparent min-h-screen">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 flex items-center justify-between">
           <div>FitMaker Dashboard </div>
           <div><StartTourButton/></div>

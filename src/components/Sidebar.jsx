@@ -45,7 +45,7 @@ const Sidebar = () => {
           <Link
             data-tour-element='dashboard'
             to="/dashboard"
-            className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "bg-white p-4 shadow font-semibold" : ""}`}
+            className={`flex items-center gap-2 ${location.pathname === "/dashboard" ? "bg-white dark:bg-transparent p-4 shadow font-semibold" : ""}`}
           >
             <LuLayoutDashboard
               className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -63,14 +63,14 @@ const Sidebar = () => {
           <Link
             data-tour-element='profile'
             to="/profile"
-            className={`flex items-center gap-2 ${location.pathname === "/profile" ? "bg-white md:p-4 shadow font-semibold" : ""}`}
+            className={`flex items-center gap-2 ${location.pathname === "/profile" ? "bg-white  dark:bg-transparent md:p-4 shadow font-semibold" : ""}`}
           >
             <TbMoodEdit
               className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
             />
             {/* Show tooltip only when collapsed */}
             <span
-              className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white   rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
             >
               Profile
             </span>
@@ -84,7 +84,7 @@ const Sidebar = () => {
               <Link
               data-tour-element='dress'
                 to="/dress"
-                className={`flex items-center gap-2 ${location.pathname === "/dress" ? "bg-white p-4 shadow font-semibold" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/dress" ? "bg-white  dark:bg-transparent p-4 shadow font-semibold" : ""}`}
               >
                 <IoShirtOutline
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -102,14 +102,14 @@ const Sidebar = () => {
               <Link
               data-tour-element='inventory'
                 to="/inventory"
-                className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "bg-white p-4 shadow font-semibold" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/inventory" ? "bg-white  dark:bg-transparent p-4 shadow font-semibold" : ""}`}
               >
                 <MdOutlineInventory
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
                 />
                 {/* Show tooltip only when collapsed */}
                 <span
-                  className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
+                  className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white  rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
                 >
                   Inventory
                 </span>
@@ -120,7 +120,7 @@ const Sidebar = () => {
               <Link
               data-tour-element='inventory-movement'
                 to="/inventory-movement"
-                className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "bg-white p-4 shadow font-semibold" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/inventory-movement" ? "bg-white  dark:bg-transparent p-4 shadow font-semibold" : ""}`}
               >
                 <LuTrendingUpDown
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -143,7 +143,7 @@ const Sidebar = () => {
               <Link
               data-tour-element='measurement'
                 to="/measurement"
-                className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "bg-white p-4 shadow font-semibold" : ""}`}
+                className={`flex items-center gap-2 ${location.pathname === "/measurement" ? "bg-white  dark:bg-transparent p-4 shadow font-semibold" : ""}`}
               >
                 <TbRulerMeasure
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
@@ -164,7 +164,7 @@ const Sidebar = () => {
           <Link
           data-tour-element='orders'
             to="/orders"
-            className={`flex items-center gap-2 ${location.pathname === "/orders" ? "bg-white md:p-4 shadow font-semibold" : ""}`}
+            className={`flex items-center gap-2 ${location.pathname === "/orders" ? "bg-white  dark:bg-transparent md:p-4 shadow font-semibold" : ""}`}
           > 
             <LuClipboardList
               className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}

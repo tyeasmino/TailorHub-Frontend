@@ -28,7 +28,7 @@ const UpcomingDress = () => {
 
     return (
         <section className='max-w-screen-xl m-auto py-20'>
-            <h2 className='text-heading text-center font-semibold text-3xl mb-10'>Upcoming Dress</h2>
+            <h2 className=' text-center font-semibold text-3xl mb-10'>Upcoming Dress</h2>
 
             <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4'>
                 {dresses?.map(dress => (

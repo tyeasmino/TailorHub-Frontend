@@ -6,7 +6,7 @@ const StartTourButton = () => {
   return (
     <button 
         onClick={() => setIsOpen(true)}
-        className='text-sm bg-black text-white px-5 py-2'>
+        className='text-sm bg-black text-white  px-5 py-2'>
         Start Tour
     </button>
   )

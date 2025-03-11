@@ -37,7 +37,7 @@ const AppIntegrations = () => {
             </style>
 
 
-            <section className="mt-5 md:mt-0 py-20 bg-[#F6F6F6]" >
+            <section className="mt-5 md:mt-0 py-20 bg-[#F6F6F6] dark:bg-transparent" >
                 <section className='relative max-w-screen-xl mx-auto py-30 flex flex-col gap-14'>
                     <h1 className='md:text-4xl text-heading dark:text-white text-center font-semibold'>More than 100+ Tailor Shop Connected</h1>
 
@@ -51,7 +51,7 @@ const AppIntegrations = () => {
                     <div className='flex flex-col gap-5'>
                         <div className='flex flex-col md:flex-row items-center justify-center gap-5'>
                             {/* card 1 */}
-                            <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
+                            <div className='bg-white  rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
                                 <img src={icon1} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='dark:text-black font-semibold text-xl'>Stitch & Style</span>
                             </div>
@@ -79,19 +79,19 @@ const AppIntegrations = () => {
                             {/* card 5 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
                                 <img src={icon5} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Seamline Studio</span>
+                                <span className='dark:text-black font-semibold text-xl'>Seamline Studio</span>
                             </div>
 
                             {/* card 6 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
                                 <img src={icon6} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>The Bespoke Touch</span>
+                                <span className='dark:text-black font-semibold text-xl'>The Bespoke Touch</span>
                             </div>
 
                             {/* card 7 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
                                 <img src={icon7} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
-                                <span className='font-semibold text-xl'>Thread & Needle</span>
+                                <span className='dark:text-black font-semibold text-xl'>Thread & Needle</span>
                             </div>
                         </div>
                     </div>

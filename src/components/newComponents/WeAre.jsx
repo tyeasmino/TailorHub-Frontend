@@ -18,17 +18,17 @@ const WeAre = () => {
                     <ul className='flex flex-col gap-3'>
                         <li className='flex flex-col md:flex-row gap-3 items-start'>
                             <img src={about_icon} alt="" />
-                            <p>Proactively scale functionalized initiatives with emerging ideas.</p>
+                            <p>Our highly skilled tailors bring years of experience, ensuring every stitch is crafted with perfection for a flawless fit that enhances your style.</p>
                         </li>
 
                         <li className='flex flex-col md:flex-row gap-3 items-start'>
                             <img src={about_icon2} alt="" />
-                            <p>Collaboratively formulate principle-centered users and revolutionary human capital. Progressively evolve</p>
+                            <p>We combine top-tier materials with expert tailoring to deliver luxurious, custom-made outfits that suit your budget without compromising on quality.</p>
                         </li>
 
                         <li className='flex flex-col md:flex-row gap-3 items-start'>
                             <img src={about_icon} alt="" />
-                            <p>Dramatically pursue cooperative materials vis-a-vis flexible technology. Credibly fashion turnkey internal hosting done</p>
+                            <p>Whether you need alterations, custom designs, or bespoke suits, we guarantee a seamless experience with timely delivery and attention to every detail.</p>
                         </li>
                     </ul>
 
@@ -38,18 +38,14 @@ const WeAre = () => {
                                 <span className='text-4xl font-bold text-[#1387FF] group-hover:text-[#FE8730]'>85%</span>
                                 <FaArrowTrendUp className='text-green-500' />
                             </div>
-                            <p>
-                                Customers Websites protects By Hostlux Server
-                            </p>
+                            <p> Increases buisness with less efforts </p>
                         </div>
                         <div className='bg-white flex flex-col gap-5  rounded-md border-b-4 border-[#1387FF] group  hover:border-[#FE8730] p-7'>
                             <div className='flex items-center gap-4'>
                                 <span className='text-4xl font-bold text-[#1387FF] group-hover:text-[#FE8730]'>TM+</span>
                                 <FaArrowTrendUp className='text-green-500' />
                             </div>
-                            <p>
-                                Customers Websites protects By Hostlux Server
-                            </p>
+                            <p> Customers information protection is our first Priority </p>
                         </div>
                     </div>
                 </div>

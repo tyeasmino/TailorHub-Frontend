@@ -52,25 +52,25 @@ const AppIntegrations = () => {
                         <div className='flex flex-col md:flex-row items-center justify-center gap-5'>
                             {/* card 1 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon1} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon1} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='dark:text-black font-semibold text-xl'>Stitch & Style</span>
                             </div>
 
                             {/* card 2 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon2} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon2} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='dark:text-black font-semibold text-xl'>The Perfect Fit</span>
                             </div>
 
                             {/* card 3 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon3} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon3} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='dark:text-black font-semibold text-xl'>TailorCraft</span>
                             </div>
 
                             {/* card 4 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon4} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon4} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='dark:text-black font-semibold text-xl'>Elite Stitches</span>
                             </div>
 
@@ -78,19 +78,19 @@ const AppIntegrations = () => {
                         <div className='flex flex-col md:flex-row items-center justify-center gap-5'>
                             {/* card 5 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon5} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon5} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='font-semibold text-xl'>Seamline Studio</span>
                             </div>
 
                             {/* card 6 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon6} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon6} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='font-semibold text-xl'>The Bespoke Touch</span>
                             </div>
 
                             {/* card 7 */}
                             <div className='bg-white rounded-md flex items-center gap-5 py-5 w-[300px] px-5 group'>
-                                <img src={icon7} alt="" className="w-[50px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
+                                <img src={icon7} alt="" className="w-[50px] h-[40px] group-hover:animate-[bounceTwice_0.6s_ease-in-out]" />
                                 <span className='font-semibold text-xl'>Thread & Needle</span>
                             </div>
                         </div>

@@ -18,10 +18,10 @@ const Home = () => {
         <AppIntegrations />
         <AllProfiles homeView={true} />
         <Services />
-        <Brands />
-        <UpcomingDress />
         <WeAre />
+        <UpcomingDress />
         <HostingPlan />
+        <Brands />
     </section>
   )
 }

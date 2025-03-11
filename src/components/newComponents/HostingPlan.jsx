@@ -6,7 +6,7 @@ import picon1 from '../../assets/hostingplan/pricing-icon-01.png'
 import picon2 from '../../assets/hostingplan/pricing-icon-02.png'
 import picon3 from '../../assets/hostingplan/pricing-icon-03.png'
 import picon4 from '../../assets/hostingplan/pricing-icon-04.png'
-
+import { TbCurrencyTaka } from "react-icons/tb";
 
 
 const HostingPlan = () => {
@@ -20,13 +20,13 @@ const HostingPlan = () => {
                         {/* card 1 */}
                         <div className='md:w-1/4 border-t-4 border-blue-50 bg-white p-8 flex flex-col gap-5 group hover:border-t-4 hover:border-[#1387FF]'>
                             <img
-                                className='w-fit transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
+                                className='w-[60px] h-[60px] transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
                                 src={picon1} alt=""
                             />
                             <div className='flex gap-2 items-end'>
                                 <div className='flex items-start gap-1'>
-                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'>$</span>
-                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>67.20</span>
+                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'> <TbCurrencyTaka /> </span>
+                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>50</span>
                                 </div>
                                 <span className='text-gray-500 font-semibold'>/ Mo</span>
                             </div>
@@ -34,8 +34,8 @@ const HostingPlan = () => {
                             <div className='w-full h-[0.5px] bg-gray-300'></div>
 
                             <div className='flex flex-col gap-2'>
-                                <h1 className='font-bold text-xl'>Wordpress Hosting</h1>
-                                <p>Continually optimize web host</p>
+                                <h1 className='font-bold text-xl'>Basic Plan</h1>
+                                <p>Basic Tailor Management</p>
                             </div>
 
                             <button className='relative flex items-center justify-center rounded w-full border border-[#1387FF] px-10 py-3 overflow-hidden group'>
@@ -47,23 +47,23 @@ const HostingPlan = () => {
 
 
                             <ul className='flex flex-col gap-3'>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 10 MySQL Database </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 6GB SSD Storage </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Money Back Guarantee </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Automatic Backup System </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Basic alteration templates </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Basic customer database </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Limited online presence setup </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Standard customer support </li>
                             </ul>
                         </div>
 
                         {/* card 2 */}
                         <div className='md:w-1/4 border-t-4 border-blue-50 bg-white p-8 flex flex-col gap-5 group hover:border-t-4 hover:border-[#1387FF]'>
                             <img
-                                className='w-fit transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
+                                className='w-[60px] h-[60px]  transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
                                 src={picon2} alt=""
                             />
                             <div className='flex gap-2 items-end'>
                                 <div className='flex items-start gap-1'>
-                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'>$</span>
-                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>76.20</span>
+                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'><TbCurrencyTaka /></span>
+                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>90</span>
                                 </div>
                                 <span className='text-gray-500 font-semibold'>/ Mo</span>
                             </div>
@@ -71,8 +71,8 @@ const HostingPlan = () => {
                             <div className='w-full h-[0.5px] bg-gray-300'></div>
 
                             <div className='flex flex-col gap-2'>
-                                <h1 className='font-bold text-xl'>Dedicated Hosting</h1>
-                                <p>Continually optimize web host</p>
+                                <h1 className='font-bold text-xl'>Advanced Plan</h1>
+                                <p>Advanced Tailoring Business Suite</p>
                             </div>
 
                             <button className='relative flex items-center justify-center rounded w-full border border-[#1387FF] px-10 py-3 overflow-hidden group'>
@@ -84,10 +84,10 @@ const HostingPlan = () => {
 
 
                             <ul className='flex flex-col gap-3'>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 10 MySQL Database </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 6GB SSD Storage </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Money Back Guarantee </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Automatic Backup System </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Custom design catalog  </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Advanced customer database </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Fabric inventory tracking </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Multi-shop management </li>
                             </ul>
                         </div>
 
@@ -95,13 +95,13 @@ const HostingPlan = () => {
                         {/* card 3 */}
                         <div className='md:w-1/4 border-t-4 border-blue-50 bg-white p-8 flex flex-col gap-5 group hover:border-t-4 hover:border-[#1387FF]'>
                             <img
-                                className='w-fit transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
+                                className='w-[60px] h-[60px] transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
                                 src={picon3} alt=""
                             />
                             <div className='flex gap-2 items-end'>
                                 <div className='flex items-start gap-1'>
-                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'>$</span>
-                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>87.20</span>
+                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'><TbCurrencyTaka /></span>
+                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>160</span>
                                 </div>
                                 <span className='text-gray-500 font-semibold'>/ Mo</span>
                             </div>
@@ -109,8 +109,8 @@ const HostingPlan = () => {
                             <div className='w-full h-[0.5px] bg-gray-300'></div>
 
                             <div className='flex flex-col gap-2'>
-                                <h1 className='font-bold text-xl'>VPS Hosting</h1>
-                                <p>Continually optimize web host</p>
+                                <h1 className='font-bold text-xl'>Premium Plan</h1>
+                                <p>Premium Bespoke Tailor Solution</p>
                             </div>
 
                             <button className='relative flex items-center justify-center rounded w-full border border-[#1387FF] px-10 py-3 overflow-hidden group'>
@@ -122,10 +122,10 @@ const HostingPlan = () => {
 
 
                             <ul className='flex flex-col gap-3'>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 10 MySQL Database </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 6GB SSD Storage </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Money Back Guarantee </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Automatic Backup System </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> VIP client management  </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Automated order tracking </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Exclusive high-end design </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> With AI measurement analysis </li>
                             </ul>
                         </div>
 
@@ -133,13 +133,13 @@ const HostingPlan = () => {
                         {/* card 4*/}
                         <div className='md:w-1/4 border-t-4 border-blue-50 bg-white p-8 flex flex-col gap-5 group hover:border-t-4 hover:border-[#1387FF]'>
                             <img
-                                className='w-fit transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
-                                src={picon4} alt=""
+                                className='w-[60px] h-[60px] transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
+                                src={picon3} alt=""
                             />
                             <div className='flex gap-2 items-end'>
                                 <div className='flex items-start gap-1'>
-                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'>$</span>
-                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>67.20</span>
+                                    <span className='font-semibold text-[#1387FF] group-hover:text-[#FE8730]'><TbCurrencyTaka /></span>
+                                    <span className='font-semibold text-3xl text-[#1387FF] group-hover:text-[#FE8730]'>300</span>
                                 </div>
                                 <span className='text-gray-500 font-semibold'>/ Mo</span>
                             </div>
@@ -147,8 +147,8 @@ const HostingPlan = () => {
                             <div className='w-full h-[0.5px] bg-gray-300'></div>
 
                             <div className='flex flex-col gap-2'>
-                                <h1 className='font-bold text-xl'>Joomla Hosting</h1>
-                                <p>Continually optimize web host</p>
+                                <h1 className='font-bold text-xl'>Enterprise Plan</h1>
+                                <p>Enterprise Tailor Network Suite</p>
                             </div>
 
                             <button className='relative flex items-center justify-center rounded w-full border border-[#1387FF] px-10 py-3 overflow-hidden group'>
@@ -160,10 +160,10 @@ const HostingPlan = () => {
 
 
                             <ul className='flex flex-col gap-3'>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 10 MySQL Database </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> 6GB SSD Storage </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Money Back Guarantee </li>
-                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Automatic Backup System </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Multi-shop sync system </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Bulk & wholesale orders </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> AI demand forecasting </li>
+                                <li className='flex items-center gap-3'> <img src={icon} alt="" /> Supply chain integration </li>
                             </ul>
                         </div>
                     </section>

@@ -31,10 +31,10 @@ const FitMakerDashboard = () => {
       content: (
         <div>
           <p className='font-semibold text-lg mb-2'>
-          🌟 Welcome to the Dashboard!
+            🌟 Welcome to the Dashboard!
           </p>
           <p className=''>
-           This is the main hub of your app where you can access all key features. Click here to view your overall progress and navigate to other important sections.
+            This is the main hub of your app where you can access all key features. Click here to view your overall progress and navigate to other important sections.
           </p>
           <p className='text-sm text-violet-400 mt-2'>
             Pro tip: Use keyboard shortcut */Ctrl + B to toggle
@@ -63,7 +63,7 @@ const FitMakerDashboard = () => {
       selector: '[data-tour-element="running-order"]',
       content: '⏳ Running Orders show you all current transactions in progress. Monitor these closely to ensure that everything is moving along as expected and no orders are delayed.',
     },
-    
+
     // New steps for additional sidebar elements
     {
       selector: '[data-tour-element="profile"]',
@@ -89,7 +89,7 @@ const FitMakerDashboard = () => {
       selector: '[data-tour-element="orders"]',
       content: '📝 The Orders section shows you all pending and completed orders. Keep track of the status of each one and ensure timely processing.',
     },
-  
+
     // Add any other elements
     // {
     //   selector: '[data-tour-element="support"]',
@@ -104,25 +104,25 @@ const FitMakerDashboard = () => {
     //   content: '🚪 When you’re done, click here to logout securely. Make sure to log out when you’re finished for privacy and security.',
     // },
   ];
-  
+
 
   const PTBadge = () => null
 
   return (
-    <TourProvider 
+    <TourProvider
       steps={steps}
       components={{
         Badge: PTBadge
       }}
       onClickClose={(e) => {
         e.setCurrentStep(0),
-        e.setIsOpen(false)
+          e.setIsOpen(false)
       }}
     >
-      <div className="p-6 font-sans bg-gray-100 dark:bg-transparent min-h-screen">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 flex items-center justify-between">
+      <div className="p-10 font-sans bg-gray-100 dark:bg-transparent md:min-h-screen">
+        <h1 className="text-sm md:text-3xl font-bold text-gray-800 mb-6 flex  items-center justify-between">
           <div>FitMaker Dashboard </div>
-          <div><StartTourButton/></div>
+          <div><StartTourButton /></div>
         </h1>
         <button
           data-tour-element='deposit-toggle'
@@ -139,12 +139,30 @@ const FitMakerDashboard = () => {
           </Modal>
         )}
 
-        <section className='flex gap-5 my-5'>
-          <div data-tour-element='total-order' className='w-1/5 shadow shadow-violet-300 rounded p-5 flex flex-col items-center text-xl'> <MdOutlineAddTask className='text-[50px]' /> Total Orders <span>71</span> </div>
-          <div data-tour-element='completed-order' className='w-1/5 shadow shadow-violet-300 rounded p-5 flex flex-col items-center text-xl'> <MdTaskAlt className='text-[50px]' /> Completed Orders <span>48</span> </div>
-          <div data-tour-element='running-order' className='w-1/5 shadow shadow-violet-300 rounded p-5 flex flex-col items-center text-xl'> <RiScissorsCutFill className='text-[50px]' /> Running Orders <span>23</span> </div>
-          <div className='w-1/5 shadow shadow-violet-300 rounded p-5 flex flex-col items-center text-xl'> <MdOutlineInventory className='text-[50px]' /> Inventory Items <span>425</span> </div>
-          <div data-tour-element='profit' className='w-1/5 shadow shadow-violet-300 rounded p-5 flex flex-col items-center text-xl'> <GiProfit className='text-[50px]' /> Profits <span>2540</span> </div>
+        <section className='flex flex-col md:flex-row gap-5 my-5'>
+          <div data-tour-element='total-order' className='md:w-1/5 shadow shadow-violet-300 rounded p-3 md:p-5 flex md:flex-col gap-3 items-center text-sm md:text-xl'>
+            <MdOutlineAddTask className='text-[30px] md:text-[50px]' />
+            <span className='flex flex-col md:items-center'>Total Orders <span>71</span></span>
+          </div>
+          <div data-tour-element='completed-order' className='md:w-1/5 shadow shadow-violet-300 rounded p-3 md:p-5 flex md:flex-col gap-3 items-center text-sm md:text-xl'>
+            <MdTaskAlt className='text-[30px] md:text-[50px]' />  
+            <span className='flex flex-col md:items-center'>Completed Orders <span>48</span></span>
+          </div>
+
+          <div data-tour-element='running-order' className='md:w-1/5 shadow shadow-violet-300 rounded p-3 md:p-5 flex md:flex-col gap-3 items-center text-sm md:text-xl'> 
+          <RiScissorsCutFill className='text-[30px] md:text-[50px]' />  
+          <span className='flex flex-col md:items-center'>Running Orders <span>23</span></span>
+          </div>
+
+          <div className='md:w-1/5 shadow shadow-violet-300 rounded p-3 md:p-5 flex md:flex-col gap-3 items-center text-sm md:text-xl'> 
+          <MdOutlineInventory className='text-[30px] md:text-[50px]' />  
+          <span className='flex flex-col md:items-center'>Inventory Items <span>425</span></span>          
+          </div>
+
+          <div data-tour-element='profit' className='md:w-1/5 shadow shadow-violet-300 rounded p-3 md:p-5 flex md:flex-col gap-3 items-center text-sm md:text-xl'>
+           <GiProfit className='text-[30px] md:text-[50px]' /> 
+           <span className='flex flex-col md:items-center'>Profits <span>2540</span></span> 
+            </div>
         </section>
       </div>
     </TourProvider>

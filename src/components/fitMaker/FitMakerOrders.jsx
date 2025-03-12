@@ -139,31 +139,30 @@ const FitMakerOrders = () => {
     <div className="w-11/12 md:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       <h1 className="text-xl md:text-3xl font-bold text-gray-900 mb-6">Orders</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {orders.map((order) => (
           <div key={order.id} className="bg-white shadow-md rounded-lg overflow-hidden">
-            <div className="px-4 py-3 bg-violet-100 flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-gray-900">{order.order_id}</h3>
+            <div className="px-4 py-3 bg-violet-100 flex flex-col md:flex-row md:items-center justify-between">
+              <h3 className="md:text-xl font-semibold text-gray-900">{order.order_id}</h3>
               <p className="text-sm text-gray-500">{format(new Date(order.created_at), 'MMMM dd, yyyy')}</p>
             </div>
-            <div className="px-6 py-4">
-
+            <div className="px-4 md:px-6 py-4">
               <p className="text-sm text-gray-600 mb-2">
-                <strong>Fabric/Dress Name:</strong> {order.fabric_OR_dress_name}
+                <strong> <span className='hidden md:inline-block'>Fabric/Dress</span> Name:</strong> {order.fabric_OR_dress_name.slice(0, 15)}..
               </p>
               <p className="text-sm text-gray-600 mb-2">
-                <strong>Fabric/Dress Quantity:</strong> {order.fabric_OR_dress_quantity}
+                <strong> <span className='hidden md:inline-block'>Fabric/Dress</span>  Quantity:</strong> {order.fabric_OR_dress_quantity}
               </p>
               <p className="text-sm text-gray-600 mb-2">
-                <strong>Fabric/Dress Price:</strong> ${order.fabric_OR_dress_price}
+                <strong> <span className='hidden md:inline-block'>Fabric/Dress</span> Price:</strong> ${order.fabric_OR_dress_price}
               </p>
               {order.tailorService_name ? 
                 <>
                   <p className="text-sm text-gray-600 mb-2">
-                    <strong>Tailor Service Name:</strong> {order.tailorService_name}
+                    <strong> <span className='hidden md:inline-block'>Tailor</span> Service Name:</strong> {order.tailorService_name}
                   </p>
                   <p className="text-sm text-gray-600 mb-2">
-                    <strong>Tailor Service Price:</strong> ${order.tailorService_price}
+                    <strong><span className='hidden md:inline-block'>Tailor</span> Service Price:</strong> ${order.tailorService_price}
                   </p>
                 </> 
                 : <></>}
@@ -210,7 +209,7 @@ const FitMakerOrders = () => {
           <button
             onClick={fetchNextPage}
             disabled={loading}
-            className="inline-flex items-center px-6 py-3 text-white bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:ring-violet-300 rounded-lg"
+            className="inline-flex items-center text-[12px] md:text-[16px] px-6 py-3 text-white bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:ring-violet-300 rounded-lg"
           >
             {loading ? 'Loading next page...' : 'Load More Orders'}
           </button>

@@ -1,13 +1,14 @@
 import { useTour } from '@reactour/tour'
 import React from 'react'
+import { SiTourbox } from "react-icons/si";
 
 const StartTourButton = () => {
     const {setIsOpen} = useTour()
   return (
     <button 
         onClick={() => setIsOpen(true)}
-        className='text-sm bg-black text-white  px-5 py-2'>
-        Start Tour
+        className=' bg-black text-white px-5 py-2'>
+          <SiTourbox /> 
     </button>
   )
 }

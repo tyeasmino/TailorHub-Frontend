@@ -12,7 +12,7 @@ const OrdersPage = () => {
         <section className='flex'>
             <Sidebar />
 
-            <section className='mx-64 p-10 max-w-screen-2xl w-full'>
+            <section className='ml-14 md:mx-64 md:p-10 md:max-w-screen-2xl w-full'>
                 {(user && user.fitMaker) ?
                     (<> <FitMakerOrders /> </>) : (<></>)}
 

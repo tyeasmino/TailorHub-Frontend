@@ -4,6 +4,10 @@ import Sidebar from '../components/Sidebar';
 import { FaEdit } from 'react-icons/fa';
 import { MdOutlineDeleteSweep } from 'react-icons/md';
 import { FormGroup, Label, Input } from 'reactstrap';
+import { TbArrowBackUpDouble } from "react-icons/tb";
+import { TbArrowForwardUpDouble } from "react-icons/tb";
+
+
 
 const InventoryMovementPage = () => {
     const [inventoryMovements, setInventoryMovements] = useState([]);
@@ -52,20 +56,20 @@ const InventoryMovementPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+
         // Log the formData object before making the request
         console.log('Form data being sent:', formData);
-    
+
         const url = isEditing
             ? `https://tailor-hub-backend.vercel.app/inventory/items_movements/${editingMovement.id}/`  // Edit endpoint
             : 'https://tailor-hub-backend.vercel.app/inventory/items_movements/';  // Add endpoint
-    
+
         try {
             const method = isEditing ? 'put' : 'post';
-    
+
             // Log the API request details
             console.log('Making request to:', url, 'with method:', method);
-    
+
             const response = await axios({
                 method,
                 url,
@@ -74,10 +78,10 @@ const InventoryMovementPage = () => {
                 },
                 data: formData,
             });
-    
+
             // Log the response from the API
             console.log('API response:', response);
-    
+
             if (isEditing) {
                 const updatedMovements = inventoryMovements.map(movement =>
                     movement.id === editingMovement.id ? response.data : movement
@@ -86,7 +90,7 @@ const InventoryMovementPage = () => {
             } else {
                 setInventoryMovements([response.data, ...inventoryMovements]);
             }
-    
+
             setMessage(isEditing ? 'Item movement updated successfully!' : 'Item movement added successfully!');
             setShowForm(false);
             setIsEditing(false);
@@ -102,7 +106,7 @@ const InventoryMovementPage = () => {
             }
         }
     };
-    
+
 
 
 
@@ -229,8 +233,8 @@ const InventoryMovementPage = () => {
     return (
         <section className='flex'>
             <Sidebar />
-            <section className="m-auto shadow my-20 p-10 max-w-screen-xl w-full">
-                <h2 className="text-3xl font-bold mb-5">Inventory Movements</h2>
+            <section className="ml-10 md:m-auto shadow md:my-20 pl-8 pr-3 py-10 md:p-10 md:max-w-screen-xl w-full">
+                <h2 className="text-sm md:text-3xl font-bold mb-5">Inventory Movements</h2>
 
                 {message && (
                     <div className={`p-4 mb-4 rounded-md ${message === 'Item movement added successfully!' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
@@ -247,19 +251,19 @@ const InventoryMovementPage = () => {
 
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className="px-4 py-2 bg-violet-600 text-white rounded-md mb-4"
+                    className="px-4 py-2  bg-violet-600 text-white text-[12px] md:text-[16px] rounded-md mb-4"
                 >
                     {showForm ? 'Cancel' : 'Add New Movement'}
                 </button>
 
                 {showForm && (
                     <form onSubmit={handleSubmit} className="space-y-4 mb-5 p-5 border rounded-lg shadow-lg">
-                        <div className='flex'>
-                            <div className='w-1/2 px-5'>
+                        <div className='flex flex-col md:flex-row'>
+                            <div className='md:w-1/2 md:px-5'>
                                 {/* Inventory Item */}
                                 <FormGroup className='py-2'>
                                     <Label for="inventory_item">Inventory Item</Label>
-                                    <Input className='w-full p-2 border rounded'
+                                    <Input className='w-full p-2 border rounded text-sm md:text-[14px]'
                                         type="select"
                                         id="inventory_item"
                                         disabled={isEditing}
@@ -301,7 +305,7 @@ const InventoryMovementPage = () => {
                                 </FormGroup>
                             </div>
 
-                            <div className="w-1/2 px-5 ">
+                            <div className="md:w-1/2">
                                 {/* Description */}
                                 <FormGroup className='py-2'>
                                     <Label for="description">Description</Label>
@@ -318,7 +322,7 @@ const InventoryMovementPage = () => {
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 mt-2 bg-violet-600 text-white rounded-md"
+                                    className="px-4 py-2 mt-2 text-sm md:text-lg bg-violet-600 text-white rounded-md"
                                 >
                                     {isEditing ? 'Update' : 'Add'} Movement
                                 </button>
@@ -331,12 +335,16 @@ const InventoryMovementPage = () => {
                 <table className="table-auto w-full mb-5">
                     <thead>
                         <tr className="border-b-2 border-violet-400">
-                            <th className="py-3 text-start">Date</th>
-                            <th className="py-3 text-start">Inventory Item</th>
-                            <th className="py-3 text-start">Movement Type</th>
-                            <th className="py-3 text-start">Quantity</th>
-                            <th className="py-3 text-start">Description</th>
-                            <th className="py-3 text-end">Actions</th>
+                            <th className="text-[12px] md:text-[16px] py-3 text-start">Date</th>
+                            <th className="text-[12px] md:text-[16px] py-3 text-start"><span className='hidden md:inline-block'>Inventory</span> Item</th>
+                            <th className="text-[12px] md:text-[16px] py-3 text-start"> <span className='hidden md:inline-block'>Movement</span> Type </th>
+                            <th className="text-[12px] md:text-[16px] py-3 text-start">
+                                <span className="block md:hidden">Qty</span>
+                                <span className="hidden md:block">Quantity</span>
+                            </th>
+
+                            <th className="text-[12px] md:text-[16px] py-3 text-start hidden md:table-cell">Description</th>
+                            <th className="text-[12px] md:text-[16px] py-3 text-end">Actions</th>
                         </tr>
                     </thead>
 
@@ -346,25 +354,32 @@ const InventoryMovementPage = () => {
                             const inventoryItem = inventoryItems.find(item => item.id === movement.inventory_item);
                             return (
                                 <tr key={movement.id} className="border-b border-violet-200">
-                                    <td className="py-2 text-start">{movement.date}</td>
+                                    <td className="text-[10px] md:text-[14px] py-2 text-start">{movement.date}</td>
                                     {/* Display the item name here */}
-                                    <td className="py-2 text-start">{inventoryItem ? inventoryItem.name : 'Item Not Found'}</td>
-                                    <td className="py-2 text-start">{movement.movement_type}</td>
-                                    <td className="py-2 text-start">{movement.quantity}</td>
-                                    <td className="py-2 text-start">{movement.description}</td>
-                                    <td className="py-2 text-end">
+                                    <td className="text-[10px] md:text-[14px] py-2 text-start">
+                                        {inventoryItem ?
+                                            (window.innerWidth <= 768 ?
+                                                `${inventoryItem.name.slice(0, 13)}...` :
+                                                inventoryItem.name)
+                                            : 'Item Not Found'}
+                                    </td>
+
+                                    <td className="text-[10px] md:text-[14px] py-2 text-start">{movement.movement_type}</td>
+                                    <td className="text-[10px] md:text-[14px] py-2 text-start">{movement.quantity}</td>
+                                    <td className="py-2 text-start hidden md:table-cell">{movement.description}</td>
+                                    <td className="text-[10px] md:text-[14px] flex py-2 items-center justify-center md:justify-end ">
                                         <button
                                             onClick={() => {
                                                 setEditingMovement(movement);
                                                 setShowForm(true);
                                             }}
-                                            className="bg-violet-600 text-white px-3 py-1 rounded mr-2"
+                                            className="text-violet-600 text-[12px] md:bg-violet-600 md:text-white md:px-3 md:py-1 rounded mr-2"
                                         >
                                             <FaEdit />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(movement.id)}
-                                            className="bg-red-600 text-white px-3 py-1 rounded"
+                                            className="text-red-600 text-[14px] md:bg-red-600 md:text-white md:px-3 md:py-1 rounded"
                                         >
                                             <MdOutlineDeleteSweep />
                                         </button>
@@ -377,15 +392,15 @@ const InventoryMovementPage = () => {
                 </table>
 
                 {/* Pagination Controls */}
-                <div className="flex justify-between items-center">
+                <div className="flex text-[12px] md:text-[16px]  justify-between items-center">
                     <button
                         disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}
                         className={`px-4 py-2 ${currentPage === 1 ? 'bg-gray-400' : 'bg-violet-600'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
                     >
-                        Previous
+                        <TbArrowBackUpDouble />
                     </button>
 
-                    <div className="flex">
+                    <div className="flex ">
                         {getPaginationNumbers().map((pageNumber, index) => (
                             <button key={index} onClick={() => handlePageChange(pageNumber)}
                                 className={`px-4 py-2 ${currentPage === pageNumber ? 'bg-pink' : 'bg-violet-600'} text-white rounded-md mx-1 hover:bg-violet-700 focus:outline-none`}
@@ -399,7 +414,7 @@ const InventoryMovementPage = () => {
                         disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}
                         className={`px-4 py-2 ${currentPage === totalPages ? 'bg-gray-400' : 'bg-violet-600'} text-white rounded-md hover:bg-violet-700 focus:outline-none`}
                     >
-                        Next
+                        <TbArrowForwardUpDouble />
                     </button>
                 </div>
             </section>

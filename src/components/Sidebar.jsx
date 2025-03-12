@@ -80,7 +80,7 @@ const Sidebar = () => {
 
         {user && user.fitMaker ? (
           <>
-            <li className="relative group">
+            {/* <li className="relative group">
               <Link
               data-tour-element='dress'
                 to="/dress"
@@ -89,7 +89,7 @@ const Sidebar = () => {
                 <IoShirtOutline
                   className={`transition-all ${collapsed ? 'text-lg' : 'text-xl'}`}
                 />
-                {/* Show tooltip only when collapsed */}
+                
                 <span
                   className={`absolute left-16 hidden group-hover:block text-sm bg-gray-800 text-white rounded px-2 py-1 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
                 >
@@ -97,7 +97,7 @@ const Sidebar = () => {
                 </span>
                 {!collapsed && <span className="ml-2">Dress</span>}
               </Link>
-            </li>
+            </li> */}
             <li className="relative group">
               <Link
               data-tour-element='inventory'

@@ -136,7 +136,7 @@ const HostingPlan = () => {
                             <div className='md:w-1/4 border-t-4 border-blue-50 bg-white p-8 flex flex-col gap-5 group hover:border-t-4 hover:border-[#1387FF]'>
                                 <img
                                     className='w-[60px] h-[60px] transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
-                                    src={picon3} alt=""
+                                    src={picon4} alt=""
                                 />
                                 <div className='flex gap-2 items-end'>
                                     <div className='flex items-start gap-1'>
@@ -294,7 +294,7 @@ const HostingPlan = () => {
                             <div className='md:w-1/4 border-t-4 border-blue-50  p-8 flex flex-col gap-5 group hover:border-t-4 hover:border-[#1387FF]'>
                                 <img
                                     className='w-[60px] h-[60px] transition-all duration-500 transform group-hover:translate-y-2 group-hover:animate-bounce'
-                                    src={picon3} alt=""
+                                    src={picon4} alt=""
                                 />
                                 <div className='flex gap-2 items-end'>
                                     <div className='flex items-start gap-1'>

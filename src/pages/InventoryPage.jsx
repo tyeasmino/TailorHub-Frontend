@@ -8,6 +8,9 @@ import { FaEdit } from "react-icons/fa";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { uploadImage } from '../apiServices/apiService';
 import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
+import { TbArrowBackUpDouble } from "react-icons/tb";
+import { TbArrowForwardUpDouble } from "react-icons/tb";
+
 
 
 const InventoryPage = () => {
@@ -281,11 +284,11 @@ const InventoryPage = () => {
 
       {/* <section className='mx-64 p-10 max-w-screen-2xl w-full'>
         </section> */}
-      <section className="flex flex-col m-auto shadow my-20 p-10 max-w-screen-xl w-full">
+      <section className="flex flex-col ml-10 md:m-auto shadow md:my-20 p-10 md:max-w-screen-xl w-full">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-3xl font-bold">Inventory Items</h2>
+          <h2 className="md:text-3xl font-bold">Inventory Items</h2>
           <MdFormatListBulletedAdd
-            className="text-3xl cursor-pointer"
+            className="md:text-3xl cursor-pointer"
             onClick={() => setShowModal(true)} // Show the modal on click
           />
         </div>
@@ -293,7 +296,7 @@ const InventoryPage = () => {
         {/* Table to display inventory items */}
         <table className="table-auto w-full">
           <thead>
-            <tr className="border-b-2 border-violet-400">
+            <tr className="text-[12px] md:text-[16px] border-b-2 border-violet-400">
               <th
                 className="py-3 flex text-start cursor-pointer"
                 onClick={() => handleSort('item_type')}
@@ -303,36 +306,43 @@ const InventoryPage = () => {
               </th>
               <th className="py-3 text-start">Name</th>
               <th
-                className="py-3 text-start cursor-pointer"
+                className="hidden md:table-cell py-3 text-start cursor-pointer"
                 onClick={() => handleSort('purchase_price')}
               >
                 Purchase Price
               </th>
               <th
-                className="py-3 text-start cursor-pointer"
+                className="hidden md:table-cell py-3 text-start cursor-pointer"
                 onClick={() => handleSort('base_price')}
               >
                 Sell Price
               </th>
               <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('stock')}> Stock </th>
-              <th className="py-3 text-start">Color</th>
-              <th className="py-3 text-start cursor-pointer" onClick={() => handleSort('supplier')}> Supplier </th>
+              <th className="hidden md:table-cell py-3 text-start">Color</th>
+              <th className="hidden md:table-cell py-3 text-start cursor-pointer" onClick={() => handleSort('supplier')}> Supplier </th>
               <th className="py-3 text-start" colSpan={2}>Action</th>
             </tr>
           </thead>
           <tbody>
             {sortedItems.map((item) => (
               <tr key={item.id} className="border-b border-violet-200">
-                <td className="py-2 text-start">{item.item_type}</td>
-                <td className="py-2 text-start flex items-center justify-start gap-3">
+                <td className="text-[12px] md:text-[16px] py-2 text-start">{item.item_type}</td>
+                <td className="py-2 text-start">
+                {/* Show image only on mobile */}
+                <img src={item.image} className="w-[30px] h-[30px] object-cover overflow-hidden rounded-md block md:hidden" alt="" />
+
+                {/* Show both image and name on desktop */}
+                <div className="hidden md:flex items-center gap-3">
                   <img src={item.image} className="w-[50px] h-[50px] object-cover overflow-hidden rounded-md" alt="" />
                   {item.name}
-                </td>
-                <td className="py-2 text-start">{item.purchase_price}</td>
-                <td className="py-2 text-start">{item.discount_price !== '0.00' ? item.discount_price : item.base_price}</td>
-                <td className="py-2 text-start">{item.stock}</td>
-                <td className="py-2 text-start">{item.color}</td>
-                <td className="py-2 text-start">{item.supplier}</td>
+                </div>
+              </td>
+
+                <td className="hidden md:table-cell py-2 text-start">{item.purchase_price}</td>
+                <td className="hidden md:table-cell py-2 text-start">{item.discount_price !== '0.00' ? item.discount_price : item.base_price}</td>
+                <td className="text-[12px] md:text-[16px] py-2 text-center">{item.stock}</td>
+                <td className="hidden md:table-cell py-2 text-start">{item.color}</td>
+                <td className="hidden md:table-cell py-2 text-start">{item.supplier}</td>
                 <td className="py-2 text-start">
                   <FaEdit className="text-heading " onClick={() => handleEditItem(item)} />
                 </td>
@@ -344,12 +354,10 @@ const InventoryPage = () => {
           </tbody>
         </table>
 
-
-
-        <div className='flex items-center py-3 justify-between'>
+        <div className='flex flex-col md:flex-row gap-3 items-center py-3 justify-between'>
 
           {/* Page Size Dropdown */}
-          <div className="flex justify-center items-center">
+          <div className="text-[12px] md:text-[16px]  flex justify-center items-center">
             <label htmlFor="pageSize" className="mr-2">Items per page:</label>
             <select
               id="pageSize"
@@ -365,14 +373,14 @@ const InventoryPage = () => {
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex justify-center">
+          <div className="text-[12px] md:text-[16px]  flex justify-center">
             {/* Previous Button */}
             <button
               disabled={currentPage === 1}  // Disable if on the first page
               onClick={() => handlePageChange(currentPage - 1)}
               className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
             >
-              Previous
+              <TbArrowBackUpDouble />
             </button>
 
             {/* Page number buttons */}
@@ -392,7 +400,7 @@ const InventoryPage = () => {
               onClick={() => handlePageChange(currentPage + 1)}
               className={`px-4 py-2 bg-heading text-white rounded-md hover:bg-violet-700 focus:outline-none ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
             >
-              Next
+              <TbArrowForwardUpDouble />
             </button>
           </div>
         </div>
@@ -402,7 +410,7 @@ const InventoryPage = () => {
         {showModal && (
           <div className="fixed inset-0 bg-opacity-50 z-50 flex justify-center items-center">
             <Modal onClose={() => setShowModal(false)}>
-              <div className="w-full max-w-3xl m-auto my-6 bg-white rounded-lg shadow-xl p-6 relative">
+              <div className="w-full md:max-w-3xl md:m-auto my-6 bg-white rounded-lg shadow-xl p-6 relative">
 
                 {/* Cross Button */}
                 <button
@@ -412,141 +420,141 @@ const InventoryPage = () => {
                   &times;
                 </button>
 
-                <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Add New Inventory Item</h2>
+                <h2 className="md:text-3xl font-semibold text-center mb-6 text-gray-800">Add New Inventory Item</h2>
                 <form onSubmit={editingItem ? handleUpdateItem : handleAddItem} className="flex flex-col gap-6">
-                  <div className="flex gap-6">
-                    <div className="w-1/2">
-                      <label htmlFor="item_type" className="block text-lg font-semibold text-gray-700 mb-2">Item Type</label>
+                  <div className="flex flex-col md:flex-row gap-2 md:gap-6">
+                    <div className="md:w-1/2">
+                      <label htmlFor="item_type" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Item Type</label>
                       <select
                         name="item_type"
                         value={newItem.item_type}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out" >
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out" >
                         <option value="Tool">Tool</option>
                         <option value="Fabric">Fabric</option>
                         <option value="Dress">Dress</option>
                       </select>
                     </div>
-                    <div className="w-1/2">
-                      <label htmlFor="name" className="block text-lg font-semibold text-gray-700 mb-2">Name</label>
+                    <div className="md:w-1/2">
+                      <label htmlFor="name" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Name</label>
                       <input
                         type="text"
                         name="name"
                         required
                         value={newItem.name}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
                   </div>
 
-                  <div className="flex gap-6">
-                    <div className="w-1/4">
-                      <label htmlFor="purchase_price" className="block text-lg font-semibold text-gray-700 mb-2">Purchase Price</label>
+                  <div className="flex flex-col md:flex-row gap-2 md:gap-6">
+                    <div className="md:w-1/4">
+                      <label htmlFor="purchase_price" className="block  text-sm md:text-lg  font-semibold text-gray-700 mb-2">Purchase Price</label>
                       <input required
                         type="number"
                         name="purchase_price"
                         value={newItem.purchase_price}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
 
-                    <div className="w-1/4">
-                      <label htmlFor="base_price" className="block text-lg font-semibold text-gray-700 mb-2">Sell Price</label>
+                    <div className="md:w-1/4">
+                      <label htmlFor="base_price" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Sell Price</label>
                       <input
                         type="number"
                         name="base_price"
                         value={newItem.base_price}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
-                    <div className="w-1/4">
-                      <label htmlFor="discount_price" className="block text-lg font-semibold text-gray-700 mb-2">Discount Price</label>
+                    <div className="md:w-1/4">
+                      <label htmlFor="discount_price" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Discount Price</label>
                       <input
                         type="number"
                         name="discount_price"
                         value={newItem.discount_price}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
 
-                    <div className="w-1/4">
-                      <label htmlFor="color" className="block text-lg font-semibold text-gray-700 mb-2">Color</label>
+                    <div className="md:w-1/4">
+                      <label htmlFor="color" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Color</label>
                       <input
                         type="text"
                         name="color"
                         value={newItem.color}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
                   </div>
 
-                  <div className="flex gap-6">
-                    <div className="w-1/2">
-                      <label htmlFor="category" className="block text-lg font-semibold text-gray-700 mb-2">Category</label>
+                  <div className="flex flex-col md:flex-row gap-2 md:gap-6">
+                    <div className="md:w-1/2">
+                      <label htmlFor="category" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Category</label>
                       <input
                         type="text"
                         name="category"
                         value={newItem.category}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
-                    <div className="w-1/2">
-                      <label htmlFor="supplier" className="block text-lg font-semibold text-gray-700 mb-2">Supplier</label>
+                    <div className="md:w-1/2">
+                      <label htmlFor="supplier" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Supplier</label>
                       <input
                         type="text"
                         name="supplier"
                         value={newItem.supplier}
                         onChange={handleChange}
-                        className="input w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
+                        className="input text-sm md:text-lg w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out"
                       />
                     </div>
                   </div>
 
-                  <div className="flex gap-6">
-                    <div className="w-1/2">
+                  <div className="flex flex-col md:flex-row gap-2 md:gap-6">
+                    <div className="md:w-1/2">
 
                       <div>
-                        <label htmlFor="description" className="block text-lg font-semibold text-gray-700 mb-2">Description</label>
+                        <label htmlFor="description" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Description</label>
                         <textarea
                           rows={12}
                           name="description"
                           value={newItem.description}
                           onChange={handleChange}
-                          className="input min-h-20 w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out overflow-hidden"
+                          className="input text-sm md:text-lg min-h-20 w-full px-4 py-3 border rounded-md bg-violet-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition ease-in-out overflow-hidden"
                         />
                       </div>
-                      <div className='flex gap-10 items-center'>
+                      <div className='flex flex-col md:flex-row gap-2 md:gap-10 md:items-center'>
                         <div>
                           <input type='checkbox' name="is_upcoming"
                             checked={newItem.is_upcoming}
                             value={newItem.is_upcoming}
                             onChange={handleChange} />
-                          <label htmlFor="is_best_seller" className="ml-2 text-lg font-semibold text-gray-700 mb-2">Upcoming Dress</label>
+                          <label htmlFor="is_best_seller" className="text-sm md:text-lg ml-2  font-semibold text-gray-700 mb-2">Upcoming Dress</label>
                         </div>
                         <div>
                           <input type='checkbox' name="is_featured"
                             checked={newItem.is_featured}
                             value={newItem.is_featured}
                             onChange={handleChange} />
-                          <label htmlFor="is_featured" className="ml-2 text-lg font-semibold text-gray-700 mb-2">Featured Dress</label>
+                          <label htmlFor="is_featured" className="text-sm md:text-lg ml-2   font-semibold text-gray-700 mb-2">Featured Dress</label>
                         </div>
                       </div>
 
                     </div>
-                    <div className="w-1/2">
-                      <label htmlFor="image" className="block text-lg font-semibold text-gray-700 mb-2">Image</label>
+                    <div className="md:w-1/2">
+                      <label htmlFor="image" className="block text-sm md:text-lg font-semibold text-gray-700 mb-2">Image</label>
                       <input
                         type="file"
                         name="image"
                         accept="image/*"
                         onChange={handleChange}
-                        className="file-input mt-2 file-input-bordered w-full bg-violet-50"
+                        className="file-input text-sm md:text-lg mt-2 file-input-bordered w-full bg-violet-50"
                       />
 
                       {newItem.image && newItem.image instanceof File && (
@@ -559,7 +567,7 @@ const InventoryPage = () => {
                   </div>
                   <button
                     type="submit"
-                    className="bg-violet-600 text-white py-3 rounded-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition duration-200 w-full mt-5"
+                    className="bg-violet-600 text-sm md:text-lg text-white py-3 rounded-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 transition duration-200 w-full mt-5"
                   >
                     {editingItem ? "Update Item" : "Add Item"} {/* Show correct text based on editing mode */}
                   </button>
@@ -568,8 +576,6 @@ const InventoryPage = () => {
             </Modal>
           </div>
         )}
-
-
       </section>
     </section>
   );

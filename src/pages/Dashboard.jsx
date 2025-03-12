@@ -12,7 +12,7 @@ const Dashboard = () => {
     <section className='flex'>
       <Sidebar />
 
-      <section className='mx-64 p-10 max-w-screen-2xl w-full'>
+      <section className='ml-10 md:mx-64 md:p-10 max-w-screen-2xl w-full'>
         {(user && user.fitMaker) ?
           (<> <FitMakerDashboard /> </>) : (<></>)}
 
